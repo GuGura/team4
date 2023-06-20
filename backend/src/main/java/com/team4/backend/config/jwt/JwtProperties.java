@@ -2,8 +2,8 @@ package com.team4.backend.config.jwt;
 
 public interface JwtProperties {
     String SECRET = "maeTtaem";//우리 서버만 알고 잇는 비밀값
-    int ACCESS_TOKEN_EXPIRATION_TIME = 10 * 6;
-    int REFRESH_TOKEN_EXPIRATION_TIME = 100 * 5;
+    int ACCESS_TOKEN_EXPIRATION_TIME = 10000 * 6;
+    int REFRESH_TOKEN_EXPIRATION_TIME = 1000000 * 5;
     //60000*10;
     String TOKEN_PREFIX = "Bearer ";
     String HEADER_ACCESS = "accessJwt";

@@ -20,7 +20,7 @@ function handleModel() {
   fileURL.value = ''
 }
 
-async function onFileSelected(event) {
+async function imgPreview(event) {
   const img = event.target.files[0];
   if (img instanceof Blob) {
     const fileReader = new FileReader();
@@ -50,7 +50,7 @@ async function onFileSelected(event) {
           <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${fileURL})`}" v-if="fileURL!=='' "></div>
           <div id="Icon" :style="{backgroundImage: `url(${defaultURL})`}" v-else></div>
           <input class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" aria-label="서버 아이콘 업로드하기"
-                 @change="onFileSelected">
+                 @change="imgPreview">
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
