@@ -5,14 +5,15 @@ import com.team4.backend.util.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(ControllerProperties.API_VERSION)
 public class MyInfoController {
 
-    @PostMapping("/myInfo/init")
+    @PutMapping("/myInfo/init")
     public ResponseEntity<ResultDTO> initMyInfo() {
         String email = UserUtil.getEmail();
 

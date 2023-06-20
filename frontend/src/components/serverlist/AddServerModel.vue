@@ -1,26 +1,40 @@
 <script setup>
 import {defineProps, defineEmits, reactive} from 'vue'
 import {useStore} from "vuex";
+import axios from "axios";
+import authHeader from "../../../script/authHeader";
 
 const props = defineProps({
   isModelActive: {
     type: Boolean,
     default: false
   },
-  defaultURL:{
-    type:String,
-    default:"/img/sidebar/choose.png"
+  defaultURL: {
+    type: String,
+    default: "/img/sidebar/choose.png"
   },
   serverN: String
 })
 const store = useStore();
+
 let dataForm = reactive({
+  nickName: store.getters.getUsername,
   fileURL: '',
   serverName: store.getters.getUsername + '님의 서버'
 })
+
+  function createServer() {
+    if (dataForm.serverName === '')
+      return
+    axios.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm, {headers:authHeader()})
+        .then((res) => {
+          console.log(res)
+        })
+  }
+
 const emit = defineEmits(['update:isModelActive', 'update:fileURL'])
 
-function handleModel() {
+function exitModal() {
   emit('update:isModelActive', false)
   dataForm.fileURL = ''
   dataForm.serverName = store.getters.getUsername + '님의 서버'
@@ -46,12 +60,12 @@ test()
 
 <template>
   <div id="container" v-if="props.isModelActive">
-    <div id="background" @click="handleModel"></div>
+    <div id="background" @click="exitModal"></div>
     <div id="modal">
       <div id="header">
         <div id="header_sumName">
           <div>서버 만들기</div>
-          <img src="/img/serverlist/exit.png" alt="" @click="handleModel">
+          <img src="/img/serverlist/exit.png" alt="" @click="exitModal">
         </div>
         <div id="description">서버는 나와 친구들이 함께 어울리는 공간입니다. 내 서버를 만들고 대화를 시작해보세요.</div>
       </div>
@@ -65,11 +79,11 @@ test()
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
-          <input name="" v-model=dataForm.serverName >
+          <input name="" v-model=dataForm.serverName>
           <div id="box3">
             <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
             <div id="btnCreate">
-              <button>생성하기</button>
+              <button @click="createServer">생성하기</button>
             </div>
           </div>
         </div>

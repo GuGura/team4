@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping(ControllerProperties.API_VERSION)
 public class TokenController {
 
     ResultDTO resultDTO;

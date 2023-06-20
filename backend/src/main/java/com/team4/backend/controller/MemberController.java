@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(ControllerProperties.API_VERSION)
 public class MemberController {
 
     ResultDTO resultDTO;

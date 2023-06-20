@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(ControllerProperties.API_VERSION)
 public class EmailController {
 
     private final EmailService emailService;
