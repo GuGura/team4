@@ -8,10 +8,8 @@
 <script setup>
 import ServerList from "@/components/serverlist/ServerList.vue";
 import MainContainer from "@/components/mainpage/MainContainer.vue";
-import loginService from "../../script/LoginService";
 
 
-loginService.initTokenCheck();
 </script>
 
 <style scoped>

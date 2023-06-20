@@ -39,9 +39,7 @@ const store = createStore({
         setFriendList(state, friends) {
             state.friendList = friends;
         },
-        setIsLogin(state, status){
-            state.isLogin = state;
-        }
+
     },
     actions: { //비즈니스 로직
         login({commit}, user) {
@@ -89,6 +87,9 @@ const store = createStore({
         },
         isLogin(state){
             return state.isLogin
+        },
+        getUsername(state){
+          return state.user
         }
     },
 

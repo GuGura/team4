@@ -32,7 +32,6 @@ class LoginService {
         return await axios.post(process.env.VUE_APP_BASEURL_V1 + "/check-token", null, {headers: authHeader()})
             .then(({data}) => {
                 if (data.status) {
-                    router.push("/")
                     return true;
                 } else {
                     return this.reissueRefreshJwt()
@@ -42,8 +41,12 @@ class LoginService {
 
     async initTokenCheck() {
         const result = await this.initCheck();
-        console.log(result)
         if (result) {
+             axios.post(process.env.VUE_APP_BASEURL_V1+"/myInfo/init",null,{headers: authHeader()})
+                .then(({data})=>{
+                    console.log(data.result)
+                    store.commit('setUser',data.result)
+                })
             router.push("/").then()
         }
         else {

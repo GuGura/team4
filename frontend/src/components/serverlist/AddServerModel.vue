@@ -1,23 +1,26 @@
 <script setup>
-import {defineProps, defineEmits, ref} from 'vue'
+import {defineProps, defineEmits, reactive} from 'vue'
+import {useStore} from "vuex";
 
 const props = defineProps({
   isModelActive: {
     type: Boolean,
     default: false
   },
-  defaultURL: {
-    type: String,
-    default: "/img/sidebar/choose.png"
-  }
+  defaultURL: String,
+  serverN: String
 })
-
-let fileURL = ref('');
+const store = useStore();
+let dataForm = reactive({
+  fileURL: '',
+  serverName: props.serverN
+})
 const emit = defineEmits(['update:isModelActive', 'update:fileURL'])
 
 function handleModel() {
   emit('update:isModelActive', false)
-  fileURL.value = ''
+  dataForm.fileURL = ''
+  dataForm.serverName = store.getters.getUsername + '님의 서버'
 }
 
 async function imgPreview(event) {
@@ -26,15 +29,20 @@ async function imgPreview(event) {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(img)
     fileReader.onload = function (e) {
-      fileURL.value = e.target.result;
+      dataForm.fileURL = e.target.result;
     }
   }
 }
 
+function test() {
+  console.log(dataForm.serverName)
+}
+
+test()
 </script>
 
 <template>
-
+  {{ store.getters.getUsername }}
   <div id="container" v-if="props.isModelActive">
     <div id="background" @click="handleModel"></div>
     <div id="modal">
@@ -47,14 +55,15 @@ async function imgPreview(event) {
       </div>
       <div id="body">
         <div id="img_upload">
-          <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${fileURL})`}" v-if="fileURL!=='' "></div>
+          <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${dataForm.fileURL})`}"
+               v-if="dataForm.fileURL!=='' "></div>
           <div id="Icon" :style="{backgroundImage: `url(${defaultURL})`}" v-else></div>
           <input class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" aria-label="서버 아이콘 업로드하기"
                  @change="imgPreview">
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
-          <input name="" value="??님의 서버">
+          <input name="" v-model=dataForm.serverName >
           <div id="box3">
             <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
             <div id="btnCreate">

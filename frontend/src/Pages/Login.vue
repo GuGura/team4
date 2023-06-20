@@ -82,7 +82,6 @@ function login(){
         }
       })
 }
-loginService.initTokenCheck();
 </script>
 
 <style scoped>

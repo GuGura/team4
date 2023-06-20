@@ -57,8 +57,7 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint()).and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/main/**").authenticated()
-                .antMatchers("/api/v1/channel/**").authenticated()
+                .antMatchers("/api/v1/**").authenticated()
 //                .antMatchers(HttpMethod.OPTIONS,"**").permitAll()
                 .anyRequest().permitAll()
                 .and().build();
