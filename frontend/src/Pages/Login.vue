@@ -63,7 +63,7 @@ function forgotPassword(){
     return
   }
   console.log("이메일 입력완료")
-};
+}
 function login(){
   axios.post(process.env.VUE_APP_BASEURL + "/login", JSON.stringify(result))
       .then((res) => {

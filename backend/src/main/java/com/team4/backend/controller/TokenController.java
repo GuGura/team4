@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,11 +33,13 @@ public class TokenController {
     }
 
     @PostMapping("/check-refreshToken")
-    public ResponseEntity<?> checkRefreshToken(HttpServletRequest request) {
+    public ResponseEntity<?> checkRefreshToken(HttpServletRequest request, HttpSession session) {
         boolean status = (boolean) request.getAttribute(ResultDtoProperties.STATUS);
         String message = (String) request.getAttribute(ResultDtoProperties.MESSAGE);
-        if (!status)
+        if (!status){
+            session.invalidate();
             return new ResponseEntity<>(jwtService.getResult(false, message), HttpStatus.OK);
+        }
         else
             return new ResponseEntity<>(jwtService.getResult(true, "토큰 재발급 성공"), HttpStatus.OK);
     }

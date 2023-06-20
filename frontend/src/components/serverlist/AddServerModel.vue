@@ -1,43 +1,40 @@
 <script setup>
+import {defineProps, defineEmits, ref} from 'vue'
+
 const props = defineProps({
   isModelActive: {
     type: Boolean,
     default: false
   },
-  preview:{
-    type:String,
-    default: null
-  },
-  fileURL:{
-    type:String,
+  defaultURL: {
+    type: String,
     default: "/img/sidebar/choose.png"
   }
-
 })
 
-const emit = defineEmits(['update:isModelActive'])
+let fileURL = ref('');
+const emit = defineEmits(['update:isModelActive', 'update:fileURL'])
 
 function handleModel() {
   emit('update:isModelActive', false)
+  fileURL.value = ''
 }
-function onFileSelected(event){
-  console.log(event)
-  let input = event.target;
-  if (input.files && input.files[0]) {
-    let reader = new FileReader();
-    reader.onload = (e) => {
-      props.preview = e.target.result;
+
+async function onFileSelected(event) {
+  const img = event.target.files[0];
+  if (img instanceof Blob) {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(img)
+    fileReader.onload = function (e) {
+      fileURL.value = e.target.result;
     }
-    reader.readAsDataURL(input.files[0]);
   }
 }
 
-function previewFile(file){
-
-}
 </script>
 
 <template>
+
   <div id="container" v-if="props.isModelActive">
     <div id="background" @click="handleModel"></div>
     <div id="modal">
@@ -50,9 +47,10 @@ function previewFile(file){
       </div>
       <div id="body">
         <div id="img_upload">
-          <div id="Icon" :style="{backgroundImage: `url(${fileURL})`}"></div>
+          <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${fileURL})`}" v-if="fileURL!=='' "></div>
+          <div id="Icon" :style="{backgroundImage: `url(${defaultURL})`}" v-else></div>
           <input class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" aria-label="서버 아이콘 업로드하기"
-                 @change="onFileSelected" >
+                 @change="onFileSelected">
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
@@ -76,10 +74,17 @@ function previewFile(file){
 </template>
 
 <style scoped>
-#Icon{
+#Icon {
   width: 80px;
   height: 80px;
 }
+
+.IconURL {
+  border-radius: 50%;
+  background-position: center;
+  background-size: contain;
+}
+
 #container {
   display: flex;
   position: fixed;
@@ -221,9 +226,11 @@ function previewFile(file){
   cursor: pointer;
   border-radius: 2px;
 }
-#btnCreate > button:hover{
-  background-color:#CECECE;
+
+#btnCreate > button:hover {
+  background-color: #CECECE;
 }
+
 #footer {
   display: flex;
   flex-direction: column;

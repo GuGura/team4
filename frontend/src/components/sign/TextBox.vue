@@ -4,11 +4,14 @@
       <div id="idInfo">{{ props.subject }}</div>
       <div :style="props.noticeColor">{{ props.notice }}</div>
     </div>
-    <input class="textBox" :type="props.boxType" :name="props.boxName" @input="handleModelValue" :pattern="props.pattern" required>
+    <input class="textBox" :type="props.boxType" :name="props.boxName" @input="handleModelValue"
+           :pattern="props.pattern" required>
   </div>
 </template>
 
 <script setup>
+import {defineProps, defineEmits} from 'vue'
+
 const props = defineProps({
   boxType: String,
   boxName: String,
@@ -20,7 +23,8 @@ const props = defineProps({
     default: '*'
   },
   noticeColor: String
-})
+});
+
 const emit = defineEmits(['update:modelValue'])
 
 const handleModelValue = (event) => {

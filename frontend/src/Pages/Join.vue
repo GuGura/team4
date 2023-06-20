@@ -60,7 +60,6 @@ import axios from "axios";
 import router from "../../script/router";
 import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
-import loginService from "../../script/LoginService";
 
 const joinInfo = reactive({
   email: null,
