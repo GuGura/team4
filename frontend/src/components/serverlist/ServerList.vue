@@ -2,20 +2,12 @@
 import ServerIcon from "@/components/serverlist/ServerIcon.vue";
 import AddServerModel from "@/components/serverlist/AddServerModel.vue";
 import {reactive} from "vue";
-import {useStore} from "vuex";
-
-const store = useStore();
 
 function choiceServer(index) {
   if (index === 'addServer') {
     this.status.addServer = true
   }
 }
-
-const addServerDefault = reactive({
-  fileURL: "/img/sidebar/choose.png",
-  serverName: store.getters.getUsername + '님의 서버'
-})
 
 function addServer(event) {
   this.status.addServer = event;
@@ -56,8 +48,6 @@ const status = reactive({
     <AddServerModel
         :is-model-active="status.addServer"
         @update:isModelActive="addServer(event)"
-        :defaultURL="addServerDefault.fileURL"
-        :serverN="addServerDefault.serverName"
     />
 
   </div>

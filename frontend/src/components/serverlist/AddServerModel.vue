@@ -7,13 +7,16 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  defaultURL: String,
+  defaultURL:{
+    type:String,
+    default:"/img/sidebar/choose.png"
+  },
   serverN: String
 })
 const store = useStore();
 let dataForm = reactive({
   fileURL: '',
-  serverName: props.serverN
+  serverName: store.getters.getUsername + '님의 서버'
 })
 const emit = defineEmits(['update:isModelActive', 'update:fileURL'])
 
@@ -42,7 +45,6 @@ test()
 </script>
 
 <template>
-  {{ store.getters.getUsername }}
   <div id="container" v-if="props.isModelActive">
     <div id="background" @click="handleModel"></div>
     <div id="modal">
