@@ -1,23 +1,24 @@
 <script setup>
 
-// import LobbySidebar from "@/components/mainpage/lobby/LobbySidebar.vue";
-// import Lobby from "@/components/mainpage/lobby/Lobby.vue";
-import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
-import Channel from "@/components/mainpage/channel/Channel.vue";
+ import LobbySidebar from "@/components/mainpage/lobby/LobbySidebar.vue";
+ import Lobby from "@/components/mainpage/lobby/Lobby.vue";
+//import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
+//import Channel from "@/components/mainpage/channel/Channel.vue";
 </script>
 
 <template>
   <!-- lobby-->
-<!--  <div id="contents">-->
-<!--    <LobbySidebar/>-->
-<!--    <Lobby/>-->
-<!--  </div>-->
+  <div id="contents">
+    <LobbySidebar/>
+    <Lobby/>
+  </div>
 
-  <!-- channel-->
+  <!-- channel
   <div id="contents">
     <ChannelSidebar/>
     <Channel/>
   </div>
+  -->
 </template>
 
 <style scoped>
