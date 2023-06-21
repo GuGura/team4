@@ -1,73 +1,82 @@
 <script>
 import axios from "axios";
 import authHeader from "../../../../script/authHeader";
-import {reactive} from "vue";
 
-let dataForm = reactive({
-    fileURL: '',
-})
+
 
 export default {
     name: 'Profile',
     data: ()=>({
-        image: '',
+        imgPreview: '',
+        nickName: '',
+        user_description: '',
+        imgTest: '',
 
     }),
     methods: {
-        fileChange: function (e) {
+        imgChange: function (e) {
             const img = e.target.files[0];
-            if (img instanceof Blob) {
-                const fileReader = new FileReader();
-                fileReader.readAsDataURL(img)
-                fileReader.onload = function (e) {
-                    dataForm.fileURL = e.target.result;
-                }
+            const fileData = (data) => {
+                this.imgPreview = data
             }
-            axios.post(process.env.VUE_APP_BASEURL_V1 + "/api/v1/home/changeProfileImage", form,
-                {headers: authHeader()})
-                .then(({data}) => {
-                    console.log(data)
-                })
-                .catch(() => {
-                    alert("이메일을 입력해주세요1")
-                })
-        }
+            const reader = new FileReader()
+            reader.readAsDataURL(img)
+            reader.addEventListener("load", function () {
+                fileData(reader.result)
+            }, false);
+        },
+        uploadProfile:function (){
+            let data = {
+                nickName: this.nickName,
+                user_description: this.user_description
+            }
+            axios.put(process.env.VUE_APP_BASEURL + "/api/v1/home/updateProfile",data,{headers:authHeader()}
+            ).then(()=>{
+                alert("저장 완료")
+            })
+
+        },
+        uploadIcon: function (){
+            axios.post(process.env.VUE_APP_BASEURL + "/api/v1/home/updateIcon",this.imgPreview,{headers:authHeader()}
+            ).then(()=>{
+
+            })
+        },
+
+
     }
 }
 
 </script>
 <template>
-    <form>
         <fieldset>
             <div>
                 <strong>닉네임</strong>
-                <input type="text" name="name" value="닉네임 입력">
+                <input type="text" name="name" id="nickName" v-model="nickName">
             </div>
             <div>
                 <strong>내 정보</strong>
-                <label for="text"></label>
                 <br/>
-                <textarea rows="5" cols="70" name="text" id="text"></textarea>
+                <textarea rows="5" cols="70" name="text" id="description" v-model="user_description"></textarea>
                 <br/>
                 <div>
-                    <input type="submit" value="제출">
+                    <button @click="uploadProfile">제출</button>
                 </div>
             </div>
+            <div>
+                <img :src="imgPreview" alt="image" id="icon">
+            </div>
+            <div>
+                <img :src="imgTest" alt="image" id="icon">
+            </div>
         </fieldset>
-    </form>
 
     <div style="padding:30px;">
-        <input ref="image" type="file" accept="image/*" @change="fileChange" multiple="multiple"/>
-        <input type="text" ref="imageName"/>
-        <div :style="{backgroundImage: `url(${dataForm.fileURL})`}"
-             class="w-full h-full flex items-center">
-
+        <input ref="image" class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" @change="imgChange" multiple="multiple"/>
+        <div>
         </div>
         <div>
-
-        </div>
-        <div>
-            <input type="submit" value="저장하기">
+            <button @click="uploadIcon">저장</button>
         </div>
     </div>
 
