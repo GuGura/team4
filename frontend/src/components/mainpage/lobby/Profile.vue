@@ -19,9 +19,14 @@
     </form>
 
     <div style="padding:30px;">
-        <input type="file" accept="image/*" @change="fileChange"/>
+        <input ref="image" type="file" accept="image/*" @change="fileChange" multiple="multiple"/>
+        <input type="text" ref="imageName"/>
+        <div v-if="image"
+             class="w-full h-full flex items-center">
+            <img :src="image" alt="image">
+        </div>
         <div>
-            upload 이미지 :{{ file.name }} ({{ file.size }}) / {{ file.type }}
+
         </div>
         <div>
             <input type="submit" value="저장하기">
@@ -30,17 +35,30 @@
 
 </template>
 <script>
+import axios from "axios";
+import authHeader from "../../../../script/authHeader";
+import loginService from "../../../../script/LoginService";
+import router from "../../../../script/router";
+
 export default {
     name: 'Profile',
-    data() {
-        return {
-            file: '',
-        }
-    },
+    data: ()=>({
+        image: '',
+
+    }),
     methods: {
         fileChange: function (e) {
-            this.file = e.target.files[0];
-
+            let file = e.target.files[0];
+            let form = new FormData()
+            form.append('image',file)
+            axios.post(process.env.VUE_APP_BASEURL_V1 + "/api/v1/home/changeProfileImage", form,
+                {headers: authHeader()})
+                .then(({data}) => {
+                    console.log(data)
+                })
+                .catch(() => {
+                    alert("이메일을 입력해주세요1")
+                })
         }
     }
 }
