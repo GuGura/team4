@@ -1,14 +1,25 @@
 CREATE SEQUENCE MEMBER_ID_PK START WITH 1 INCREMENT BY 1; --스퀀스
-create table Member
+create table member
 (
-    id       number primary key,
-    email    varchar(100) unique,
-    username varchar(100) not null,
-    password varchar(100) not null
+    ID       number primary key auto increment,
+    EMAIL    varchar(100),
+    USERNAME varchar(100),
+    PASSWORD varchar(200),
+    ROLE varchar(100) = 'ROLE_USER',
+    JOIN_DATE date default sysdate()
 );
 
 create table emailAuthentication
 (
-    email varchar2(100),
-    auth varchar2(100)
+    EMAIL varchar(100),
+    AUTH varchar(100)
 )
+create table token
+{
+    ID       number primary key auto increment,
+    ACCESS_TOKEN varchar(1000),
+    REFRESH_TOKEN varchar(1000),
+    CREATE_DATE datetime,
+    ACCESS_TOKEN_EXPIRES_DATE datetime,
+    REFRESH_TOKEN_EXPIRES_DATE datetime
+}
