@@ -4,7 +4,7 @@ import {createStore} from 'vuex'
 const store = createStore({
     state() {
         return {
-            user: null,
+            user: 'wodus331',
             accessJwt: null,
             refreshJwt: null,
             channels: [],

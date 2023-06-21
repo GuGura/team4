@@ -28,20 +28,20 @@ const router = createRouter({
     routes
 });
 router.beforeEach(async (to, from, next) => {
+    console.log("1")
     const isLogin = await loginService.initCheck();
     console.log(isLogin)
-    console.log(to.meta.requiresAuth)
     if (to.meta.requiresAuth && !isLogin) {
         next('/login')
     } else if (!to.meta.requiresAuth && isLogin) {
         next('/')
-    } else {
-        axios.put(process.env.VUE_APP_BASEURL_V1+"/myInfo/init",null,{headers: authHeader()})
-            .then(({data})=>{
-                console.log(data.result)
-                store.commit('setUser',data.result)
+    } else if(from.meta.requiresAuth && isLogin){
+        axios.put(process.env.VUE_APP_BASEURL_V1 + "/myInfo/init")
+            .then(({data}) => {
+                store.commit('setUser', data.result)
             })
-        next()
+    }else{
+        next();
     }
 })
 

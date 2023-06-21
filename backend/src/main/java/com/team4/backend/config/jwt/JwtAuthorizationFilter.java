@@ -8,6 +8,7 @@ import com.team4.backend.model.User;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 @Slf4j
@@ -65,9 +67,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     response.addHeader(JwtProperties.HEADER_ACCESS, JwtProperties.TOKEN_PREFIX + token.getAccessToken());
                     response.addHeader(JwtProperties.HEADER_REFRESH, JwtProperties.TOKEN_PREFIX + token.getRefreshToken());
                 } catch (TokenExpiredException e) {
-                    setFailRequest(request, "refreshTokenExpired");
+                    setFailRequest("refreshTokenExpired", response);
                 }
             }
+            System.out.println("4. 유저 이름 확인: " + email);
             user = jwtService.findUserByEmail(email);
             PrincipalDetails principalDetails = new PrincipalDetails(user);
             Authentication authentication =
@@ -75,19 +78,23 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             request.setAttribute(ResultDtoProperties.STATUS, true);
             request.setAttribute(ResultDtoProperties.MESSAGE, "SUCCESS");
+            chain.doFilter(request, response);
         } catch (TokenExpiredException e) {
-            setFailRequest(request, "TokenExpired");
+            setFailRequest("TokenExpired", response);
         } catch (Exception e) {
-            setFailRequest(request, e.getMessage());
+            setFailRequest(e.getMessage(), response);
         }
-
-        chain.doFilter(request, response);
     }
 
-    private void setFailRequest(HttpServletRequest request, String message) throws IOException {
+    private void setFailRequest(String message, HttpServletResponse response) throws IOException {
         System.out.println("setFailResponse: " + message);
-        request.setAttribute(ResultDtoProperties.STATUS, false);
-        request.setAttribute(ResultDtoProperties.MESSAGE, message);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        String responseData = "{\"message\": \"" + message + "\"}"; // JSON 형식의 응답 데이터 생성
+
+        PrintWriter writer = response.getWriter(); // 출력 스트림 가져오기
+        writer.print(responseData); // 데이터 출력
+        writer.flush(); // 버퍼 비우기
+        writer.close(); // 스트림 닫기
     }
 
 }

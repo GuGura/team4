@@ -48,7 +48,6 @@ import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
 import router from "../../script/router";
 import {useStore} from "vuex";
-import loginService from "../../script/LoginService";
 
 const store = useStore();
 
@@ -74,7 +73,7 @@ function login(){
           localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
           store.commit('setAccessJwt', accessJwt);
           store.commit('setRefreshJwt', refreshJwt);
-          store.commit('login',result);
+          store.commit('setUser',result.username);
 
           router.push("/").then(()=>console.log("로그인 성공"))
         } else {

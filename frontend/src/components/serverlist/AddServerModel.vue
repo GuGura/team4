@@ -1,8 +1,7 @@
 <script setup>
 import {defineProps, defineEmits, reactive} from 'vue'
 import {useStore} from "vuex";
-import axios from "axios";
-import authHeader from "../../../script/authHeader";
+import api from "../../../script/axios";
 
 const props = defineProps({
   isModelActive: {
@@ -23,12 +22,15 @@ let dataForm = reactive({
   serverName: store.getters.getUsername + '님의 서버'
 })
 
-  function createServer() {
+  async function createServer() {
     if (dataForm.serverName === '')
       return
-    axios.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm, {headers:authHeader()})
-        .then((res) => {
-          console.log(res)
+    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
+        .then(() => {
+          console.log("createServer1")
+        })
+        .catch(()=>{
+          console.log("createServer2")
         })
   }
 
@@ -51,11 +53,7 @@ async function imgPreview(event) {
   }
 }
 
-function test() {
-  console.log(dataForm.serverName)
-}
 
-test()
 </script>
 
 <template>
