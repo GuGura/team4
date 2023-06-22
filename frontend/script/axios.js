@@ -46,13 +46,9 @@ api.interceptors.response.use(
                         console.log(refreshJwt)
                         const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
                         localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
-                        store.commit('setAccessJwt', accessJwt);
-                        store.commit('setRefreshJwt', refreshJwt);
                     })
                     .catch(() => {
                         localStorage.removeItem('token');
-                        store.commit('setAccessJwt', null)
-                        store.commit('setRefreshJwt', null)
                     })
                 console.log("222")
                 return api(originalRequest);

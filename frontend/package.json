@@ -11,10 +11,10 @@
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "http-proxy-middleware": "^2.0.6",
+    "pinia": "^2.1.4",
     "vue": "^3.2.13",
     "vue-final-modal": "^4.4.2",
-    "vue-router": "^4.2.2",
-    "vuex": "^4.1.0"
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -30,7 +30,6 @@
     "env": {
       "node": true
     },
-
     "extends": [
       "plugin:vue/vue3-essential",
       "eslint:recommended"

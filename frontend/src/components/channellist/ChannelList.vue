@@ -1,6 +1,6 @@
 <script setup>
-import ServerIcon from "@/components/serverlist/ServerIcon.vue";
-import AddServerModel from "@/components/serverlist/AddServerModel.vue";
+import ServerIcon from "@/components/channellist/ChannelIcon.vue";
+import AddServerModel from "@/components/channellist/AddChannelModel.vue";
 import {reactive} from "vue";
 
 function choiceServer(index) {

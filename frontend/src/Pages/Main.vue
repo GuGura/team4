@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import ServerList from "@/components/serverlist/ServerList.vue";
+import ServerList from "@/components/channellist/ChannelList.vue";
 import MainContainer from "@/components/mainpage/MainContainer.vue";
 
 

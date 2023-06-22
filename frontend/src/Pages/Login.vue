@@ -47,9 +47,6 @@ import axios from "axios";
 import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
 import router from "../../script/router";
-import {useStore} from "vuex";
-
-const store = useStore();
 
 const result = reactive({
   username: '',
@@ -71,9 +68,6 @@ function login(){
           const refreshJwt = res.headers.get('refreshJwt')
           const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
           localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
-          store.commit('setAccessJwt', accessJwt);
-          store.commit('setRefreshJwt', refreshJwt);
-          store.commit('setUser',result.username);
 
           router.push("/").then(()=>console.log("로그인 성공"))
         } else {

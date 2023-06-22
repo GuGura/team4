@@ -3,7 +3,6 @@ import authHeader from "./authHeader";
 import router from "./router";
 
 import refreshHeader from "./refreshHeader";
-import store from "./store";
 
 class LoginService {
     async reissueRefreshJwt() {
@@ -13,13 +12,9 @@ class LoginService {
                 const refreshJwt = res.headers.get('refreshJwt')
                 const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
                 localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
-                store.commit('setAccessJwt', accessJwt);
-                store.commit('setRefreshJwt', refreshJwt);
                 return true;
             }).catch(() => {
                 localStorage.removeItem('token');
-                store.commit('setAccessJwt', null)
-                store.commit('setRefreshJwt', null)
                 return false;
             })
     }
@@ -38,7 +33,7 @@ class LoginService {
         if (result) {
             axios.post(process.env.VUE_APP_BASEURL_V1 + "/myInfo/init", null, {headers: authHeader()})
                 .then(({data}) => {
-                    store.commit('setUser', data.result)
+                    console.log(data)
                 })
             router.push("/").then()
         } else {

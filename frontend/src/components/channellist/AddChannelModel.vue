@@ -1,6 +1,5 @@
 <script setup>
 import {defineProps, defineEmits, reactive} from 'vue'
-import {useStore} from "vuex";
 import api from "../../../script/axios";
 
 const props = defineProps({
@@ -14,12 +13,11 @@ const props = defineProps({
   },
   serverN: String
 })
-const store = useStore();
 
 let dataForm = reactive({
-  nickName: store.getters.getUsername,
+  nickName: 'wodus331',
   fileURL: '',
-  serverName: store.getters.getUsername + '님의 서버'
+  serverName: 'wodus331님의 서버'
 })
 
   async function createServer() {
@@ -39,7 +37,7 @@ const emit = defineEmits(['update:isModelActive', 'update:fileURL'])
 function exitModal() {
   emit('update:isModelActive', false)
   dataForm.fileURL = ''
-  dataForm.serverName = store.getters.getUsername + '님의 서버'
+  dataForm.serverName = 'wodus331님의 서버'
 }
 
 async function imgPreview(event) {

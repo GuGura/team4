@@ -1,8 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router/dist/vue-router'
 import loginService from "./LoginService";
-import store from "./store";
-import axios from "axios";
-import authHeader from "./authHeader";
 
 const routes = [
     {
@@ -36,10 +33,7 @@ router.beforeEach(async (to, from, next) => {
     } else if (!to.meta.requiresAuth && isLogin) {
         next('/')
     } else if(from.meta.requiresAuth && isLogin){
-        axios.put(process.env.VUE_APP_BASEURL_V1 + "/myInfo/init")
-            .then(({data}) => {
-                store.commit('setUser', data.result)
-            })
+        console.log("!2")
     }else{
         next();
     }
