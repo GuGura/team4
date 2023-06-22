@@ -9,6 +9,7 @@ import axios from "axios";
 import loginService from "../../../../script/LoginService";
 import router from "../../../../script/router";
 import authHeader from "../../../../script/authHeader";
+import api from "../../../../script/axios";
 
 export default defineComponent({
     // eslint-disable-next-line vue/multi-word-component-names
@@ -28,9 +29,9 @@ export default defineComponent({
                                 this.getApi().prev();
                                 this.getApi().removeAllEvents();
                                 console.log(this.getApi().getDate()+": 프리브")
-                                axios.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
+                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
                                     date: this.getApi().getDate()
-                                },{headers:authHeader()}).then(({data})=>{
+                                }).then(({data})=>{
                                     for(const i in data){
                                         this.getApi().addEvent({
                                             id: data[i].id,
@@ -57,9 +58,9 @@ export default defineComponent({
                                 this.getApi().next();
                                 this.getApi().removeAllEvents();
                                 console.log(this.getApi().getDate()+": 넥스트")
-                                axios.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
+                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
                                     date: this.getApi().getDate()
-                                },{headers:authHeader()}).then(({data})=>{
+                                }).then(({data})=>{
                                     for(const i in data){
                                         this.getApi().addEvent({
                                             id: data[i].id,
@@ -112,9 +113,9 @@ export default defineComponent({
             const isTest=loginService.methodTokenCheck()
             if(isTest){
                 console.log("캘린더로드")
-                axios.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
                     date: this.getApi().getDate()
-                },{headers:authHeader()}).then(({data})=>{
+                }).then(({data})=>{
                     for(const i in data){
                         this.getApi().addEvent({
                             id: data[i].id,
@@ -141,7 +142,7 @@ export default defineComponent({
 
             if (title) {
                 let id;
-                axios.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
                     title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
