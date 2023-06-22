@@ -49,12 +49,11 @@
 import Calendar from "@/components/mainpage/lobby/Calendar.vue";
 import RichTextEditor from "@/components/mainpage/lobby/RichTextEditor.vue";
 import Profile from "@/components/mainpage/lobby//Profile.vue";
-import UploadImage from "@/components/mainpage/lobby/UploadImage.vue";
+
 
 export default {
     name: "Accordion",
     components: {
-        UploadImage,
         Profile,
         RichTextEditor,
         Calendar,

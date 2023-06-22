@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -21,37 +24,36 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @PostMapping("api/v1/home/changeProfileImage")
-    public String saveProfileImage(MultipartFile[] uploadFile){
-        String uploadFolder = "C:\\upload\\images\\profile";
-        File uploadPath = new File(uploadFolder);
-        if (uploadPath.exists() == false) {
-            uploadPath.mkdirs();
-        }
-        String uploadFileName = null;
-        for (MultipartFile multipartFile : uploadFile) {
+   @PostMapping("api/v1/home/updateProfile")
+    public void updateProfile(@RequestBody Map<String,String> params) throws IOException {
+        //img 파일로 변환 및 저장
+       String base64Data=params.get("imgPreview");
+       String base64 = base64Data.substring(base64Data.lastIndexOf(",")+1);
+       BufferedImage image = null;
+       byte[] imageByte;
 
-            uploadFileName = multipartFile.getOriginalFilename();
+       Base64.Decoder decoder =  Base64.getDecoder();
+       imageByte = decoder.decode(base64);
+       ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+       image = ImageIO.read(bis);
+       bis.close();
 
-            String uuid = UUID.randomUUID().toString();
-            uploadFileName = uuid + "_" + uploadFileName;
+       //파일명
+       String fileName = base64.substring(30,50)+".png";
 
-            File saveFile = new File(uploadPath, uploadFileName);
+       String uploadFolder = "C:\\upload\\images\\users\\"+UserUtil.getEmail().substring(0,UserUtil.getEmail().lastIndexOf("@"))+"\\icons\\";
 
-            try {
-                multipartFile.transferTo(saveFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return uploadFileName;
-    }
+       File outputfile = new File(uploadFolder+fileName);
+       ImageIO.write(image, "png", outputfile);
+       //저장완료
 
-   @PutMapping("api/v1/home/updateProfile")
-    public void updateProfile(@RequestBody UserDetailDTO userDetail){
-        String email = UserUtil.getEmail();
-        userDetail.setUserName(email);
-        profileService.updateProfile(userDetail);
+       UserDetailDTO userDetailDTO = new UserDetailDTO();
+       userDetailDTO.setUserName(UserUtil.getEmail());
+       userDetailDTO.setUser_description(params.get("user_description"));
+       userDetailDTO.setNickName(params.get("nickName"));
+       userDetailDTO.setIcon_URL(uploadFolder+fileName);
+
+       profileService.updateProfile(userDetailDTO);
     }
 
     //@PostMapping("api/v1/home/updateProfile")
@@ -61,13 +63,6 @@ public class ProfileController {
         profileService.createProfile(userDetail);
     }
 
-    @PostMapping("api/v1/home/updateIcon")
-    public void updateIcon(@RequestBody File uploadFile){
-        String uploadFolder = "C:\\upload\\images\\users\\"+UserUtil.getEmail().substring(0,UserUtil.getEmail().lastIndexOf("@"))+"\\icons";
-        File file = new File(uploadFolder);
-        if (file.exists() == false) {
-            file.mkdirs();
-        }String uploadFileName = null;
-        File uploadingFile = new File(file, uploadFile);
-    }
+
+
 }

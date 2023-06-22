@@ -32,36 +32,43 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 // import axios from "axios";
 
 import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
+import {ref} from "vue";
 
+const isExpanded = ref('')
 
-export default {
-    name: "Lobby",
-    components: {Accordion},
-    // setUp(){
-    //     axios.get("/api/items").then((res)=>{
-    //         console.log(res);
-    //     })
-    // },
-    data() {
-        return {
-            isExpanded: null
-        };
-    },
-    methods: {
-        toggleAccordion(index) {
-            if (this.isExpanded === index) {
-                this.isExpanded = null; // Collapse the active accordion
-            } else {
-                this.isExpanded = index; // Expand the clicked accordion
-            }
-        }
-    },
-
+function toggleAccordion(index){
+    if (this.isExpanded === index) {
+        this.isExpanded = null; // Collapse the active accordion
+    } else {
+        this.isExpanded = index; // Expand the clicked accordion
+    }
 }
+
+// export default {
+//     name: "Lobby",
+//     components: {Accordion},
+//
+//     data() {
+//         return {
+//             isExpanded: null
+//
+//         };
+//     },
+//     methods: {
+//         toggleAccordion(index) {
+//             if (this.isExpanded === index) {
+//                 this.isExpanded = null; // Collapse the active accordion
+//             } else {
+//                 this.isExpanded = index; // Expand the clicked accordion
+//             }
+//         }
+//     },
+//
+// }
 </script>
 
 <style scoped>
