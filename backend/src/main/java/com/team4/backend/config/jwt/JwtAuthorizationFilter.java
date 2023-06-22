@@ -78,6 +78,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             request.setAttribute(ResultDtoProperties.STATUS, true);
             request.setAttribute(ResultDtoProperties.MESSAGE, "SUCCESS");
+            request.setAttribute(ResultDtoProperties.USER_UID,user.getId());;
             chain.doFilter(request, response);
         } catch (TokenExpiredException e) {
             setFailRequest("TokenExpired", response);

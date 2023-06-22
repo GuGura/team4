@@ -1,6 +1,8 @@
 package com.team4.backend.controller;
 
+import com.team4.backend.model.Channel;
 import com.team4.backend.model.dto.ResultDTO;
+import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ChannelService;
 import com.team4.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,12 +34,12 @@ public class MyInfoController {
     }
 
     @GetMapping("/myInfo/channelList")
-    public ResponseEntity<ResultDTO> getMyServerList(){
-        String email = UserUtil.getEmail();
-        System.out.println(email);
+    public ResponseEntity<ResultDTO> getMyServerList(HttpServletRequest request){
+        int userUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        System.out.println(userUID);
 
         resultDTO = ResultDTO.builder()
-                .result(email)
+                .result(userUID)
                 .build();
         return new ResponseEntity<>(HttpStatus.OK);
     }
