@@ -4,4 +4,6 @@ public interface ResultDtoProperties {
     String MESSAGE = "message";
     String STATUS = "status";
     String RESULT = "result";
+
+    String USER_UID = "userUID";
 }
