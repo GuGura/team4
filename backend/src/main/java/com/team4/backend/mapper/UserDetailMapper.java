@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UserDetailMapper {
 
-    @Update("UPDATE UserDetail SET nickName = #{nickName}, user_description= #{user_description} WHERE userName = #{userName}")
+    @Update("UPDATE UserDetail SET nickName = #{nickName}, user_description= #{user_description}, icon_URL=#{icon_URL} WHERE userName = #{userName}")
     void updateProfile(UserDetailDTO userDetailDTO);
 
     @Insert("insert into UserDetail(userName) values(#{userName})")
