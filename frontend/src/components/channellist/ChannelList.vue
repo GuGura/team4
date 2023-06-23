@@ -9,12 +9,7 @@ const store = useServerListStore();
 onMounted(()=>{
   store.updateBtn()
 })
-// function choiceServer(index) {
-//   if (index === 'addServer') {
-//     this.status.addServer = true
-//   }
-//   console.log(index)
-// }
+
 
 function addServer(event) {
   this.status.addServer = event;
