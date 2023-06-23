@@ -11,11 +11,16 @@ const props = defineProps({
 
 <template>
   <div class="server_Icon">
-    <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;" v-if="props.buttonData.channel_icon_url === null">
+    <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;"
+         v-if="props.buttonData.channel_icon_url === null">
       <div class="title">{{ props.buttonData.channel_title }}</div>
     </div>
-    <img class="img" v-else-if="props.buttonData.channel_title" :src="props.buttonData.channel_icon_url" alt=""
-         :class=" {colorGreen : props.buttonData.channel_title === ('addServer' || 'public'),colorBlue:(props.buttonData.channel_title === 'lobby')}">
+
+    <img class="img" v-else-if="props.buttonData.channel_title === ('lobby' ||'addServer' || 'public')"
+         :src="props.buttonData.channel_icon_url" alt=""
+         :class=" {colorGreen : (props.buttonData.channel_title === 'addServer')|| (props.buttonData.channel_title === 'addServer'), colorBlue:(props.buttonData.channel_title === 'lobby')}">
+
+    <img class="img" v-else :src="props.buttonData.channel_icon_url">
   </div>
 </template>
 
