@@ -1,6 +1,9 @@
 <script>
+import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
+
 export default {
-  name:'LobbySidebar'
+  name:'LobbySidebar',
+  components: {SidebarMyInfo}
 }
 </script>
 
@@ -8,6 +11,7 @@ export default {
   <div id="side_contents">
     <div id="side_content_info">
       <form name="list">
+
         <div id="btn_DMList" class="btnList">
           <div style="width: 20px;">
             <img src="/img/sidebar/DM_icon.png" style="height: 20px;">
@@ -15,6 +19,7 @@ export default {
           <input type="checkbox" name="dm" hidden checked>
           <div>DM</div>
         </div>
+
         <div id="btn_FriendList" class="btnList">
           <div style="width: 20px;">
             <img src="/img/sidebar/friend_icon.png" style="height: 20px;">
@@ -22,29 +27,15 @@ export default {
           <input type="checkbox" name="friend" hidden>
           <div>친구</div>
         </div>
+
       </form>
 
       <div id="searchBox">
         <input name="searchbox" placeholder="친구 찾기">
       </div>
+
       <div style="color: #fff;margin-top: 10px; padding: 0 5px;">리스트</div>
-      <!---->
-      <div class="btnList">
-        <!---->
-        <div style="width: 35px;">
-          <img src="/img/sidebar/userIcon.png">
-        </div>
-        <div class="MyMember_Info">
-          <div class="MyMember_Name">
-            재연
-          </div>
-          <div class="MyMember_exit">
-            <img src="/img/sidebar/exit.png">
-          </div>
-        </div>
-        <!---->
-      </div>
-      <!---->
+      <!----><!---->
       <div class="btnList">
         <div style="width: 35px;">
           <img src="/img/sidebar/userIcon.png">
@@ -58,35 +49,23 @@ export default {
           </div>
         </div>
       </div>
-
-    </div>
-
-    <div id="side_content_myStatus">
-      <div style="display: flex;gap: 15px;">
-        <div id="MyIcon">
-          <img src="/img/sidebar/userIcon.png" style="height: 40px;" alt="헬로">
+      <!---->
+      <!---->
+      <div class="btnList">
+        <div style="width: 35px;">
+          <img src="/img/sidebar/userIcon.png">
         </div>
-        <div id="MyInfo">
-          <div id="MyName">
-            meatTeam<!-- 글자제한필요-->
+        <div class="MyMember_Info">
+          <div class="MyMember_Name">
+            재연
           </div>
-          <div id="MyStatus">
-            meatTeam#1234
+          <div class="MyMember_exit">
+            <img src="/img/sidebar/exit.png">
           </div>
         </div>
       </div>
-      <div style="display: flex;">
-        <div id="Mike">
-          <img src="/img/sidebar/mike.png" alt="마이크">
-        </div>
-        <div id="headset">
-          <img src="/img/sidebar/headset.png" alt="헤드셋">
-        </div>
-        <div id="btnHome">
-          <img src="/img/sidebar/btnHome.png" alt="홈버튼">
-        </div>
-      </div>
     </div>
+    <SidebarMyInfo />
   </div>
 </template>
 
@@ -97,6 +76,8 @@ export default {
   min-width: 240px;
   background: #2b2d31;
   border-radius: 10px 0 0 0;
+  z-index: 10;
+  position: relative;
 }
 #side_content_info{
   display: flex;
@@ -158,46 +139,7 @@ form[name=list]{
   width: 8px;
 }
 
-/** fixed */
-#side_content_myStatus{
-  display: flex;
-  position: fixed;
-  left: 74px;
-  bottom: 0;
-  height: 60px;
-  min-width: 240px;
-  background: #232428;
-  align-items: center;
-  gap: 5px;
-  padding: 0 0 0 5px;
-}
-#MyInfo{
-  display: flex;
-  flex-direction: column;
-  height: 40px;
-  line-height: 1;
-  color:#fff;
-  justify-content: space-evenly;
-}
-#MyIcon{
-  display: flex;
-}
 
-#MyName{
-  font-weight: bold;
-  font-size: 18px;
-}
-#MyStatus{
-  font-size: 9px;
-}
-#Mike,#btnHome,#headset{
-  display: flex;
-  height: 30px;
-  padding: 7px;
-}
-#Mike:hover,#btnHome:hover,#headset:hover{
-  background: #383940;
-}
 img{
   width: 100%;
 }

@@ -1,18 +1,16 @@
 <script setup>
-import {defineProps, defineEmits, reactive} from 'vue'
+import {defineProps, reactive} from 'vue'
 import api from "../../../script/axios";
+import {useModalStore} from "@/stores/modal";
 
 const props = defineProps({
-  isModelActive: {
-    type: Boolean,
-    default: false
-  },
   defaultURL: {
     type: String,
     default: "/img/sidebar/choose.png"
   },
-  serverN: String
+  isModalActive:Boolean
 })
+const modalStore = useModalStore();
 
 let dataForm = reactive({
   nickName: 'wodus331',
@@ -20,22 +18,20 @@ let dataForm = reactive({
   serverName: 'wodus331님의 서버'
 })
 
-  async function createServer() {
-    if (dataForm.serverName === '')
-      return
-    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
-        .then(() => {
-          console.log("createServer1")
-        })
-        .catch(()=>{
-          console.log("createServer2")
-        })
-  }
-
-const emit = defineEmits(['update:isModelActive', 'update:fileURL'])
+async function createServer() {
+  if (dataForm.serverName === '')
+    return
+  await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
+      .then(() => {
+        console.log("createServer1")
+      })
+      .catch(() => {
+        console.log("createServer2")
+      })
+}
 
 function exitModal() {
-  emit('update:isModelActive', false)
+  modalStore.terminate('addServer')
   dataForm.fileURL = ''
   dataForm.serverName = 'wodus331님의 서버'
 }
@@ -55,7 +51,7 @@ async function imgPreview(event) {
 </script>
 
 <template>
-  <div id="container" v-if="props.isModelActive">
+  <div id="container">
     <div id="background" @click="exitModal"></div>
     <div id="modal">
       <div id="header">
@@ -69,7 +65,7 @@ async function imgPreview(event) {
         <div id="img_upload">
           <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${dataForm.fileURL})`}"
                v-if="dataForm.fileURL!=='' "></div>
-          <div id="Icon" :style="{backgroundImage: `url(${defaultURL})`}" v-else></div>
+          <div id="Icon" :style="{backgroundImage: `url(${props.defaultURL})`}" v-else></div>
           <input class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" aria-label="서버 아이콘 업로드하기"
                  @change="imgPreview">
         </div>
@@ -115,6 +111,7 @@ async function imgPreview(event) {
   left: 0;
   justify-content: center;
   align-items: center;
+  z-index: 90;
 }
 
 #background {

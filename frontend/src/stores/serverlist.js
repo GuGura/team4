@@ -7,8 +7,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
     const buttons = reactive([])
 
     let btnResult = reactive({
-        channel_title: '',
-        isLobby: true
+        isLobby: true,
     })
 
     function updateBtn() {

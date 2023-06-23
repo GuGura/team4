@@ -2,6 +2,7 @@
   <div id="container">
     <ServerList/>
     <MainContainer/>
+
   </div>
 </template>
 

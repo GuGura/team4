@@ -1,6 +1,5 @@
 import axios from "axios";
 import refreshHeader from "./refreshHeader";
-import store from "./store";
 
 const api = axios.create();
 

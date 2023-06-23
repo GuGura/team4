@@ -1,39 +1,30 @@
 <script setup>
 import ServerIcon from "@/components/channellist/ChannelIcon.vue";
-import AddServerModel from "@/components/channellist/AddChannelModel.vue";
-import {onMounted, reactive} from "vue";
+
+import {onMounted} from "vue";
 import {useServerListStore} from "@/stores/serverlist";
+import AddServerModel from "@/components/modal/AddChannelModel.vue";
+import {useModalStore} from "@/stores/modal";
 
-const store = useServerListStore();
+const modalStore = useModalStore();
+const serverListStore = useServerListStore();
 
-onMounted(()=>{
-  store.updateBtn()
+
+onMounted(() => {
+  serverListStore.updateBtn()
 })
 
-function addServer(event) {
-  this.status.addServer = event;
-}
 
-const status = reactive({
-  lobby: true,
-  addServer: false,
-  publicServer: false,
-  myServerList: []
-})
 
 </script>
 
 <template>
   <div id="serverList">
     <form name="serverList">
-
-      <ServerIcon v-for="button in store.buttons" :key="button" :buttonData="button"/>
+      <ServerIcon v-for="button in serverListStore.buttons" :key="button" :buttonData="button"/>
     </form>
     <AddServerModel
-        :is-model-active="status.addServer"
-        @update:isModelActive="addServer(event)"
-    />
-
+        v-if="modalStore.modal.addServer"/>
   </div>
 </template>
 
