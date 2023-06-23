@@ -9,13 +9,9 @@ import {useModalStore} from "@/stores/modal";
 const modalStore = useModalStore();
 const serverListStore = useServerListStore();
 
-
 onMounted(() => {
   serverListStore.updateBtn()
 })
-
-
-
 </script>
 
 <template>
