@@ -22,7 +22,7 @@ function addServer(event) {
 
 const status = reactive({
   lobby: true,
-  addServer: true,
+  addServer: false,
   publicServer: false,
   myServerList: []
 })

@@ -6,11 +6,13 @@ const props = defineProps({
   buttonData: Object
 })
 
-
+function btnClick(){
+  console.log(props.buttonData.channel_title)
+}
 </script>
 
 <template>
-  <div class="server_Icon" >
+  <div class="server_Icon" @click="btnClick">
     <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;"
          v-if="props.buttonData.channel_icon_url === null">
       <div class="title">{{ props.buttonData.channel_title }}</div>
