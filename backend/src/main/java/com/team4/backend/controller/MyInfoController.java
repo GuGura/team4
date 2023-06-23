@@ -1,6 +1,6 @@
 package com.team4.backend.controller;
 
-import com.team4.backend.model.ChannelMember;
+import com.team4.backend.model.dto.MyChannelsDTO;
 import com.team4.backend.model.dto.ResultDTO;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ChannelService;
@@ -36,7 +36,7 @@ public class MyInfoController {
     public ResponseEntity<ResultDTO> getMyServerList(HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         System.out.println(memberUID);
-        List<ChannelMember> list = channelService.getMyChannels(memberUID);
+        List<MyChannelsDTO> list = channelService.getMyChannels(memberUID);
         resultDTO = ResultDTO.builder()
                 .result(list)
                 .message("channel_list callback")

@@ -6,7 +6,9 @@ create table member
     USERNAME varchar(100),
     PASSWORD varchar(200),
     ROLE varchar(100) = 'ROLE_USER',
-    JOIN_DATE date default sysdate()
+    JOIN_DATE date default sysdate(),
+    USER_ICON_URL varchar(200),
+    USER_DESCRIPTION varchar(1000)
 );
 
 create table emailAuthentication
@@ -27,7 +29,8 @@ create table channel
 (
     CHANNEL_UID           int primary key auto increment,
     CHANNEL_TITLE         varchar(100),
-    CHANNEL_DESCRIPTION   varchar(100),
+    CHANNEL_ICON_URL      varchar(100),
+    CHANNEL_DESCRIPTION   varchar(500),
     CHANNEL_OWNER         int,
     CHANNEL_INVITE_CODE   varchar(100),
     CHANNEL_IS_OPEN       boolean default false,
@@ -36,7 +39,7 @@ create table channel
 create table channelmember
 (
     CHANNEL_UID                 int,
-    USER_UID                    int,
+    MEMBER_UID                 int,
     CHANNEL_MEMBER_AUTHORITY    varchar(100),
     CHANNEL_MEMBER_JOINDATE     date default sysdate()
 )

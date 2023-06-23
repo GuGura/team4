@@ -2,17 +2,20 @@
 import {defineProps} from 'vue'
 
 
-
 const props = defineProps({
-  buttonData:Object
+  buttonData: Object
 })
 
 
 </script>
 
 <template>
-  <div class="server_Icon" >
-    <div class="img"></div>
+  <div class="server_Icon">
+    <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;" v-if="props.buttonData.channel_icon_url === null">
+      <div class="title">{{ props.buttonData.channel_title }}</div>
+    </div>
+    <img class="img" v-else-if="props.buttonData.channel_title" :src="props.buttonData.channel_icon_url" alt=""
+         :class=" {colorGreen : props.buttonData.channel_title === ('addServer' || 'public'),colorBlue:(props.buttonData.channel_title === 'lobby')}">
   </div>
 </template>
 
@@ -23,19 +26,38 @@ const props = defineProps({
   background: #313338;
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
 }
 
 .server_Icon:hover {
   border-radius: 30%;
 }
 
-div:not(:nth-last-of-type(1),:nth-last-of-type(2)):hover > div {
+.colorBlue:hover {
   background: #5865F2;
+}
+
+.colorGreen:hover {
+  background: #23A559;
+}
+
+.title {
+  color: #fff;
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
 }
 
 .img {
   width: 100%;
   height: 100%;
+  box-sizing: inherit;
+  padding: 12px;
   cursor: pointer;
 }
 </style>
