@@ -1,15 +1,17 @@
 <script setup>
 import {defineProps} from 'vue'
 
+
+
 const props = defineProps({
-  id: String,
-  img_url: String,
-  padding: String,
+  buttonData:Object
 })
+
+
 </script>
 
 <template>
-  <div :style="props.padding" :id=props.id class="server_Icon">
+  <div class="server_Icon" >
     <div class="img"></div>
   </div>
 </template>

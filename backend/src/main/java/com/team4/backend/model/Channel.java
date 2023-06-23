@@ -10,11 +10,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Channel {
-    private int id;
-    private String title;
-    private String description;
-    private int owner;
-    private String inviteCode;
-    private boolean isOpen;
-    private Date createDate;
+    private int channel_id;
+    private String channel_title;
+    private String channel_icon_url;
+    private String channel_description;
+    private int channel_owner;
+    private String channel_inviteCode;
+    private boolean channel_is_Open;
+    private Date channel_createDate;
 }

@@ -1,6 +1,6 @@
 package com.team4.backend.controller;
 
-import com.team4.backend.model.Channel;
+import com.team4.backend.model.ChannelMember;
 import com.team4.backend.model.dto.ResultDTO;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ChannelService;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,12 +34,13 @@ public class MyInfoController {
 
     @GetMapping("/myInfo/channelList")
     public ResponseEntity<ResultDTO> getMyServerList(HttpServletRequest request){
-        int userUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
-        System.out.println(userUID);
-
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        System.out.println(memberUID);
+        List<ChannelMember> list = channelService.getMyChannels(memberUID);
         resultDTO = ResultDTO.builder()
-                .result(userUID)
+                .result(list)
+                .message("channel_list callback")
                 .build();
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(resultDTO,HttpStatus.OK);
     }
 }
