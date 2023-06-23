@@ -16,9 +16,11 @@ onMounted(() => {
 
 <template>
   <div id="serverList">
-    <form name="serverList">
-      <ServerIcon v-for="button in serverListStore.buttons" :key="button" :buttonData="button"/>
-    </form>
+    <div class="box1">
+      <form name="serverList">
+        <ServerIcon v-for="button in serverListStore.buttons" :key="button" :buttonData="button"/>
+      </form>
+    </div>
     <AddServerModel
         v-if="modalStore.modal.addServer"/>
   </div>
@@ -31,10 +33,11 @@ onMounted(() => {
 #serverList {
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: relative;
+  top: 0;
+  left: 0;
   min-width: 74px;
   height: 100%;
-  padding: 10px 12px;
   background: #1E1F22;
   z-index: 12;
 }
@@ -57,5 +60,16 @@ form[name=serverList] {
   padding: 12px;
   cursor: pointer;
 }
-
+.box1{
+  padding: 10px 12px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.box1::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
 </style>

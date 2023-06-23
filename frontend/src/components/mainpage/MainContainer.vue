@@ -26,6 +26,5 @@ const store = useServerListStore();
   display: flex;
   flex:1;
   background: #1E1F22;
-  padding-left: 74px;
 }
 </style>
