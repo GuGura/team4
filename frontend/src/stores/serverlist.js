@@ -6,6 +6,11 @@ export const useServerListStore = defineStore("serverListStore", () => {
 
     const buttons = reactive([])
 
+    let btnResult = reactive({
+        channel_title: '',
+        isLobby: true
+    })
+
     function updateBtn() {
         api.get(process.env.VUE_APP_BASEURL_V1 + "/myInfo/channelList")
             .then(({data}) => {
@@ -18,6 +23,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
 
     return {
         buttons,
+        btnResult,
         updateBtn
     }
 })

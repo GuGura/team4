@@ -1,13 +1,20 @@
 <script setup>
 import {defineProps} from 'vue'
 
+import {useServerListStore} from "@/stores/serverlist";
+
+const store = useServerListStore();
 
 const props = defineProps({
-  buttonData: Object
+  buttonData: Object,
+  isLobby: Boolean
 })
 
 function btnClick(){
-  console.log(props.buttonData.channel_title)
+  store.btnResult.channel_title = props.buttonData.channel_title
+  store.btnResult.isLobby =  store.btnResult.channel_title === 'lobby'
+  console.log(store.btnResult.channel_title)
+  console.log(store.btnResult.isLobby)
 }
 </script>
 

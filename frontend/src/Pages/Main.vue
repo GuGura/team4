@@ -9,7 +9,6 @@
 import ServerList from "@/components/channellist/ChannelList.vue";
 import MainContainer from "@/components/mainpage/MainContainer.vue";
 
-
 </script>
 
 <style scoped>
