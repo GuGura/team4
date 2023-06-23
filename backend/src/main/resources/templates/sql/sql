@@ -43,3 +43,22 @@ create table channelmember
     CHANNEL_MEMBER_AUTHORITY    varchar(100),
     CHANNEL_MEMBER_JOINDATE     date default sysdate()
 )
+
+--로비
+
+create table event(
+EVENT_UID int NOT NULL AUTO_INCREMENT PRIMARY key,
+MEMBER_UID INT,
+EVENT_TITLE varchar(500),
+EVENT_START date,
+EVENT_END date,
+CHANNEL_UID INT
+);
+
+create table content(
+CONTENT_UID int primary KEY auto_increment,
+MEMBER_UID int,
+CONTENT_TITLE VARCHAR(100),
+CONTENT_TEXT longtext,
+CONTENT_UPLOADED_DATE date default NOW()
+);
