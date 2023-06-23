@@ -22,7 +22,7 @@ function addServer(event) {
 
 const status = reactive({
   lobby: true,
-  addServer: false,
+  addServer: true,
   publicServer: false,
   myServerList: []
 })
@@ -75,9 +75,4 @@ form[name=serverList] {
   padding: 12px;
   cursor: pointer;
 }
-
-
-
-
-
 </style>
