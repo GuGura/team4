@@ -10,7 +10,6 @@ onMounted(()=>{
   store.updateBtn()
 })
 
-
 function addServer(event) {
   this.status.addServer = event;
 }
@@ -27,6 +26,7 @@ const status = reactive({
 <template>
   <div id="serverList">
     <form name="serverList">
+
       <ServerIcon v-for="button in store.buttons" :key="button" :buttonData="button"/>
     </form>
     <AddServerModel
@@ -70,4 +70,5 @@ form[name=serverList] {
   padding: 12px;
   cursor: pointer;
 }
+
 </style>
