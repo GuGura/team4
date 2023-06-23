@@ -1,25 +1,45 @@
 CREATE SEQUENCE MEMBER_ID_PK START WITH 1 INCREMENT BY 1; --스퀀스
 create table member
 (
-    ID       number primary key auto increment,
+    ID       int primary key auto increment,
     EMAIL    varchar(100),
     USERNAME varchar(100),
     PASSWORD varchar(200),
     ROLE varchar(100) = 'ROLE_USER',
-    JOIN_DATE date default sysdate()
+    JOIN_DATE date default sysdate(),
+    USER_ICON_URL varchar(200),
+    USER_DESCRIPTION varchar(1000)
 );
 
 create table emailAuthentication
 (
     EMAIL varchar(100),
     AUTH varchar(100)
-)
+);
 create table token
-{
-    ID       number primary key auto increment,
+(
+    ID       int primary key auto increment,
     ACCESS_TOKEN varchar(1000),
     REFRESH_TOKEN varchar(1000),
     CREATE_DATE datetime,
     ACCESS_TOKEN_EXPIRES_DATE datetime,
     REFRESH_TOKEN_EXPIRES_DATE datetime
-}
+);
+create table channel
+(
+    CHANNEL_UID           int primary key auto increment,
+    CHANNEL_TITLE         varchar(100),
+    CHANNEL_ICON_URL      varchar(100),
+    CHANNEL_DESCRIPTION   varchar(500),
+    CHANNEL_OWNER         int,
+    CHANNEL_INVITE_CODE   varchar(100),
+    CHANNEL_IS_OPEN       boolean default false,
+    CHANNEL_CREATEDATE    date default sysdate()
+)
+create table channelmember
+(
+    CHANNEL_UID                 int,
+    MEMBER_UID                 int,
+    CHANNEL_MEMBER_AUTHORITY    varchar(100),
+    CHANNEL_MEMBER_JOINDATE     date default sysdate()
+)

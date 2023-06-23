@@ -1,23 +1,23 @@
 import {defineStore} from "pinia";
 import {reactive} from "vue";
+import api from "../../script/axios";
 
 export const useServerListStore = defineStore("serverListStore", () => {
 
-    const buttons = reactive([
-        {id: 1, name: 'lobby', value: true},
-        {id: 2, name: 'addServer', value: false},
-        {id: 3, name: 'public', value: false},
-    ])
+    const buttons = reactive([])
 
-    function activeBtn(btn) {
-        for (const button of Object.values(buttons)) {
-            button.value = (button.id === btn.id)
-        }
-        console.log("btn :" + btn);
+    function updateBtn() {
+        api.get(process.env.VUE_APP_BASEURL_V1 + "/myInfo/channelList")
+            .then(({data}) => {
+                const resultArray = data.result;
+                resultArray.forEach(btn =>{
+                    buttons.push(btn)
+                })
+            })
     }
 
     return {
         buttons,
-        activeBtn
+        updateBtn
     }
 })
