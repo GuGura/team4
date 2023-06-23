@@ -16,5 +16,4 @@ public class EventDTO {
     private String title;
     private Long memberId;
     private Long groupId;
-    private boolean allDay;
 }
