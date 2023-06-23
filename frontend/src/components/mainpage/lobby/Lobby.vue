@@ -36,17 +36,6 @@
 // import axios from "axios";
 
 import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
-import {ref} from "vue";
-
-const isExpanded = ref('')
-
-function toggleAccordion(index){
-    if (this.isExpanded === index) {
-        this.isExpanded = null; // Collapse the active accordion
-    } else {
-        this.isExpanded = index; // Expand the clicked accordion
-    }
-}
 
 // export default {
 //     name: "Lobby",
