@@ -18,7 +18,6 @@ function btnClick(event) {
     serverListStore.btnResult.isActive = event.target['__vnode'].el['__vueParentComponent'].vnode.key[('channel_title')]
     localStorage.setItem('activeChannel',serverListStore.btnResult.isActive)
   }
-
   if (props.buttonData.channel_title === 'addServer') {
     modalStore.modal.addServer = true
   }
@@ -31,13 +30,18 @@ function btnClick(event) {
     router.push(`/channel/${endPoint}`)
   }
 }
+
+function text(){
+  serverListStore.btnResult.onlyText = localStorage.getItem('onlyText');
+}
+text();
 </script>
 
 <template>
   <div class="server_Icon" @click="btnClick"
-       :class=" {br : props.buttonData.channel_title === serverListStore.btnResult.isActive}">
+       :class=" {br : (props.buttonData.channel_title === serverListStore.btnResult.isActive)}">
     <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;"
-         :class="{colorBlue1 :serverListStore.btnResult.isActive === props.buttonData.channel_title}"
+         :class="{colorBlue1 :(serverListStore.btnResult.isActive === props.buttonData.channel_title)}"
          v-if="props.buttonData.channel_icon_url === null">
       <div class="title">{{ props.buttonData.channel_title }}</div>
     </div>
