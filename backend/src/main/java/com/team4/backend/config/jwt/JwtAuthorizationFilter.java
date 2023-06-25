@@ -7,8 +7,6 @@ import com.team4.backend.model.Token;
 import com.team4.backend.model.User;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.JwtService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,12 +17,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-@Slf4j
+
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final JwtService jwtService;

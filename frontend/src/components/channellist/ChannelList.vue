@@ -1,10 +1,10 @@
 <script setup>
-import ServerIcon from "@/components/channellist/ChannelIcon.vue";
+import ChannelIcon from "@/components/channellist/ChannelIcon.vue";
 
 import {onMounted} from "vue";
-import {useServerListStore} from "@/stores/serverlist";
+import {useServerListStore} from "../../../script/stores/serverlist";
 import AddServerModel from "@/components/modal/AddChannelModel.vue";
-import {useModalStore} from "@/stores/modal";
+import {useModalStore} from "../../../script/stores/modal";
 
 const modalStore = useModalStore();
 const serverListStore = useServerListStore();
@@ -18,7 +18,7 @@ onMounted(() => {
   <div id="serverList">
     <div class="box1">
       <form name="serverList">
-        <ServerIcon v-for="button in serverListStore.buttons" :key="button" :buttonData="button"/>
+        <ChannelIcon v-for="button in serverListStore.buttons" :key="button" :buttonData="button"/>
       </form>
     </div>
     <AddServerModel

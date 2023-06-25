@@ -18,4 +18,5 @@ public class Channel {
     private String channel_inviteCode;
     private boolean channel_is_Open;
     private Date channel_createDate;
+    private String channel_type;
 }

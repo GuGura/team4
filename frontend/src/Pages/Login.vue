@@ -46,7 +46,7 @@ import {reactive} from "vue";
 import axios from "axios";
 import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
-import router from "../../script/router";
+import router from "../../script/routes/router";
 
 const result = reactive({
   username: '',

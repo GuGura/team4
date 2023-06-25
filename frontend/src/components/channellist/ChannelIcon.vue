@@ -1,32 +1,48 @@
 <script setup>
 import {defineProps} from 'vue'
 
-import {useServerListStore} from "@/stores/serverlist";
-import {useModalStore} from "@/stores/modal";
+import {useServerListStore} from "../../../script/stores/serverlist";
+import {useModalStore} from "../../../script/stores/modal";
+import {useRouter} from "vue-router";
 
 const serverListStore = useServerListStore();
 const modalStore = useModalStore();
+const router = useRouter();
 
 const props = defineProps({
   buttonData: Object,
 })
 
-function btnClick() {
-  console.log(props.buttonData.channel_title)
-  if (serverListStore.btnResult.isLobby === true && props.buttonData.channel_title === 'addServer') {
+function btnClick(event) {
+  if (event.target['__vnode'].el['__vueParentComponent'].vnode.key[('channel_title')] !== 'addServer'){
+    serverListStore.btnResult.isActive = event.target['__vnode'].el['__vueParentComponent'].vnode.key[('channel_title')]
+    localStorage.setItem('activeChannel',serverListStore.btnResult.isActive)
+  }
+
+  if (props.buttonData.channel_title === 'addServer') {
     modalStore.modal.addServer = true
-  } else if (serverListStore.btnResult.isLobby === false && props.buttonData.channel_title === 'addServer') {
-    modalStore.modal.addServer = true
-  } else {
-    const channelTitle = props.buttonData.channel_title;
-    serverListStore.btnResult.isLobby = channelTitle === 'lobby';
+  }
+  let endPoint = props.buttonData.channel_type;
+  if (!(endPoint === 'lobby') && !(endPoint === 'addServer') && !(endPoint === 'public'))
+    endPoint = props.buttonData.channel_UID
+  if (endPoint !== 'addServer') {
+    localStorage.setItem('endPoint', endPoint);
+    serverListStore.btnResult.endPoint = endPoint;
+    router.push(`/channel/${endPoint}`)
   }
 }
+function test(){
+  console.log(serverListStore.btnResult.isActive)
+  console.log(props.buttonData.channel_title)
+}
+test()
 </script>
 
 <template>
-  <div class="server_Icon" @click="btnClick">
+  <div class="server_Icon" @click="btnClick"
+       :class=" {br : props.buttonData.channel_title === serverListStore.btnResult.isActive}">
     <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;"
+         :class="{colorBlue1 :serverListStore.btnResult.isActive === props.buttonData.channel_title}"
          v-if="props.buttonData.channel_icon_url === null">
       <div class="title">{{ props.buttonData.channel_title }}</div>
     </div>
@@ -34,7 +50,9 @@ function btnClick() {
     <img class="img"
          v-else-if="props.buttonData.channel_title === 'lobby' || props.buttonData.channel_title === 'addServer' || props.buttonData.channel_title === 'public'"
          :src="props.buttonData.channel_icon_url" alt=""
-         :class="{ colorGreen: props.buttonData.channel_title === 'addServer' || props.buttonData.channel_title === 'public', colorBlue: props.buttonData.channel_title === 'lobby' }">
+         :class="{ colorGreen: props.buttonData.channel_title === 'addServer' || props.buttonData.channel_title === 'public', colorBlue: props.buttonData.channel_title === 'lobby' ,
+         colorBlue1 : (serverListStore.btnResult.isActive === props.buttonData.channel_title) && props.buttonData.channel_title==='lobby',
+         colorGreen1:(serverListStore.btnResult.isActive === props.buttonData.channel_title) && props.buttonData.channel_title === 'public'}">
 
     <div class="img channelImage" v-else :style="{backgroundImage: `url(${props.buttonData.channel_icon_url})`}"/>
   </div>
@@ -42,6 +60,7 @@ function btnClick() {
 </template>
 
 <style scoped>
+
 .server_Icon {
   width: 50px;
   height: 50px;
@@ -59,8 +78,20 @@ function btnClick() {
   background: #5865F2;
 }
 
+.colorBlue1 {
+  background: #5865F2;
+}
+
 .colorGreen:hover {
   background: #23A559;
+}
+
+.colorGreen1 {
+  background: #23A559;
+}
+
+.br {
+  border-radius: 30%;
 }
 
 .channelImage {

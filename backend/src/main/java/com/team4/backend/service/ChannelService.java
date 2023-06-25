@@ -16,20 +16,19 @@ public class ChannelService {
     private final ChannelMapper channelMapper;
 
     public List<MyChannelsDTO> getMyChannels(int memberUID) {
-        List<MyChannelsDTO> list = new ArrayList<>();
-        list.add(getChannelType(memberUID,"lobby", "/img/serverlist/discord_Icon.png"));
-        list.addAll(channelMapper.findChannelsByMemberUID(memberUID));
-        list.add(getChannelType(memberUID,"addServer", "/img/serverlist/add_server1.png"));
-        list.add(getChannelType(memberUID,"public", "/img/serverlist/public_icon.png"));
+        List<MyChannelsDTO> list = new ArrayList<>(channelMapper.findChannelsByMemberUID(memberUID));
+        list.add(getChannelType(memberUID,"addServer", "/img/serverlist/add_server1.png","addServer"));
+        list.add(getChannelType(memberUID,"public", "/img/serverlist/public_icon.png","public"));
         return list;
     }
 
-    public MyChannelsDTO getChannelType(int memberUID, String channel_title,String channel_iconURL) {
+    public MyChannelsDTO getChannelType(int memberUID, String channel_title,String channel_iconURL,String channel_type) {
         return MyChannelsDTO.builder()
                 .channel_UID(0)
                 .member_UID(memberUID)
                 .channel_title(channel_title)
                 .channel_icon_url(channel_iconURL)
+                .channel_type(channel_type)
                 .build();
     }
 }

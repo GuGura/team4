@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ChannelMapper {
 
-    @Select("select m.CHANNEL_UID, m.MEMBER_UID, c.CHANNEL_TITLE, c.CHANNEL_ICON_URL " +
+    @Select("select m.CHANNEL_UID, m.MEMBER_UID, c.CHANNEL_TITLE, c.CHANNEL_ICON_URL, c.CHANNEL_TYPE " +
             "from channelmember m " +
             "left join channel c on m.CHANNEL_UID = c.CHANNEL_UID " +
             "where m.MEMBER_UID = #{memberUID}")

@@ -57,7 +57,7 @@
 <script setup>
 import {reactive} from "vue";
 import axios from "axios";
-import router from "../../script/router";
+import router from "../../script/routes/router";
 import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
 

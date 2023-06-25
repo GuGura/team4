@@ -1,11 +1,20 @@
 import {createRouter, createWebHistory} from 'vue-router/dist/vue-router'
-import loginService from "./LoginService";
+import loginService from "../LoginService";
 
 const routes = [
     {
+        path: '/channel/',
+        name: 'baseURL',
+        redirect: '/channel/lobby'
+    },{
+        path: '/',
+        name: 'baseURL',
+        redirect: '/channel/:localStorage.endPoint'
+    },
+    {
         path: '/login',
         name: 'login',
-        component: () => import(/*webpackChunkName: "login", webpackPrefetch: true */ "@/Pages/Login"),
+        component: () => import(/*webpackChunkName: "login", webpackPrefetch: true */ "@/Pages/Login.vue"),
         meta: {requiresAuth: false}
     },
     {
@@ -14,27 +23,29 @@ const routes = [
         component: () => import(/*webpackChunkName: "join", webpackPrefetch: true */ "@/Pages/Join.vue")
     },
     {
-        path: '/',
+        path: '/channel/**',
         name: 'main',
         component: () => import(/*webpackChunkName: "main", webpackPrefetch: true */ "@/Pages/Main.vue"),
         meta: {requiresAuth: true}
     },
+    {
+        path:'/channel/:channel_title',
+        name: 'main',
+        component: () => import(/*webpackChunkName: "main", webpackPrefetch: true */ "@/Pages/Main.vue"),
+        meta: {requiresAuth: true}
+    }
 ]
 const router = createRouter({
     history: createWebHistory(),
     routes
 });
 router.beforeEach(async (to, from, next) => {
-    console.log("1")
     const isLogin = await loginService.initCheck();
-    console.log(isLogin)
     if (to.meta.requiresAuth && !isLogin) {
         next('/login')
     } else if (!to.meta.requiresAuth && isLogin) {
-        next('/')
-    } else if(from.meta.requiresAuth && isLogin){
-        console.log("!2")
-    }else{
+        next('/channel/lobby')
+    } else{
         next();
     }
 })

@@ -1,7 +1,7 @@
 <script setup>
 import {defineProps, reactive} from 'vue'
-import api from "../../../script/axios";
-import {useModalStore} from "@/stores/modal";
+import api from "../../../script/token/axios";
+import {useModalStore} from "../../../script/stores/modal";
 
 const props = defineProps({
   defaultURL: {

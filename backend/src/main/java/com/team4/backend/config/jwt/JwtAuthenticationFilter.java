@@ -8,7 +8,6 @@ import com.team4.backend.model.User;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.util.Map;
 
 @RequiredArgsConstructor
-@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 //
     private final AuthenticationManager authenticationManager;

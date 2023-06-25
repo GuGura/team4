@@ -1,8 +1,8 @@
 import axios from "axios";
-import authHeader from "./authHeader";
-import router from "./router";
+import authHeader from "./token/authHeader";
+import router from "./routes/router";
 
-import refreshHeader from "./refreshHeader";
+import refreshHeader from "./token/refreshHeader";
 
 class LoginService {
     async reissueRefreshJwt() {
