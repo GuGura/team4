@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref, reactive} from "vue";
+import {reactive, ref} from "vue";
 import api from "../token/axios";
 
 export const useServerListStore = defineStore("serverListStore", () => {
@@ -19,8 +19,8 @@ export const useServerListStore = defineStore("serverListStore", () => {
         isActive: 'lobby',
     })
 
-    function updateBtn() {
-        api.get(process.env.VUE_APP_BASEURL_V1 + "/myInfo/channelList")
+    async function initBtn() {
+        await api.get(process.env.VUE_APP_BASEURL_V1 + "/myInfo/channelList")
             .then(({data}) => {
                 const resultArray = data.result;
                 resultArray.forEach(btn => {
@@ -28,10 +28,15 @@ export const useServerListStore = defineStore("serverListStore", () => {
                 })
             })
     }
-
+    async function updateBtn(btn){
+        btn.forEach(b =>{
+            buttons.push(b)
+        })
+    }
     return {
         buttons,
         btnResult,
+        initBtn,
         updateBtn,
     }
 })

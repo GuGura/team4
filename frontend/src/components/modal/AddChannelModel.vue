@@ -1,39 +1,40 @@
 <script setup>
-import {defineProps, reactive} from 'vue'
+import { reactive} from 'vue'
 import api from "../../../script/token/axios";
 import {useModalStore} from "../../../script/stores/modal";
+import {useLobbyStore} from "../../../script/stores/lobby";
+import router from "../../../script/routes/router";
+import {useServerListStore} from "../../../script/stores/serverlist";
 
-const props = defineProps({
-  defaultURL: {
-    type: String,
-    default: "/img/sidebar/choose.png"
-  },
-  isModalActive:Boolean
-})
 const modalStore = useModalStore();
+const userStore = useLobbyStore();
+const serverListStore = useServerListStore();
 
 let dataForm = reactive({
-  nickName: 'wodus331',
-  fileURL: '',
-  serverName: 'wodus331님의 서버'
+  fileURL: '/img/sidebar/choose.png',
+  serverName: userStore.user.username + '님의 서버',
+  inviteCode: ''
 })
 
 async function createServer() {
-  if (dataForm.serverName === '')
-    return
-  await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
-      .then(() => {
-        console.log("createServer1")
-      })
-      .catch(() => {
-        console.log("createServer2")
-      })
+  if (dataForm.serverName !== ''){
+    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
+        .then(({data}) => {
+          const result = data.result.channel_UID
+          modalStore.terminate('addServer')
+          serverListStore.updateBtn(data.result)
+          router.push(`/channel/${result}`)
+        })
+        .catch(() => {
+          console.log("createServer2")
+        })
+  }
 }
 
 function exitModal() {
   modalStore.terminate('addServer')
   dataForm.fileURL = ''
-  dataForm.serverName = 'wodus331님의 서버'
+  dataForm.serverName = userStore.user.username + '님의 서버'
 }
 
 async function imgPreview(event) {
@@ -64,14 +65,14 @@ async function imgPreview(event) {
       <div id="body">
         <div id="img_upload">
           <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${dataForm.fileURL})`}"
-               v-if="dataForm.fileURL!=='' "></div>
-          <div id="Icon" :style="{backgroundImage: `url(${props.defaultURL})`}" v-else></div>
+               v-if="dataForm.fileURL!=='/img/sidebar/choose.png' "></div>
+          <div id="Icon" :style="{backgroundImage: `url(${dataForm.fileURL})`}" v-else></div>
           <input class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" aria-label="서버 아이콘 업로드하기"
                  @change="imgPreview">
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
-          <input name="" v-model=dataForm.serverName>
+          <input v-model=dataForm.serverName :placeholder="dataForm.serverName === '' ? '필수입력칸 입니다.':''" >
           <div id="box3">
             <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
             <div id="btnCreate">

@@ -9,13 +9,9 @@ export const useModalStore = defineStore("modalStore",()=>{
     function terminate(index){
         modal.addServer =  !(index === 'addServer')
     }
-    function operate(index){
-        modal.addServer =  (index === 'addServer')
-    }
 
     return{
         modal,
         terminate,
-        operate
     }
 })

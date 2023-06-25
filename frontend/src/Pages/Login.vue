@@ -68,7 +68,8 @@ function login(){
           const refreshJwt = res.headers.get('refreshJwt')
           const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
           localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
-
+          localStorage.setItem('activeChannel','lobby')
+          localStorage.setItem('endPoint', 'lobby');
           router.push("/").then(()=>console.log("로그인 성공"))
         } else {
           alert(res.data.message)

@@ -7,17 +7,23 @@ import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
 import {onMounted} from "vue";
+import {useLobbyStore} from "../../script/stores/lobby";
 
-const store = useServerListStore();
+const serverListStore = useServerListStore();
+const lobbyStore = useLobbyStore();
+
+
+
 onMounted(()=>{
-  store.btnResult.endPoint = localStorage.getItem('endPoint');
-  store.btnResult.isActive = localStorage.getItem('activeChannel');
+  lobbyStore.updateMyInfo();
+  serverListStore.btnResult.endPoint = localStorage.getItem('endPoint');
+  serverListStore.btnResult.isActive = localStorage.getItem('activeChannel');
 })
 </script>
 <template>
   <div id="container">
     <ServerList/>
-    <div id="contents" v-if="store.btnResult.endPoint === 'lobby'">
+    <div id="contents" v-if="serverListStore.btnResult.endPoint === 'lobby'">
       <LobbySidebar/>
       <Lobby/>
     </div>

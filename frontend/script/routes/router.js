@@ -9,7 +9,7 @@ const routes = [
     },{
         path: '/',
         name: 'baseURL',
-        redirect: '/channel/:localStorage.endPoint'
+        redirect: '/channel/lobby'
     },
     {
         path: '/login',

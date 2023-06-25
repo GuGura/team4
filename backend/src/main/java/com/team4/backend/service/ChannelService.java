@@ -1,6 +1,7 @@
 package com.team4.backend.service;
 
 import com.team4.backend.mapper.ChannelMapper;
+import com.team4.backend.model.Channel;
 import com.team4.backend.model.ChannelMember;
 import com.team4.backend.model.dto.MyChannelsDTO;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,23 @@ public class ChannelService {
                 .channel_icon_url(channel_iconURL)
                 .channel_type(channel_type)
                 .build();
+    }
+
+    public MyChannelsDTO createChannel(int memberUID, String fileURL, String serverName) {
+        if (fileURL.equals("/img/sidebar/choose.png")){
+            fileURL = null;
+        }else{
+
+        }
+        Channel channel = Channel.builder()
+                .fileURL(fileURL)
+                .nickName(memberUID)
+                .serverName(serverName)
+                .build();
+        channelMapper.saveChannel(channel);
+        int channel_UID = channelMapper.findChannelUIDByMemberUID(memberUID);
+        System.out.println(channel_UID);
+        channelMapper.saveChannelMember(channel_UID, memberUID,"ROLE_ADMIN");
+        return channelMapper.findLastChannelByMemberUID(memberUID);
     }
 }

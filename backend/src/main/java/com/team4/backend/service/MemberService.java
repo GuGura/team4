@@ -1,10 +1,14 @@
 package com.team4.backend.service;
 
+import com.team4.backend.model.Member;
 import com.team4.backend.model.dto.MemberDTO;
+import com.team4.backend.model.dto.MyChannelsDTO;
 import com.team4.backend.model.dto.ResultDTO;
 import com.team4.backend.mapper.MemberMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -38,5 +42,9 @@ public class MemberService {
 
     public boolean isMemberExist(String isEmail) {
         return memberMapper.findMemberByEmail(isEmail).isPresent();
+    }
+
+    public Member getLobbyInfoByMemberUID(int memberUID) {
+        return memberMapper.findMemberByUID(memberUID);
     }
 }

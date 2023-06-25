@@ -31,11 +31,6 @@ function btnClick(event) {
     router.push(`/channel/${endPoint}`)
   }
 }
-function test(){
-  console.log(serverListStore.btnResult.isActive)
-  console.log(props.buttonData.channel_title)
-}
-test()
 </script>
 
 <template>

@@ -10,7 +10,7 @@ const modalStore = useModalStore();
 const serverListStore = useServerListStore();
 
 onMounted(() => {
-  serverListStore.updateBtn()
+  serverListStore.initBtn()
 })
 </script>
 

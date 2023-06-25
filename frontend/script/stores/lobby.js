@@ -1,15 +1,38 @@
 import {defineStore} from "pinia";
-import {computed, ref} from "vue";
+import {reactive} from "vue";
+import api from "../token/axios";
+
 
 //id 고유아이디
 //state 상태 (현재코드에선 초기상태 0으로 리턴해줌)
 export const useLobbyStore = defineStore("lobbyStore", () => {
-    const count = ref(0);
-    const name = ref("wodus331");
-    const doubleCount = computed(() => count.value * 2); //getter
 
-    function increment() {
-        count.value++
+    let user = reactive({
+        email: '',
+        username: '',
+        role: '',
+        join_date: '',
+        user_icon_url: '',
+        user_description: ''
+    })
+
+    function updateMyInfo() {
+        api.get(process.env.VUE_APP_BASEURL_V1 + '/myInfo/lobby')
+            .then(({data}) => {
+                console.log("updateMyInfo")
+                const userInfo = data.result
+                user.email = userInfo.email
+                user.username = userInfo.username
+                user.role = userInfo.role
+                user.join_date = userInfo.join_date
+                user.user_icon_url = userInfo.user_icon_url
+                user.user_description = userInfo.user_description
+                localStorage.setItem('user',JSON.stringify(user))
+            })
     }
-    return {count, name, doubleCount, increment}
+
+    return {
+        user,
+        updateMyInfo
+    }
 });
