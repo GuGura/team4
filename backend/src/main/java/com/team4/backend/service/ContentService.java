@@ -13,8 +13,8 @@ public class ContentService {
 
     private final ContentMapper contentMapper;
 
-    public List<ContentDTO> findAllByMember(){
-        return contentMapper.findAll();
+    public List<ContentDTO> listContent(int pageNum, int memberUID){
+        return contentMapper.listContent(pageNum, memberUID);
     }
 
     public void saveContent(String content) {
