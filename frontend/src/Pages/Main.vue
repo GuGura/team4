@@ -12,8 +12,6 @@ import {useLobbyStore} from "../../script/stores/lobby";
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
 
-
-
 onMounted(()=>{
   lobbyStore.updateMyInfo();
   serverListStore.btnResult.endPoint = localStorage.getItem('endPoint');

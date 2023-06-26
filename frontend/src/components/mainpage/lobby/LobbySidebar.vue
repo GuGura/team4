@@ -78,6 +78,10 @@ export default {
   border-radius: 10px 0 0 0;
   z-index: 10;
   position: relative;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 #side_content_info{
   display: flex;

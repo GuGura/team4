@@ -28,6 +28,10 @@ export default {
   display: flex;
   width: 40px;
   height: 40px;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 .UserMessage{
   display: flex;

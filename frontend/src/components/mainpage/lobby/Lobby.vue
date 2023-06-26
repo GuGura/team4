@@ -1,7 +1,10 @@
-<script>
-export default {
-  name: 'Lobby'
-}
+<script setup>
+import {reactive} from "vue";
+
+const state = reactive({
+  isActive: 'P'
+})
+
 </script>
 
 <template>
@@ -16,41 +19,64 @@ export default {
       </div>
     </div>
     <div id="main_content_body">
-      <div id="main_content1"></div>
+      <div id="main_content1">
+        <div>
+          <div style="display: flex; height: 30px;gap: 5px">
+            {{state.isActive}}
+            <button @click="state.isActive === 'P' ">프로필</button>
+            <button @click="state.isActive === 'W' ">글쓰기</button>
+            <button @click="state.isActive === 'C' ">달력 보기</button>
+          </div>
+          <div>
+            <textarea v-if="state.isActive === 'P'" style="width: 700px;height: 400px;outline: none" readonly>안녕하세요</textarea>
+            <textarea v-else-if="state.isActive === 'W'" style="width: 700px;height: 400px;outline: none" readonly>안녕하세요</textarea>
+            <textarea v-else-if="state.isActive === 'C'" style="width: 700px;height: 400px;outline: none" readonly>안녕하세요</textarea>
+          </div>
+        </div>
+      </div>
       <div id="main_content2"></div>
     </div>
   </div>
 </template>
 
 <style scoped>
-#main_contents{
+#main_contents {
   display: flex;
   flex: 1;
   flex-direction: column;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
-#main_content_header{
+
+#main_content_header {
   display: flex;
   height: 35%;
   align-items: flex-end;
   padding: 0 70px;
   gap: 35px;
 }
-#icon_URL{
+
+#icon_URL {
   display: flex;
   width: 13em;
   height: 13em;
 }
-#userName{
+
+#userName {
   display: flex;
   flex-direction: column;
   color: #fff;
   height: 70%;
   justify-content: space-around;
 }
-#userName > div:nth-of-type(1){
+
+#userName > div:nth-of-type(1) {
   font-size: 3em;
 }
-#userName > div:nth-of-type(2){
+
+#userName > div:nth-of-type(2) {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,25 +86,30 @@ export default {
   border-radius: 10px;
   cursor: pointer;
 }
-#userName > div:nth-of-type(2):hover{
+
+#userName > div:nth-of-type(2):hover {
   background: #36373D;
 }
-#userName > div:nth-of-type(2):active{
+
+#userName > div:nth-of-type(2):active {
   background: #3B3D44;
 }
-#main_content_body{
+
+#main_content_body {
   display: flex;
-  flex:1;
+  flex: 1;
   padding: 0 0 0 30px;
   gap: 10px;
 }
-#main_content1{
+
+#main_content1 {
   display: flex;
   background: #36393F;
   width: 73%;
   height: 98%;
 }
-#main_content2{
+
+#main_content2 {
   display: flex;
   background: #36393F;
   width: 25%;

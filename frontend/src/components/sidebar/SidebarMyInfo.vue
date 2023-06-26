@@ -1,8 +1,11 @@
 <script setup>
 
+import router from "../../../script/routes/router";
+
 function logout(){
   if(confirm('로그아웃 하시겠습니까?')){
     localStorage.clear();
+    router.go(0)
   }
 }
 </script>

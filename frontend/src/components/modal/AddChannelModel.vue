@@ -24,7 +24,9 @@ async function createServer() {
           const result = data.result[0].channel_UID
           modalStore.terminate('addServer')
           serverListStore.updateBtn(data.result[0])
+          localStorage.setItem('selectChannel',data.result[0].channel_title)
           router.push(`/channel/${result}`)
+          router.go(1);
         })
         .catch(() => {
           console.log("createServer2")

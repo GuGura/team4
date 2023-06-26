@@ -40,6 +40,10 @@ onMounted(() => {
   height: 100%;
   background: #1E1F22;
   z-index: 12;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 
 img {
