@@ -1,3 +1,19 @@
+<script setup>
+
+import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
+import {useLobbyStore} from "../../../../script/stores/lobby";
+import {onMounted} from "vue";
+
+const lobbyStore=useLobbyStore();
+
+onMounted(()=>{
+
+})
+
+
+</script>
+
+
 <template>
     <div id="contents">
         <div id="main_contents">
@@ -31,34 +47,6 @@
         </div>
     </div>
 </template>
-<script setup>
-// import axios from "axios";
-
-import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
-
-// export default {
-//     name: "Lobby",
-//     components: {Accordion},
-//
-//     data() {
-//         return {
-//             isExpanded: null
-//
-//         };
-//     },
-//     methods: {
-//         toggleAccordion(index) {
-//             if (this.isExpanded === index) {
-//                 this.isExpanded = null; // Collapse the active accordion
-//             } else {
-//                 this.isExpanded = index; // Expand the clicked accordion
-//             }
-//         }
-//     },
-//
-// }
-</script>
-
 <style scoped>
 #description{
     background: #41434A;

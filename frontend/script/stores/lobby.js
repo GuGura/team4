@@ -31,6 +31,8 @@ export const useLobbyStore = defineStore("lobbyStore", () => {
             })
     }
 
+
+
     return {
         user,
         updateMyInfo
