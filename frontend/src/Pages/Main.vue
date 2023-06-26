@@ -6,11 +6,20 @@ import LobbySidebar from "@/components/mainpage/lobby/LobbySidebar.vue";
 import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
-import {onMounted} from "vue";
+import {onMounted, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
+import {useRouter} from "vue-router";
 
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
+
+const route = useRouter()
+
+watch(route.currentRoute, (to,form) => {
+  if (to.path !== form.path){
+    console.log(to.path)
+  }
+})
 
 onMounted(()=>{
   lobbyStore.updateMyInfo();

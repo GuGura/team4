@@ -1,6 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router/dist/vue-router'
 import loginService from "../LoginService";
-import {watch} from "vue";
 
 const routes = [
     {
@@ -40,11 +39,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 });
-watch(() => router, async (to, from) => {
-    if (to.path !== from.path){
-        console.log("change path")
-    }
-})
+
 router.beforeEach(async (to, from, next) => {
     const isLogin = await loginService.initCheck();
     if (to.meta.requiresAuth && !isLogin) {
