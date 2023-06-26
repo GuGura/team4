@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface ContentMapper {
 
-    @Select("select * from content where id < #{pageNum}")
-    List<ContentDTO> listContent(int pageNum);
+    @Select("select * from content where writer_id = #{userUID} and id < #{pageNum} order by id desc limit 20")
+    List<ContentDTO> listContent(int pageNum,int userUID);
 
     @Insert("insert into content(id, content, uploadDate) values(seq_content.nextVal, #{content}, sysdate )")
     void saveContent(String content);

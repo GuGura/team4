@@ -16,9 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping(ControllerProperties.API_VERSION)
 public class ContentController {
 
     @Autowired
@@ -28,10 +30,10 @@ public class ContentController {
 
     //글 불러오기(페이징)
     @ResponseBody
-    @PostMapping("api/v1/home/listContent")
-    public ResponseEntity<PageInfo<ContentDTO>> listContent(HttpServletRequest request){
-        PageHelper.startPage(request);//pageNum=현재페이지와 pageSize=한페이지에 얼마나 있는지 필요
-        return new ResponseEntity<>(PageInfo.of(contentService.findAllByMember()), HttpStatus.OK);
+    @PostMapping("/content/listByPage")
+    public List<ContentDTO> listContent(int last, HttpServletRequest request){
+
+
     }
 
     //글 저장

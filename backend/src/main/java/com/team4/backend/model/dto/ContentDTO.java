@@ -15,5 +15,6 @@ public class ContentDTO {
     private String title;
     private String content;
     private Date uploadDate;
+    private boolean visible;
 
 }
