@@ -6,12 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserDetailDTO {
-    private int id;
-    private String userName;
-    private String nickName;
+@AllArgsConstructor
+@Builder
+public class MemberTestDTO {
+    private String email;
+    private String username; // email
+    private String role;
+    private String join_date;
+    private byte[] user_icon_url;
     private String user_description;
-    private String icon_URL;
 }

@@ -25,7 +25,7 @@ export const useLobbyStore = defineStore("lobbyStore", () => {
                 user.username = userInfo.username
                 user.role = userInfo.role
                 user.join_date = userInfo.join_date
-                user.user_icon_url = userInfo.user_icon_url
+                user.user_icon_url = "data:image/png;base64,"+userInfo.user_icon_url
                 user.user_description = userInfo.user_description
                 localStorage.setItem('user',JSON.stringify(user))
             })

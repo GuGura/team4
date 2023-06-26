@@ -1,6 +1,7 @@
 package com.team4.backend.controller;
 
 import com.team4.backend.model.Member;
+import com.team4.backend.model.dto.MemberTestDTO;
 import com.team4.backend.model.dto.MyChannelsDTO;
 import com.team4.backend.model.dto.ResultDTO;
 import com.team4.backend.model.dto.ResultDtoProperties;
@@ -8,14 +9,19 @@ import com.team4.backend.service.ChannelService;
 import com.team4.backend.service.MemberService;
 import com.team4.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 @RestController
@@ -50,9 +56,10 @@ public class MyInfoController {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         Member member = memberService.getLobbyInfoByMemberUID(memberUID);
         resultDTO = ResultDTO.builder()
-                .result(member)
+                .result(UserUtil.memberToReturn(member))
                 .message("lobby Info callback")
                 .build();
         return new ResponseEntity<>(resultDTO,HttpStatus.OK);
     }
+
 }

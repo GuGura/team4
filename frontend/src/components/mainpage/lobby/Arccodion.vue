@@ -28,7 +28,7 @@
             >
                 <div class="accordion-body d-flex justify-content-center align-items-center">
                     <template v-if="i === 1">
-                        <Profile/>
+                        <Profile :key="profileKey"/>
 
 
                     </template>
@@ -62,11 +62,15 @@ export default {
         return {
             isExpanded: null,
             calendarKey: 0,
+            profileKey: 0
         };
     },
     methods: {
         callCalendarLoad() {
             this.calendarKey += 1;
+        },
+        callProfileLoad(){
+            this.profileKey +=1;
         },
         toggleAccordion(index) {
             if (this.isExpanded === index) {
@@ -74,6 +78,8 @@ export default {
             } else {
                 if (index == 3) {
                     this.callCalendarLoad();
+                }else if(index == 1) {
+                    this.callProfileLoad();
                 }
                 this.isExpanded = index; // Expand the clicked accordion
             }

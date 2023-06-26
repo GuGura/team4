@@ -1,55 +1,60 @@
-<script>
-import api from "../../../../script/axios";
+<script setup>
+import {useLobbyStore} from "../../../../script/stores/lobby";
+import {onMounted, reactive} from "vue";
+import api from "../../../../script/token/axios";
+import router from "../../../../script/routes/router";
+
+onMounted(()=>{
+
+})
+
+
+const lobbyStore = useLobbyStore();
+
+let profileForm = reactive({
+    username: lobbyStore.user.username,
+    user_icon_url: lobbyStore.user.user_icon_url,
+    user_description: lobbyStore.user.user_description
+})
 
 
 
-export default {
-    name: 'Profile',
-    data: ()=>({
-        profileForm: {
-            imgPreview: '',
-            nickName: '',
-            user_description: '',
-        }
 
-    }),
-    methods: {
-        imgChange: function (e) {
-
-            const img = e.target.files[0];
-            const fileData = (data) => {
-                this.profileForm.imgPreview = data
-            }
-            if (img instanceof Blob) {
-                const reader = new FileReader()
-                reader.readAsDataURL(img)
-                reader.addEventListener("load", function () {
-                    fileData(reader.result)
-                }, false);
-
-            }
-
-
-        },
-        uploadProfile:function (){
-            api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/updateProfile",this.profileForm
-            ).then(()=>{
-                alert("성공")
-            })
-
-        },
-
-
+function imgChange(e){
+    const img = e.target.files[0];
+    const fileData = (data) => {
+        profileForm.user_icon_url = data
+        document.getElementById("icon").setAttribute('src',data)
+    }
+    if (img instanceof Blob) {
+        const reader = new FileReader()
+        reader.readAsDataURL(img)
+        reader.addEventListener("load", function () {
+            fileData(reader.result)
+        }, false);
 
     }
+
 }
+
+function uploadProfile() {
+    alert(profileForm.user_description)
+    api.post(process.env.VUE_APP_BASEURL_V1 + "/profile/updateProfile",profileForm
+    ).then(()=>{
+        router.go(0)
+    })
+
+
+
+}
+
 
 </script>
 <template>
         <fieldset>
             <div>
                 <strong>닉네임</strong>
-                <input type="text" name="name" id="nickName" v-model="profileForm.nickName">
+                <input type="text" id="nickName" v-model="profileForm.username">
             </div>
             <div>
                 <strong>내 정보</strong>
@@ -57,11 +62,11 @@ export default {
                 <textarea rows="5" cols="70" name="text" id="description" v-model="profileForm.user_description"></textarea>
                 <br/>
                 <div>
-                    <button @click="uploadProfile">제출</button>
+                    <button @click="uploadProfile()">제출</button>
                 </div>
             </div>
             <div>
-                <img :src="profileForm.imgPreview" alt="image" id="icon">
+                <img alt="image" id="icon" :src="profileForm.user_icon_url">
             </div>
         </fieldset>
 

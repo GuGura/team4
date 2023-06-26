@@ -4,10 +4,7 @@ import com.team4.backend.model.Member;
 import com.team4.backend.model.dto.MemberDTO;
 import com.team4.backend.model.User;
 import com.team4.backend.model.dto.MyChannelsDTO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +27,7 @@ public interface MemberMapper {
     @Select("SELECT EMAIL, USERNAME, ROLE, JOIN_DATE, USER_ICON_URL, USER_DESCRIPTION " +
             "FROM member WHERE ID = #{memberUID}")
     Member findMemberByUID(int memberUID);
+
+    @Update("UPDATE MEMBER SET USERNAME=#{member.username}, USER_ICON_URL=#{member.user_icon_url}, USER_DESCRIPTION=#{member.user_description} WHERE ID=#{memberUID}")
+    void updateProfile(Member member, int memberUID);
 }

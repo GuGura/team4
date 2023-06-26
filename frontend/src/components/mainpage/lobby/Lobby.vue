@@ -4,7 +4,7 @@ import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {onMounted} from "vue";
 
-const lobbyStore=useLobbyStore();
+const lobbyStore = useLobbyStore();
 
 onMounted(()=>{
 
@@ -19,15 +19,12 @@ onMounted(()=>{
         <div id="main_contents">
             <div id="main_content_header">
                 <div id="icon_URL">
-                    <img src="@/assets/image/userIcon.png" alt="헬로" style="width: 200px; position:relative; z-index: 4;">
+                    <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px; position:relative; z-index: 4;">
                 </div>
                 <div id="userName" style="z-index: 3;">
                     <div class="col-md-7 order-md-2">
-                        <h2 class="featurette-heading fw-normal lh-1">meatTeam </h2>
-                        <div class="lead"> 앙용하세요 예,, 한국어가 좋다 이말입니다,,모두들 한국어를 아끼고 사랑하세요 사실 저도 제가 무슨말을 쓰고 있는지 몰라요..그저 유저 정보 설명칸을 채우기 위해 말을 주절주절 써보는데
-                            자소서 쓰는것 보다는 재미있지만 뭐 그닥 추천해드리고 싶지는 않아요,,, 오늘 제 옆자리에 아무도 출석을 하지 않아서 심심하기는 한데용,,자리를 짱 넓게 쓸 수 있어서 맥시멀리스트인 저에겐 아주 최고랍니다,,(오히려 조하,,👍) 하 저 증말 말 많이 한 것 같은데
-                            왜 아직도 쓸 칸이 많이 남은 것 같죠,? 기분탓이겠지요,, 아 몰루 이제 그만 쓸래욥 앙용!
-
+                        <h2 class="featurette-heading fw-normal lh-1">{{lobbyStore.user.username}} </h2>
+                        <div class="lead"> {{lobbyStore.user.user_description}}
                         </div>
                     </div>
                 </div>
