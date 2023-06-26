@@ -19,18 +19,17 @@ watch(route.currentRoute, (to,form) => {
   if (to.path !== form.path){
     console.log(to.path)
   }
+  console.log(route.currentRoute)
 })
 
 onMounted(()=>{
   lobbyStore.updateMyInfo();
-  serverListStore.btnResult.endPoint = localStorage.getItem('endPoint');
-  serverListStore.btnResult.isActive = localStorage.getItem('activeChannel');
 })
 </script>
 <template>
   <div id="container">
     <ServerList/>
-    <div id="contents" v-if="serverListStore.btnResult.endPoint === 'lobby'">
+    <div id="contents" v-if="route.currentRoute.value.path === '/channel/lobby'">
       <LobbySidebar/>
       <Lobby/>
     </div>
