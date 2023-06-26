@@ -30,7 +30,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
     }
 
     async function updateBtn(btn) {
-        this.buttons.splice(1, 0, btn[0])
+        this.buttons.splice(1, 0, btn)
     }
 
     return {

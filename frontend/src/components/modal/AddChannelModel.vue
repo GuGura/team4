@@ -20,9 +20,10 @@ async function createServer() {
   if (dataForm.serverName !== ''){
     await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
         .then(({data}) => {
-          const result = data.result.channel_UID
+          console.log(data)
+          const result = data.result[0].channel_UID
           modalStore.terminate('addServer')
-          serverListStore.updateBtn(data.result)
+          serverListStore.updateBtn(data.result[0])
           router.push(`/channel/${result}`)
         })
         .catch(() => {

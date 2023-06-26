@@ -37,7 +37,7 @@ public class ChannelService {
         if (fileURL.equals("/img/sidebar/choose.png")){
             fileURL = null;
         }else{
-
+            System.out.println(fileURL);
         }
         Channel channel = Channel.builder()
                 .fileURL(fileURL)
