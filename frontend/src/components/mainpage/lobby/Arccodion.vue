@@ -112,4 +112,9 @@ export default {
     white-space: nowrap;
     border-width: 0;
 }
+
+.h-100 p-5 bg-body-tertiary border rounded-3 {
+    background-color: #1A1B1E;
+
+}
 </style>

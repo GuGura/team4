@@ -39,6 +39,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
+
 }
 
 tasks.named('test') {
