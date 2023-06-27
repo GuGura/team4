@@ -58,6 +58,10 @@ async function imgPreview(event) {
 function changeInviteModal() {
   modalStore.open('attendChannel')
 }
+
+function btnBack() {
+  modalStore.terminate('attendChannel')
+}
 </script>
 
 <template>
@@ -99,14 +103,13 @@ function changeInviteModal() {
     </div>
 
 
-
     <div id="modal" v-else>
       <div id="header">
         <div id="header_sumName">
           <div>서버 참가하기</div>
           <img src="/img/serverlist/exit.png" alt="" @click="exitModal">
         </div>
-        <div id="description">아래 초대 코드를 입력하여 서버에 참가하세요</div>
+        <div id="description" style="font-size: 14px">아래 초대 코드를 입력하여 서버에 참가하세요</div>
       </div>
       <div id="body">
         <div id="ChannelNameInputBox">
@@ -114,17 +117,32 @@ function changeInviteModal() {
             <div>초대 링크</div>
             <div style="color: #DA373C">&nbsp;*</div>
           </div>
-          <input v-model=channelCode.channelCode :placeholder="createChannel.serverName === '' ? '필수입력칸 입니다.':''">
-          <div id="box3">
-            <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
-            <div id="btnCreate">
-              <button @click="createServer">생성하기</button>
+          <input v-model=channelCode.channelCode :placeholder="channelCode.channelCode === '' ? '필수입력칸 입니다.':''">
+          <div id="box4">
+            <div>초대는 다음 형태여야 해요.</div>
+            <div>hTKzmak</div>
+            <div id="redirectPublicBtn">
+              <div style="background-color:#23A559;border-radius: 50%;width: 45px;height: 45px;display: flex;align-items: center;justify-content: center;">
+                <img src="/img/serverlist/public_icon.png" height="23px">
+              </div>
+              <div style="display: flex;flex-direction: column;">
+                <div style="font-size: 16px;font-weight: bold">초대장이 없으신가요?</div>
+                <div style="font-size: 12px;">서버 찾기에서 찾기 기능 커뮤니티를 확인하세요.</div>
+              </div>
+              <div style="display: flex; justify-content: flex-end;flex: 1;align-items: center;filter: opacity(0.5)">
+                <img src="/img/serverlist/back.png" height="30px">
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div id="footer2">
+        <div id="btnBack" @click="btnBack">뒤로 가기</div>
+        <div id="btnAttend2">
+          서버 참가하기
+        </div>
+      </div>
     </div>
-
 
 
   </div>
@@ -331,5 +349,76 @@ function changeInviteModal() {
 
 #btnAttend > button:active {
   background: #41434A;
+}
+
+
+#box4 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+#box4 > div:nth-of-type(1) {
+  color: #5C5E66;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#box4 > div:nth-of-type(2) {
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+#redirectPublicBtn {
+  padding: 10px;
+  display: flex;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #F2F3F5;
+  height: 75px;
+  align-items: center;
+  gap: 10px;
+}
+
+#footer2 {
+  display: flex;
+  bottom: 0;
+  background: #F2F3F5;
+  position: absolute;
+  width: 100%;
+  align-items: center;
+  padding: 0 20px;
+  height: 70px;
+  justify-content: space-between;
+}
+
+#btnBack {
+  font-size: 14px;
+  color: #858992;
+}
+
+#btnBack:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#btnAttend2 {
+  background: #5865F2;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+#btnAttend2:hover {
+  background: #4752C4;
+}
+
+#btnAttend2:active {
+  background: #3C45A6;
 }
 </style>
