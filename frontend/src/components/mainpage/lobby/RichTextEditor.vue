@@ -24,8 +24,6 @@ export default defineComponent({
 
         content.value = {
             ops: [
-                {insert: 'Lorem ipsum dolor sit amet'},
-                {attributes: {header: 3}, insert: '\n'},
                 {insert: 'consectetur adipiscing elit. '},
                 {attributes: {bold: true}, insert: 'Nunc ultrices ligula'},
                 {insert: ' eu eros pulvinar, eu consequat nulla consectetur. Cras ut purus felis. Nunc placerat risus a augue sodales, at ultricies diam tristique. Donec venenatis auctor mauris,'},
@@ -43,12 +41,8 @@ export default defineComponent({
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],
-                    // ['blockquote', 'code-block'],
-                    [{header: 1}, {header: 2}],
                     [{list: 'ordered'}, {list: 'bullet'}],
-                    // [{script: 'sub'}, {script: 'super'}],
                     [{indent: '-1'}, {indent: '+1'}],
-                    // [{direction: 'rtl'}],
                     [{size: ['small', false, 'large', 'huge']}],
                     [{header: [1, 2, 3, 4, 5, 6, false]}],
                     [{color: []}, {background: []}],
