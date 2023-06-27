@@ -20,6 +20,8 @@ const updateEmail = computed(()=>{
   const email = lobbyStore.user.email
   return email.split('@')[0]
 })
+
+
 const info = reactive({
   username: updateUsername,
   testUID: ''

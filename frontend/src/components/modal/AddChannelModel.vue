@@ -10,15 +10,18 @@ const modalStore = useModalStore();
 const userStore = useLobbyStore();
 const serverListStore = useServerListStore();
 
-let dataForm = reactive({
+let createChannel = reactive({
   fileURL: '/img/sidebar/choose.png',
   serverName: userStore.user.username + '님의 서버',
   inviteCode: ''
 })
+let channelCode = reactive({
+  channelCode: ''
+})
 
 async function createServer() {
-  if (dataForm.serverName !== '') {
-    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
+  if (createChannel.serverName !== '') {
+    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", createChannel)
         .then(({data}) => {
           console.log(data)
           const result = data.result[0].channel_UID
@@ -37,8 +40,8 @@ async function createServer() {
 function exitModal() {
   modalStore.terminate('addServer')
   modalStore.terminate('attendChannel')
-  dataForm.fileURL = ''
-  dataForm.serverName = userStore.user.username + '님의 서버'
+  createChannel.fileURL = ''
+  createChannel.serverName = userStore.user.username + '님의 서버'
 }
 
 async function imgPreview(event) {
@@ -47,7 +50,7 @@ async function imgPreview(event) {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(img)
     fileReader.onload = function (e) {
-      dataForm.fileURL = e.target.result;
+      createChannel.fileURL = e.target.result;
     }
   }
 }
@@ -70,15 +73,15 @@ function changeInviteModal() {
       </div>
       <div id="body">
         <div id="img_upload">
-          <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${dataForm.fileURL})`}"
-               v-if="dataForm.fileURL!=='/img/sidebar/choose.png' "></div>
-          <div id="Icon" :style="{backgroundImage: `url(${dataForm.fileURL})`}" v-else></div>
+          <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${createChannel.fileURL})`}"
+               v-if="createChannel.fileURL!=='/img/sidebar/choose.png' "></div>
+          <div id="Icon" :style="{backgroundImage: `url(${createChannel.fileURL})`}" v-else></div>
           <input class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" aria-label="서버 아이콘 업로드하기"
                  @change="imgPreview">
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
-          <input v-model=dataForm.serverName :placeholder="dataForm.serverName === '' ? '필수입력칸 입니다.':''">
+          <input v-model=createChannel.serverName :placeholder="createChannel.serverName === '' ? '필수입력칸 입니다.':''">
           <div id="box3">
             <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
             <div id="btnCreate">
@@ -94,6 +97,9 @@ function changeInviteModal() {
         </div>
       </div>
     </div>
+
+
+
     <div id="modal" v-else>
       <div id="header">
         <div id="header_sumName">
@@ -103,9 +109,24 @@ function changeInviteModal() {
         <div id="description">아래 초대 코드를 입력하여 서버에 참가하세요</div>
       </div>
       <div id="body">
-
+        <div id="ChannelNameInputBox">
+          <div style="display: flex">
+            <div>초대 링크</div>
+            <div style="color: #DA373C">&nbsp;*</div>
+          </div>
+          <input v-model=channelCode.channelCode :placeholder="createChannel.serverName === '' ? '필수입력칸 입니다.':''">
+          <div id="box3">
+            <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
+            <div id="btnCreate">
+              <button @click="createServer">생성하기</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+
+
   </div>
 </template>
 

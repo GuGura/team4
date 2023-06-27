@@ -29,7 +29,6 @@ export const useLobbyStore = defineStore("lobbyStore", () => {
                 localStorage.setItem('user',JSON.stringify(user))
             })
     }
-
     return {
         user,
         updateMyInfo
