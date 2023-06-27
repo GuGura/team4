@@ -49,7 +49,7 @@ export default defineComponent({
 .quill-editor-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 95%;
 }
 
 .quill-editor-content {

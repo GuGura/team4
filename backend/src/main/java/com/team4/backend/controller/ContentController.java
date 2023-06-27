@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,8 @@ public class ContentController {
     @ResponseBody
     @PostMapping("/content/listByPage")
     public List<ContentDTO> listContent(int last, HttpServletRequest request){
-
+        List<ContentDTO> contents = new ArrayList<>();
+        return contents;
 
     }
 

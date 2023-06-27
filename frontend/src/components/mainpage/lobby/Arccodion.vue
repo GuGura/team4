@@ -34,6 +34,7 @@
                     </template>
                     <template v-else-if="i === 2">
                         <RichTextEditor />
+                        <button @click="uploadText()">제출</button>
 
                     </template>
                     <template v-else>
