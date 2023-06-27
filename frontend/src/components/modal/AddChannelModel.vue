@@ -16,7 +16,8 @@ let createChannel = reactive({
   inviteCode: ''
 })
 let channelCode = reactive({
-  channelCode: ''
+  channelCode: '',
+  result: '*'
 })
 
 async function createServer() {
@@ -40,8 +41,6 @@ async function createServer() {
 function exitModal() {
   modalStore.terminate('addServer')
   modalStore.terminate('attendChannel')
-  createChannel.fileURL = ''
-  createChannel.serverName = userStore.user.username + '님의 서버'
 }
 
 async function imgPreview(event) {
@@ -63,8 +62,7 @@ function btnBack() {
   modalStore.terminate('attendChannel')
 }
 function redirectPublic(){
-  modalStore.terminate('attendChannel')
-  modalStore.terminate('addServer')
+  exitModal()
   router.push('/channel/public')
 }
 </script>
@@ -119,8 +117,8 @@ function redirectPublic(){
       <div id="body">
         <div id="ChannelNameInputBox">
           <div style="display: flex">
-            <div>초대 링크</div>
-            <div style="color: #DA373C">&nbsp;*</div>
+            <div :class="{isFalseColor: channelCode.result!=='*'}">초대 링크</div>
+            <div style="color: #DA373C">&nbsp;{{channelCode.result}}</div>
           </div>
           <input v-model=channelCode.channelCode :placeholder="channelCode.channelCode === '' ? '필수입력칸 입니다.':''">
           <div id="box4">
@@ -427,5 +425,8 @@ function redirectPublic(){
 
 #btnAttend2:active {
   background: #3C45A6;
+}
+.isFalseColor{
+  color: #DA373C
 }
 </style>
