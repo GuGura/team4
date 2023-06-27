@@ -1,7 +1,7 @@
 <template>
     <div className="quill-editor-container">
         <div className="quill-editor-content">
-            <QuillEditor v-model="content" theme="snow"/>
+            <QuillEditor v-model="content" :options="quillOptions"/>
         </div>
         <div id="custom-toolbar" className="quill-editor-toolbar">
             <!-- Your toolbar content here -->
@@ -17,7 +17,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 export default defineComponent({
     name: 'RichTextEditor',
     components: {
-        QuillEditor
+        QuillEditor,
     },
     setup() {
         const content = ref({})
@@ -34,14 +34,37 @@ export default defineComponent({
                 {attributes: {underline: true}, insert: 'Quisque non tincidunt dolor.'},
                 {insert: ' Aenean ullamcorper, diam ac vehicula imperdiet, arcu erat sodales sem, vitae lobortis dolor urna dapibus nisi. Nulla lacus urna, vehicula quis rutrum sit amet, '},
                 {attributes: {link: 'http://localhost'}, insert: 'porttitor eget ligula'},
-                {insert: '. Nam eget ante ornare, egestas nulla dapibus, tempus nisi. Sed vel odio augue. Fusce vulputate, risus sit amet venenatis tristique, ex ex pulvinar orci, vitae lobortis massa enim ac ante. Nulla sodales mauris ligula, a tempus felis vulputate ut. Sed scelerisque dolor at leo hendrerit vehicula.\n'}
-            ]
+                {insert: '. Nam eget ante ornare, egestas nulla dapibus, tempus nisi. Sed vel odio augue. Fusce vulputate, risus sit amet venenatis tristique, ex ex pulvinar orci, vitae lobortis massa enim ac ante. Nulla sodales mauris ligula, a tempus felis vulputate ut. Sed scelerisque dolor at leo hendrerit vehicula.\n'},
+            ],
+        }
+
+        const quillOptions = {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    // ['blockquote', 'code-block'],
+                    [{header: 1}, {header: 2}],
+                    [{list: 'ordered'}, {list: 'bullet'}],
+                    // [{script: 'sub'}, {script: 'super'}],
+                    [{indent: '-1'}, {indent: '+1'}],
+                    // [{direction: 'rtl'}],
+                    [{size: ['small', false, 'large', 'huge']}],
+                    [{header: [1, 2, 3, 4, 5, 6, false]}],
+                    [{color: []}, {background: []}],
+                    [{font: []}],
+                    [{align: []}],
+                    // ['clean'],
+                    ['link', 'image', 'video'],
+                ],
+            },
         }
 
         return {
-            content
+            content,
+            quillOptions,
         }
-    }
+    },
 })
 </script>
 
