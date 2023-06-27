@@ -1,116 +1,167 @@
 <script>
+import axios from "axios";
+import SockJS from 'sockjs-client';
+import Stomp from 'webstomp-client';
 
-import {defineComponent, reactive} from "vue";
+import {computed, defineComponent, reactive} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
+import {useLobbyStore} from "../../../../script/stores/lobby";
+
+const lobbyStore = useLobbyStore();
+
+const updateUsername = computed(()=>{
+  return lobbyStore.user.username
+})
 
 export default defineComponent({
+  watch: {
+    '$route'() {
+      this.created();
+    }
+  },
   components: {ChatBox},
+  data() {
+    return {
+      roomId: '',
+      room: {},
+      sender: updateUsername,
+      message: '',
+      sendDate: '',
+      messages: [],
+      chatMessages: [],
+      inputMessage: '',
+      canSend: true,
+      ws: null, // WebSocket 객체 추가
+      connected: false, // 소켓 연결 상태 추가
+    };
+  },
   setup() {
     const messageList = reactive({
       messages: [
         {
-          user: "원식킴",
+          sender: "보내는 사람의 이름",
           userIcon: '',
-          sendDate: "2023.05.21 오후 10:41",
-          message: "안녕하세요"
+          sendDate: "보낸 시각",
+          message: "기본 페이지 입니다"
         },
-        {
-          user: "재연퐉",
-          userIcon: '',
-          sendDate: "2023.05.25 오후 10:41",
-          message: "힘들다"
-        },
-        {
-          user: "민화",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다2"
-        },
-        {
-          user: "도연",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다3"
-        },
-        {
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다4"
-        },{
-          user: "선아",
-          userIcon: '',
-          sendDate: "2023.05.27 오후 10:41",
-          message: "힘들다55"
-        },
-
       ]
-    })
-
+    });
     return {
       messageList
-    }
-  }
-})
+    };
+  },
+  methods: {
+    created() {
+      this.roomId = localStorage.getItem('wschat.roomId');
+      this.sender = updateUsername
+      console.log("Channel.vue sender : " + this.sender);
+      console.log("Channel.vue roomId : " + this.roomId);
+
+      this.disconnect(); // 이전 웹소켓 연결 끊기
+      this.messageList.messages = []; // messageList 초기화
+      this.connect(); // 새로운 웹소켓 연결 수행
+    },
+    connect() {
+      const serverURL = "http://localhost:8080";
+      let socket = new SockJS(serverURL);
+      this.ws = Stomp.over(socket);
+      console.log('serverURL : ' + serverURL);
+
+      this.findRoomMessage();
+      this.ws.connect(
+          {},
+          frame => {
+            this.connected = true;
+            console.log('소켓 연결 성공', frame);
+            this.ws.subscribe("/sub/chat/room/" + this.roomId, message => {
+              console.log('구독으로 받은 메시지 입니다.', message.body);
+              this.recvMessage(JSON.parse(message.body));
+            });
+            if (this.ws && this.ws.connected) {
+              console.log('Start ws.connect Channel.vue ')
+              const msg = {
+                type: 'ENTER',
+                roomId: this.roomId,
+                sender: this.sender,
+              };
+
+              this.ws.send(
+                  "/pub/chat/message",
+                  JSON.stringify(msg),
+                  {}
+              );
+            }
+          },
+          error => {
+            console.log('소켓 연결 실패 ', error);
+            this.connected = false;
+          }
+      );
+    },
+    disconnect() {
+      if (this.ws && this.ws.connected) {
+        this.ws.disconnect();
+        this.connected = false;
+      }
+    },
+    sendMessage() {
+      if (!this.canSend) {
+        return;
+      }
+
+      if (this.ws && this.ws.connected) {
+        const msg = {
+          type: 'TALK',
+          roomId: this.roomId,
+          sender: this.sender,
+          message: this.inputMessage,
+          sendDate: new Date(),
+        };
+        this.ws.send(
+            "/pub/chat/message",
+            JSON.stringify(msg),
+            {}
+        );
+      }
+      this.inputMessage = '';
+      this.canSend = false;
+      setTimeout(() => {
+        this.canSend = true;
+      }, 1000);
+    },
+    recvMessage(recv) {
+      if (recv.type !== 'ENTER') { // 'ENTER' 타입인 경우에는 출력하지 않음
+        this.messageList.messages.push({
+          type: recv.type,
+          sender: recv.sender,
+          message: recv.message,
+          sendDate: recv.sendDate,
+        });
+        this.$nextTick(() => {
+          const chatInfoElement = this.$refs.chatInfoRef;
+          if (chatInfoElement.scrollHeight - chatInfoElement.clientHeight <= chatInfoElement.scrollTop + 100) {
+            chatInfoElement.scrollTop = chatInfoElement.scrollHeight;
+          }
+        });
+      }
+    },
+    findRoomMessage() {
+      axios.get(`http://localhost:8080/enter/${this.roomId}`).then(response => {
+        console.log(response.data);
+        this.chatMessages = response.data;
+      });
+    },
+  },
+  beforeUnmount() {
+    this.disconnect(); // 컴포넌트가 해제되기 전에 웹소켓 연결 끊기
+  },
+
+});
 </script>
 
 <template>
   <div id="main_contents">
+
     <div id="header">
       <div id="chatMain_Header">
         <div>
@@ -122,19 +173,24 @@ export default defineComponent({
         <input name="searchRoom" placeholder="검색하기">
       </div>
     </div>
+
     <div id="chat_body">
       <div id="chatMain">
-        <div id="chatInfo">
+        <div id="chatInfo" ref="chatInfoRef">
           <div class="scroll box2">
-            <div class="Box" v-for="(message,idx) in messageList.messages" :key="idx">
-              <ChatBox :message="message"/>
-            </div>
+          <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
+            <ChatBox :messages="message"/>
+          </div>
+          <div class="Box" v-for="(messages,idx) in messageList.messages" :key="idx">
+            <ChatBox :messages="messages"/>
+          </div>
           </div>
         </div>
 
         <div id="MessageBox">
-          <form style="width: 100%;padding-left: 30px">
-            <input name="message" placeholder="메세지 보내기">
+          <form style="width: 100%;" @submit.prevent>
+            <input type="text" name="message" placeholder="메세지 보내기"
+                   v-model="inputMessage" @keyup.enter="sendMessage">
           </form>
         </div>
       </div>

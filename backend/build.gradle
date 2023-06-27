@@ -16,16 +16,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    //Mail
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
+    //WebSocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars.bower:axios:0.17.1'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    //MyBatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0'
+    //DB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    //Vidu
+    implementation 'io.openvidu:openvidu-java-client:2.27.0'
+
 
     compileOnly 'org.projectlombok:lombok'
     implementation('org.projectlombok:lombok')
