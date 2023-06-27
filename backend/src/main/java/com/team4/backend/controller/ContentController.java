@@ -3,6 +3,7 @@ package com.team4.backend.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team4.backend.model.dto.ContentDTO;
+import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,15 +32,18 @@ public class ContentController {
     //글 불러오기(페이징)
     @ResponseBody
     @PostMapping("/content/listByPage")
-    public List<ContentDTO> listContent(int last, HttpServletRequest request){
-        List<ContentDTO> contents = new ArrayList<>();
-        return contents;
+    public List<ContentDTO> listContent(int pageNum, HttpServletRequest request){
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
 
+        if(pageNum==0){
+            pageNum = 100000000;
+        }
+        return contentService.listContent(pageNum, memberUID);
     }
 
     //글 저장
     @ResponseBody
-    @PostMapping("api/v1/home/saveContent")
+    @PostMapping("/content/saveContent")
     public void saveQuill(@RequestBody String json) throws Exception{
         contentService.saveContent(json);
     }
