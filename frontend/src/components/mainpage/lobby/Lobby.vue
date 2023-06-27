@@ -24,6 +24,7 @@
                     <div class="accordion" id="accordionExample">
                         <Accordion/>
 
+
                     </div>
                 </div>
                 <div id="main_content2"></div>
@@ -60,6 +61,8 @@ import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
 </script>
 
 <style scoped>
+
+
 #description{
     background: #41434A;
     width: 71.5%;
@@ -97,11 +100,12 @@ import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
 }
 
 /**  contents */
-#contents{
+#contents {
     display: flex;
-    flex:1;
+    flex: 0;
     background: #1E1F22;
     padding-left: 74px;
+    width: 100%; /* Adjust to occupy full width */
 }
 
 form[name=list]{
@@ -136,11 +140,12 @@ form[name=list]{
 }
 
 
-#main_contents{
+#main_contents {
     display: flex;
     flex: 1;
     flex-direction: column;
 }
+
 #main_content_header{
     display: flex;
     height: 35%;

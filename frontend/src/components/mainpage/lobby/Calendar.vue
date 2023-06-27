@@ -5,11 +5,9 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import axios from "axios";
 import loginService from "../../../../script/LoginService";
-import router from "../../../../script/router";
-import authHeader from "../../../../script/authHeader";
-import api from "../../../../script/axios";
+import router from "../../../../script/routes/router";
+import api from "../../../../script/token/axios";
 
 export default defineComponent({
     // eslint-disable-next-line vue/multi-word-component-names

@@ -120,7 +120,7 @@ const SignUp = () => {
       .then(({data}) => {
         if (data.status) {
           alert(data.message)
-          router.push({name: 'Login'})
+          router.push({name: 'login'})
         } else {
           alert(data.message)
         }
