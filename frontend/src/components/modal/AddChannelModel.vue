@@ -38,6 +38,14 @@ async function createServer() {
   }
 }
 
+async function attendChannel() {
+  if (channelCode.channelCode === '') {
+    channelCode.result = '- 유효한 초대 코드를 입력해 주세요'
+  }else{
+    channelCode.result = '*'
+  }
+}
+
 function exitModal() {
   modalStore.terminate('addServer')
   modalStore.terminate('attendChannel')
@@ -61,7 +69,8 @@ function changeInviteModal() {
 function btnBack() {
   modalStore.terminate('attendChannel')
 }
-function redirectPublic(){
+
+function redirectPublic() {
   exitModal()
   router.push('/channel/public')
 }
@@ -118,7 +127,9 @@ function redirectPublic(){
         <div id="ChannelNameInputBox">
           <div style="display: flex">
             <div :class="{isFalseColor: channelCode.result!=='*'}">초대 링크</div>
-            <div style="color: #DA373C">&nbsp;{{channelCode.result}}</div>
+            <div style="color: #DA373C; font-style: italic;font-weight: lighter;">
+              &nbsp;{{ channelCode.result }}
+            </div>
           </div>
           <input v-model=channelCode.channelCode :placeholder="channelCode.channelCode === '' ? '필수입력칸 입니다.':''">
           <div id="box4">
@@ -127,7 +138,8 @@ function redirectPublic(){
 
 
             <div id="redirectPublicBtn" @click="redirectPublic">
-              <div style="background-color:#23A559;border-radius: 50%;width: 45px;height: 45px;display: flex;align-items: center;justify-content: center;">
+              <div
+                  style="background-color:#23A559;border-radius: 50%;width: 45px;height: 45px;display: flex;align-items: center;justify-content: center;">
                 <img src="/img/serverlist/public_icon.png" height="23px">
               </div>
               <div style="display: flex;flex-direction: column;">
@@ -143,7 +155,7 @@ function redirectPublic(){
       </div>
       <div id="footer2">
         <div id="btnBack" @click="btnBack">뒤로 가기</div>
-        <div id="btnAttend2">
+        <div id="btnAttend2" @click="attendChannel">
           서버 참가하기
         </div>
       </div>
@@ -385,7 +397,12 @@ function redirectPublic(){
   align-items: center;
   gap: 10px;
 }
-
+#redirectPublicBtn:hover{
+  background-color: #EBEBED;
+}
+#redirectPublicBtn:active{
+  background-color: #E6E6E8;
+}
 #footer2 {
   display: flex;
   bottom: 0;
@@ -426,7 +443,8 @@ function redirectPublic(){
 #btnAttend2:active {
   background: #3C45A6;
 }
-.isFalseColor{
+
+.isFalseColor {
   color: #DA373C
 }
 </style>
