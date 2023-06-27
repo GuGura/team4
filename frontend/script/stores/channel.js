@@ -10,6 +10,7 @@ export const useChannelStore = defineStore('channelStore',()=>{
 
     function init(){
         channelInfo.channel_title = localStorage.getItem('selectChannel')
+        console.log(JSON.parse(localStorage.getItem('user')).username)
         console.log(channelInfo.channel_title)
     }
 

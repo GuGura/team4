@@ -22,7 +22,7 @@ onMounted(() => {
       </form>
     </div>
     <AddServerModel
-        v-if="modalStore.modal.addServer"/>
+        v-if="modalStore.modal.addServer === true"/>
   </div>
 </template>
 

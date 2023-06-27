@@ -15,7 +15,7 @@ const props = defineProps({
 
 function btnClick() {
   if (props.buttonData.channel_title === 'addServer') {
-    modalStore.modal.addServer = true
+    modalStore.open('addServer');
   }
   let endPoint = props.buttonData.channel_type;
   if (!(endPoint === 'lobby') && !(endPoint === 'addServer') && !(endPoint === 'public'))

@@ -1,5 +1,5 @@
 <script setup>
-import { reactive} from 'vue'
+import {reactive} from 'vue'
 import api from "../../../script/token/axios";
 import {useModalStore} from "../../../script/stores/modal";
 import {useLobbyStore} from "../../../script/stores/lobby";
@@ -17,14 +17,14 @@ let dataForm = reactive({
 })
 
 async function createServer() {
-  if (dataForm.serverName !== ''){
+  if (dataForm.serverName !== '') {
     await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", dataForm)
         .then(({data}) => {
           console.log(data)
           const result = data.result[0].channel_UID
           modalStore.terminate('addServer')
           serverListStore.updateBtn(data.result[0])
-          localStorage.setItem('selectChannel',data.result[0].channel_title)
+          localStorage.setItem('selectChannel', data.result[0].channel_title)
           router.push(`/channel/${result}`)
           router.go(1);
         })
@@ -36,6 +36,7 @@ async function createServer() {
 
 function exitModal() {
   modalStore.terminate('addServer')
+  modalStore.terminate('attendChannel')
   dataForm.fileURL = ''
   dataForm.serverName = userStore.user.username + '님의 서버'
 }
@@ -51,13 +52,15 @@ async function imgPreview(event) {
   }
 }
 
-
+function changeInviteModal() {
+  modalStore.open('attendChannel')
+}
 </script>
 
 <template>
   <div id="container">
     <div id="background" @click="exitModal"></div>
-    <div id="modal">
+    <div id="modal" v-if="modalStore.modal.attendChannel === false">
       <div id="header">
         <div id="header_sumName">
           <div>서버 만들기</div>
@@ -75,7 +78,7 @@ async function imgPreview(event) {
         </div>
         <div id="ChannelNameInputBox">
           <div>서버 이름</div>
-          <input v-model=dataForm.serverName :placeholder="dataForm.serverName === '' ? '필수입력칸 입니다.':''" >
+          <input v-model=dataForm.serverName :placeholder="dataForm.serverName === '' ? '필수입력칸 입니다.':''">
           <div id="box3">
             <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
             <div id="btnCreate">
@@ -87,8 +90,20 @@ async function imgPreview(event) {
       <div id="footer">
         <div id="footer_sumName">이미 초대장을 받으셨나요?</div>
         <div id="btnAttend">
-          <button>서버 참가하기</button>
+          <button @click="changeInviteModal()">서버 참가하기</button>
         </div>
+      </div>
+    </div>
+    <div id="modal" v-else>
+      <div id="header">
+        <div id="header_sumName">
+          <div>서버 참가하기</div>
+          <img src="/img/serverlist/exit.png" alt="" @click="exitModal">
+        </div>
+        <div id="description">아래 초대 코드를 입력하여 서버에 참가하세요</div>
+      </div>
+      <div id="body">
+
       </div>
     </div>
   </div>

@@ -37,7 +37,6 @@ watch(route.currentRoute, (to,form) => {
 
 onMounted(()=>{
   lobbyStore.updateMyInfo();
-
 })
 </script>
 <template>
