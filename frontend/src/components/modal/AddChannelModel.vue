@@ -62,6 +62,11 @@ function changeInviteModal() {
 function btnBack() {
   modalStore.terminate('attendChannel')
 }
+function redirectPublic(){
+  modalStore.terminate('attendChannel')
+  modalStore.terminate('addServer')
+  router.push('/channel/public')
+}
 </script>
 
 <template>
@@ -103,7 +108,7 @@ function btnBack() {
     </div>
 
 
-    <div id="modal" v-else>
+    <div id="modal" v-else style="padding-bottom: 90px">
       <div id="header">
         <div id="header_sumName">
           <div>서버 참가하기</div>
@@ -121,7 +126,9 @@ function btnBack() {
           <div id="box4">
             <div>초대는 다음 형태여야 해요.</div>
             <div>hTKzmak</div>
-            <div id="redirectPublicBtn">
+
+
+            <div id="redirectPublicBtn" @click="redirectPublic">
               <div style="background-color:#23A559;border-radius: 50%;width: 45px;height: 45px;display: flex;align-items: center;justify-content: center;">
                 <img src="/img/serverlist/public_icon.png" height="23px">
               </div>
