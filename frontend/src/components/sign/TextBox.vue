@@ -5,7 +5,7 @@
       <div :style="props.noticeColor">{{ props.notice }}</div>
     </div>
     <input class="textBox" :type="props.boxType" :name="props.boxName" @input="handleModelValue"
-           :pattern="props.pattern" required>
+           :pattern="props.pattern" :autocomplete="props.autocomplete" required>
   </div>
 </template>
 
@@ -22,7 +22,8 @@ const props = defineProps({
     type: String,
     default: '*'
   },
-  noticeColor: String
+  noticeColor: String,
+  autocomplete: String
 });
 
 const emit = defineEmits(['update:modelValue'])

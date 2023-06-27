@@ -14,9 +14,9 @@ export const useServerListStore = defineStore("serverListStore", () => {
             channel_type: 'lobby'
         },
     ])
+    const router = useRouter();
 
     const getPathEndPoint = (computed(()=> {
-        const router = useRouter();
         const path = router.currentRoute.value.path
         let triumphant = path.substring('/channel/'.length);
         if (!(triumphant === 'lobby'|| triumphant === 'public' || triumphant === 'addServer'))
@@ -46,6 +46,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
         buttons,
         btnResult,
         getPathEndPoint,
+        router,
         initBtn,
         updateBtn,
     }

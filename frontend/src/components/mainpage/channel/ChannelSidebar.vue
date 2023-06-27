@@ -1,19 +1,14 @@
 <script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
-import {reactive} from "vue";
+import {useChannelStore} from "../../../../script/stores/channel";
 
-const info = reactive({
-  channel_title: localStorage.getItem('selectChannel'),
-  channel_nickname: ''
-})
-
-
+const channelStore = useChannelStore();
 
 </script>
 
 <template>
   <div id="side_contents">
-    <div id="chatRooms_Header">{{info.channel_title}}</div>
+    <div id="chatRooms_Header">{{channelStore.channelInfo.channel_title}}</div>
     <div id="side_content_info">
       <div id="chatRooms">
         <div class="chatRoom">

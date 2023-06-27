@@ -9,21 +9,35 @@ import {useServerListStore} from "../../script/stores/serverlist";
 import {onMounted, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
+import {useChannelStore} from "../../script/stores/channel";
 
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
+const channelStore = useChannelStore();
 
 const route = useRouter()
 
 watch(route.currentRoute, (to,form) => {
   if (to.path !== form.path){
-    console.log(to.path)
+   const channel_type = serverListStore.getPathEndPoint;
+   console.log(typeof channel_type)
+   switch (channel_type){
+     case 'lobby':
+       console.log(channel_type);
+       break;
+     case 'public':
+       console.log(channel_type);
+       break;
+     default:
+       channelStore.init()
+       break;
+   }
   }
-  console.log(route.currentRoute)
 })
 
 onMounted(()=>{
   lobbyStore.updateMyInfo();
+
 })
 </script>
 <template>

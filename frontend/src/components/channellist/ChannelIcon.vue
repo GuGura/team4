@@ -22,6 +22,7 @@ function btnClick() {
     endPoint = props.buttonData.channel_UID
   if (endPoint !== 'addServer') {
     serverListStore.btnResult.endPoint = endPoint;
+    localStorage.setItem('selectChannel',props.buttonData.channel_title)
     router.push(`/channel/${endPoint}`)
   }
 }

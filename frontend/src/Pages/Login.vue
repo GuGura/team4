@@ -11,11 +11,13 @@
             <TextBox subject="이메일 또는 전화번호"
                      box-type="text"
                      box-name="email"
-                     v-model="result.username"/>
+                     v-model="result.username"
+                     autocomplete="username"/>
             <TextBox subject="비밀번호"
                      box-type="password"
                      box-name="passwd"
-                     v-model="result.password"/>
+                     v-model="result.password"
+                     autocomplete="current-password"/>
             <div class="hrefText" style="height: 32px;">
               <a href="#" @click="forgotPassword()">비밀번호를 잊으셨나요?</a>
             </div>
@@ -53,14 +55,15 @@ const result = reactive({
   password: ''
 });
 
-function forgotPassword(){
+function forgotPassword() {
   if (result.username === '') {
     alert("이메일을 입력해주세요")
     return
   }
   console.log("이메일 입력완료")
 }
-function login(){
+
+function login() {
   axios.post(process.env.VUE_APP_BASEURL + "/login", JSON.stringify(result))
       .then((res) => {
         if (res.data.status) {
@@ -68,7 +71,7 @@ function login(){
           const refreshJwt = res.headers.get('refreshJwt')
           const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
           localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
-          router.push("/").then(()=>console.log("로그인 성공"))
+          router.push("/").then(() => console.log("로그인 성공"))
         } else {
           alert(res.data.message)
         }

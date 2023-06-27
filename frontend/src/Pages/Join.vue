@@ -36,14 +36,16 @@
                    box-type="text"
                    box-name="userId"
                    pattern="\w{4,}"
-                   v-model="joinInfo.username"/>
+                   v-model="joinInfo.username"
+                   autocomplete="username"/>
           <TextBox subject="비밀번호"
                    notice="- 10글자 이상"
                    notice-color="color: #B5BAB8"
                    box-type="password"
                    box-name="passwd"
                    pattern="\w{10,}"
-                   v-model="joinInfo.password"/>
+                   v-model="joinInfo.password"
+                   autocomplete="current-password"/>
           <SubmitBtn text="회원가입"/>
           <div class="hrefText">
             <a href="#" onclick="history.back();">이미 계정이 있으신가요?</a>
