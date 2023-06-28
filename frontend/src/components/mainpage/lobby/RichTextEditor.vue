@@ -1,87 +1,89 @@
 <template>
-    <div className="quill-editor-container">
-        <div className="quill-editor-content">
-            <QuillEditor v-model="content" :options="quillOptions"/>
+    <div>
+        <h1>게시글 작성</h1>
+
+        <div class="AddWrap">
+            <form>
+                <table class="tbAdd">
+                    <colgroup>
+                        <col width="15%" />
+                        <col width="*" />
+                    </colgroup>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" v-model="subject" ref="subject" /></td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td><textarea v-model="cont" ref="cont"></textarea></td>
+                    </tr>
+                </table>
+            </form>
         </div>
-        <div id="custom-toolbar" className="quill-editor-toolbar">
-            <div class="submit">
-                <button @click="uploadText()">제출</button>
-            </div>
+
+        <div class="btnWrap">
+            <div href="javascript:;" @click="fnList" class="btn">목록</div>
+            <div href="javascript:;" @click="fnAddProc" class="btnAdd btn">등록</div>
         </div>
     </div>
 </template>
 
 <script>
-import {ref, defineComponent} from 'vue'
-import {QuillEditor} from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
-
-export default defineComponent({
-    name: 'RichTextEditor',
-    components: {
-        QuillEditor,
-    },
-    setup() {
-        const content = ref({})
-
-        content.value = {
-            ops: [
-                {insert: 'consectetur adipiscing elit. '},
-                {attributes: {bold: true}, insert: 'Nunc ultrices ligula'},
-                {insert: ' eu eros pulvinar, eu consequat nulla consectetur. Cras ut purus felis. Nunc placerat risus a augue sodales, at ultricies diam tristique. Donec venenatis auctor mauris,'},
-                {attributes: {italic: true}, insert: ' at molestie enim euismo'},
-                {insert: 'd ac. Mauris viverra, leo id porttitor maximus, diam magna blandit nibh, ac vehicula nulla diam in eros. Nullam mi risus, blandit a elit quis, aliquam porttitor diam. In mauris nunc, fringilla at auctor in, sodales eu diam. In convallis gravida urna, ut gravida massa euismod quis.\nProin rutrum tortor at augue eleifend finibus. '},
-                {attributes: {underline: true}, insert: 'Quisque non tincidunt dolor.'},
-                {insert: ' Aenean ullamcorper, diam ac vehicula imperdiet, arcu erat sodales sem, vitae lobortis dolor urna dapibus nisi. Nulla lacus urna, vehicula quis rutrum sit amet, '},
-                {attributes: {link: 'http://localhost'}, insert: 'porttitor eget ligula'},
-                {insert: '. Nam eget ante ornare, egestas nulla dapibus, tempus nisi. Sed vel odio augue. Fusce vulputate, risus sit amet venenatis tristique, ex ex pulvinar orci, vitae lobortis massa enim ac ante. Nulla sodales mauris ligula, a tempus felis vulputate ut. Sed scelerisque dolor at leo hendrerit vehicula.\n'},
-            ],
+export default {
+    data() {
+        return{
+            board_code:'news'
+            ,subject:''
+            ,cont:''
+            ,id:'admin'
+            ,form:''
         }
+    }
+    ,methods:{
+        fnList(){
+            this.$router.push({path:'./list',query:this.body});
 
-        const quillOptions = {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{list: 'ordered'}, {list: 'bullet'}],
-                    [{indent: '-1'}, {indent: '+1'}],
-                    [{size: ['small', false, 'large', 'huge']}],
-                    [{header: [1, 2, 3, 4, 5, 6, false]}],
-                    [{color: []}, {background: []}],
-                    [{font: []}],
-                    [{align: []}],
-                    // ['clean'],
-                    ['link', 'image', 'video'],
-
-                ],
-            },
         }
+        ,fnAddProc() {
+            if(!this.subject) {
+                alert("제목을 입력해 주세요");
+                this.$refs.subject.focus();
+                return;
+            }
 
-        return {
-            content,
-            quillOptions,
+            this.form = {
+                board_code:this.board_code
+                ,subject:this.subject
+                ,cont:this.cont
+                ,id:this.id
+            }
+
+            this.$axios.post('http://localhost:3000/api/board',this.form)
+                .then((res)=>{
+                    if(res.data.success) {
+                        alert('등록되었습니다.');
+                        this.fnList();
+                    } else {
+                        alert("실행중 실패했습니다.\n다시 이용해 주세요");
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+
         }
-    },
-})
+    }
+}
 </script>
-
-<style>
-.submit{
-    padding-top: 20px;
-}
-.quill-editor-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.quill-editor-content {
-    flex: 1;
-}
-
-.quill-editor-toolbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+<style scoped>
+.h1, h1 {font-size: 2rem; text-align: center;}
+.tbAdd {border-top:1px solid #888; width: 100%;}
+.tbAdd th, .tbAdd td {border-bottom:1px solid #eee; padding:5px 0;}
+.tbAdd td {padding:10px 10px; box-sizing:border-box;}
+.tbAdd td input {width:100%; min-height:30px; box-sizing:border-box; padding:0 10px;}
+.tbAdd td textarea {width:100%; min-height:300px; padding:10px; box-sizing:border-box;}
+.btnWrap {text-align:center; margin:20px 0 0 0;}
+.btnWrap a {margin:0 10px;}
+.btn {background: lightgray; color: #000;}
+.btnWrap .btn {margin: 0 5px;}
 </style>
