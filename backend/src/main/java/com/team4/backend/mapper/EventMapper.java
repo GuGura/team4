@@ -9,12 +9,12 @@ import java.util.List;
 public interface EventMapper {
 
 
-    @Insert("insert into event(estart, end, title, allDay) values(#{start},#{end},#{title},#{allDay})")
+    @Insert("insert into event(estart, end, title) values(#{start},#{end},#{title})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void saveEvent(EventDTO event);
 
 
-    @Select("SELECT id, estart, end, title, allDay FROM event WHERE month(estart) = #{year} OR month(end) = #{year}")
+    @Select("SELECT id, estart, end, title FROM event WHERE month(estart) = #{year} OR month(end) = #{year}")
     @Results({
             @Result(column = "id", property = "id"),
             @Result(column = "estart", property = "start"),
