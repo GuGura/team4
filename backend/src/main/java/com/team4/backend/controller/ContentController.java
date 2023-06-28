@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -32,12 +33,14 @@ public class ContentController {
     //글 불러오기(페이징)
     @ResponseBody
     @PostMapping("/content/listByPage")
-    public List<ContentDTO> listContent(int pageNum, HttpServletRequest request){
+    public List<ContentDTO> listContent(@RequestBody Map<String,String> params, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        int pageNum=Integer.parseInt(params.get("lastPosting"));
 
         if(pageNum==0){
             pageNum = 100000000;
         }
+        System.out.println(pageNum);
         return contentService.listContent(pageNum, memberUID);
     }
 
