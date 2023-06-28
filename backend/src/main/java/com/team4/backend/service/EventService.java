@@ -14,14 +14,16 @@ public class EventService {
     private final EventMapper eventMapper;
 
 
-    public List<EventDTO> listMonthly(int year) {
-        return eventMapper.listMonthly(year);
+    public List<EventDTO> listMonthly(int year, int memberId) {
+        return eventMapper.listMonthly(year, memberId);
     }
 
-    public Long saveEvent(EventDTO event) {
-        System.out.println(event.getStart());
+    public int saveEvent(EventDTO event) {
         eventMapper.saveEvent(event);
-        Long id = event.getId();
-        return id;
+        return eventMapper.selectLast();
+    }
+
+    public void deleteEvent(int id) {
+        eventMapper.deleteEvent(id);
     }
 }
