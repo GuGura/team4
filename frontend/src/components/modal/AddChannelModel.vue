@@ -22,7 +22,7 @@ let channelCode = reactive({
 
 async function createServer() {
   if (createChannel.serverName !== '') {
-    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/add", createChannel)
+    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/create", createChannel)
         .then(({data}) => {
           console.log(data)
           const result = data.result[0].channel_UID
@@ -41,10 +41,23 @@ async function createServer() {
 async function attendChannel() {
   if (channelCode.channelCode === '') {
     channelCode.result = '- 유효한 초대 코드를 입력해 주세요'
-  }else{
-    channelCode.result = '*'
+    return
   }
+  channelCode.result = '*'
+  console.log("channelCode.channelCode: "+channelCode.channelCode)
+  await api.get(process.env.VUE_APP_BASEURL_V1 + `/channel/attend/${channelCode.channelCode}`)
+      .then(({data}) => {
+        console.log(data)
+        serverListStore.updateBtn(data)
+        exitModal();
+        localStorage.setItem('selectChannel', data.channel_title)
+        router.push(`/channel/${data.channel_UID}`)
+        router.go(1);
+      }).catch((err)=>{
+        channelCode.result = (err.response.status === 404)? '- '+err.response.data : '에러발생'
+      })
 }
+
 
 function exitModal() {
   modalStore.terminate('addServer')
@@ -397,12 +410,15 @@ function redirectPublic() {
   align-items: center;
   gap: 10px;
 }
-#redirectPublicBtn:hover{
+
+#redirectPublicBtn:hover {
   background-color: #EBEBED;
 }
-#redirectPublicBtn:active{
+
+#redirectPublicBtn:active {
   background-color: #E6E6E8;
 }
+
 #footer2 {
   display: flex;
   bottom: 0;

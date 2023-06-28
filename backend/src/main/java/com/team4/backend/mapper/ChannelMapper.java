@@ -38,6 +38,12 @@ public interface ChannelMapper {
             " from channelmember m left join channel c on m.CHANNEL_UID = c.CHANNEL_UID " +
             " where m.MEMBER_UID = #{memberUID} order by CHANNEL_UID desc limit 1")
     MyChannelsDTO findLastChannelByMemberUID(int memberUID);
+
+    @Select("SELECT * FROM channel WHERE CHANNEL_INVITE_CODE = #{inviteCode}")
+    Optional<Channel> findChannelByInviteCode(String inviteCode);
+
+    @Select("SELECT * FROM channelmember WHERE MEMBER_UID = #{memberUID} and CHANNEL_UID = #{channelUID}")
+    Optional<ChannelMember> findChannelMemberByMemberUID(int memberUID,int channelUID);
 }
 //select m.CHANNEL_UID, m.MEMBER_UID, c.CHANNEL_TITLE, c.CHANNEL_ICON_URL
 //from channelmember m
