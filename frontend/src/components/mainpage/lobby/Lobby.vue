@@ -1,8 +1,10 @@
 <script setup>
 
-import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
+// import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {onMounted} from "vue";
+// import PostList from "@/components/mainpage/lobby/PostList.vue";
+import Tab from "@/components/mainpage/lobby/Tab.vue";
 
 const lobbyStore = useLobbyStore();
 
@@ -24,21 +26,13 @@ onMounted(()=>{
                 <div id="userName" style="z-index: 3;">
                     <div class="col-md-7 order-md-2">
                         <h2 class="featurette-heading fw-normal lh-1">{{lobbyStore.user.username}} </h2>
-                        <div class="lead"> {{lobbyStore.user.user_description}}
-                        </div>
+                        <div class="lead"> {{lobbyStore.user.user_description}}</div>
                     </div>
                 </div>
             </div>
-            <!--            <div id="description">-->
-            <!--                <div id="user_description" style="z-index: 1;">안녕하세요 저는...</div>-->
-            <!--            </div>-->
             <div id="main_content_body">
                 <div id="main_content1">
-                    <div class="accordion" id="accordionExample">
-                        <Accordion/>
-
-
-                    </div>
+                    <Tab/>
                 </div>
                 <div id="main_content2"></div>
             </div>
@@ -87,10 +81,10 @@ onMounted(()=>{
 /**  contents */
 #contents {
     display: flex;
-    flex: 0;
-    background: #1E1F22;
-    padding-left: 74px;
-    width: 100%; /* Adjust to occupy full width */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 form[name=list]{
@@ -127,16 +121,19 @@ form[name=list]{
 
 #main_contents {
     display: flex;
-    flex: 1;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
 }
 
-#main_content_header{
+#main_content_header {
     display: flex;
-    height: 35%;
     align-items: flex-end;
-    padding: 0 70px;
-    gap: 35px;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 #icon_URL{
     display: flex;
@@ -172,21 +169,19 @@ form[name=list]{
 #main_content_body{
     display: flex;
     flex:1;
-    padding: 0 0 0 30px;
     gap: 10px;
 }
 #main_content1 {
-    margin-top: 15px;
     background: #36393F;
-    width:73%;
-    height: 700px; /* 스크롤 영역의 높이를 지정 */
-    overflow: auto; /* 스크롤이 가능하도록 설정 */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 }
-#main_content2{
+#main_content2 {
     display: flex;
     background: #36393F;
-    width: 25%;
-    height: 60%; /* 임시로 */
+    width: 30%;
+    height: 40vh;
 }
 
 section .box p {margin: 0; color: white; padding: 200px 20px;}

@@ -4,7 +4,9 @@
             <QuillEditor v-model="content" :options="quillOptions"/>
         </div>
         <div id="custom-toolbar" className="quill-editor-toolbar">
-            <!-- Your toolbar content here -->
+            <div class="submit">
+                <button @click="uploadText()">제출</button>
+            </div>
         </div>
     </div>
 </template>
@@ -63,10 +65,13 @@ export default defineComponent({
 </script>
 
 <style>
+.submit{
+    padding-top: 20px;
+}
 .quill-editor-container {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 100%;
 }
 
 .quill-editor-content {
