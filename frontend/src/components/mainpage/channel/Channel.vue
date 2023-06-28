@@ -15,11 +15,6 @@ const updateUsername = computed(()=>{
 })
 
 export default defineComponent({
-  watch: {
-    '$route'() {
-      this.created();
-    }
-  },
   components: {ChatBox},
   data() {
     return {
@@ -52,6 +47,9 @@ export default defineComponent({
     };
   },
   methods: {
+    handleButtonClick() {
+      this.created(); // 버튼 클릭 시 created() 메서드 호출
+    },
     created() {
       this.roomId = localStorage.getItem('wschat.roomId');
       this.channelId = localStorage.getItem('wschat.channelId')
@@ -65,23 +63,26 @@ export default defineComponent({
       this.connect(); // 새로운 웹소켓 연결 수행
     },
     connect() {
-      const serverURL = process.env.VUE_APP_BASEURL_V1;
+      const serverURL = "http://localhost:8090/api/v1/";
+      const token = authHeader().accessJwt; // 토큰 가져오기
+
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      const headers = { Authorization: `Bearer ${token}` }; // 헤더 설정
+
       let socket = new SockJS(serverURL);
-      console.log("1")
       this.ws = Stomp.over(socket);
+
       console.log('serverURL : ' + serverURL);
-
+      console.log('headers token' + socket);
       this.findRoomMessage();
-      console.log("2")
-
-      const headers = {
-        accessJwt: authHeader()
-      };
 
       this.ws.connect(
           headers,
           frame => {
-            console.log("3")
             this.connected = true;
             console.log('소켓 연결 성공', frame);
             this.ws.subscribe("/sub/chat/room/" + this.roomId, message => {
@@ -157,12 +158,9 @@ export default defineComponent({
       }
     },
     findRoomMessage() {
-      console.log('5')
-      api.get(process.env.VUE_APP_BASEURL_V1+`/chat/room/enter/${this.roomId}`).then(response => {
+      api.get(`http://localhost:8090/enter/${this.roomId}`).then(response => {
         console.log(response.data);
-        console.log(6)
         this.chatMessages = response.data;
-        console.log('7')
       });
     },
   },
@@ -205,6 +203,7 @@ export default defineComponent({
           <form style="width: 100%;" @submit.prevent>
             <input type="text" name="message" placeholder="메세지 보내기"
                    v-model="inputMessage" @keyup.enter="sendMessage">
+            <button @click="handleButtonClick">Connect</button>
           </form>
         </div>
       </div>
