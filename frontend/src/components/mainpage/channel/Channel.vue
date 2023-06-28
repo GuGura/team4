@@ -65,9 +65,8 @@ export default defineComponent({
       this.connect(); // 새로운 웹소켓 연결 수행
     },
     connect() {
-      const serverURL = process.env.VUE_APP_BASEURL_V1;
+      const serverURL = process.env.VUE_APP_BASEURL+'/ws';
       let socket = new SockJS(serverURL);
-      console.log("1")
       this.ws = Stomp.over(socket);
       console.log('serverURL : ' + serverURL);
 

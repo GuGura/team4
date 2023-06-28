@@ -40,7 +40,8 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring().mvcMatchers(
-                "/api/v1/join/**"
+                "/api/v1/join/**",
+                "/ws/**"
         );
     }
 

@@ -23,14 +23,15 @@ public class ChatRoomController {
 
     @GetMapping("/room")
     public String rooms(Model model) {
+        System.out.println("get rooms");
         return "/api/v1/chat/room";
     }
 
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> room() {
-        return chatRoomRepository.findAllRoom();
-    }
+//    @GetMapping("/rooms")
+//    @ResponseBody
+//    public List<ChatRoom> room() {
+//        return chatRoomRepository.findAllRoom();
+//    }
 
     @PostMapping("/room")
     @ResponseBody

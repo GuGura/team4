@@ -58,6 +58,7 @@ router.beforeEach(async (to, from, next) => {
     } else{
         next();
     }
+    console.log("beforeEach")
 })
 
 export default router;
