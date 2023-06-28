@@ -170,6 +170,8 @@ form[name=list]{
     display: flex;
     flex:1;
     gap: 10px;
+    width: 100%;
+    height: 100%;
 }
 #main_content1 {
     background: #36393F;
