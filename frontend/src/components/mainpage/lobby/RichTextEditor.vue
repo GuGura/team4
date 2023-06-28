@@ -1,3 +1,64 @@
+<script setup>
+
+import {useLobbyStore} from "../../../../script/stores/lobby";
+import {reactive} from "vue";
+import api from "../../../../script/token/axios";
+import router from "../../../../script/routes/router";
+
+const lobbyStore = useLobbyStore();
+
+
+let contentsForm = reactive({
+    username: lobbyStore.user.username,
+    writtenDate: new Date(),
+    title: "",
+    context: '',
+    contentUID: '',
+    contentIMG: '',
+    isImgIn : false
+})
+
+function fnAddProc() {
+    if(!contentsForm.title) {
+        alert("제목을 입력해 주세요");
+        return;
+    }
+    if(!contentsForm.context) {
+        alert("내용을 입력해 주세요");
+        return;
+    }
+    contentsForm.writtenDate = new Date()
+    if(!contentsForm.contentIMG) {
+        contentsForm.isImgIn = false
+    }else {
+        contentsForm.isImgIn = true
+    }
+    api.post(process.env.VUE_APP_BASEURL_V1 + "/content/saveContent",contentsForm
+    ).then(()=>{
+        router.go(0)
+    })
+
+}
+
+function imgChange(e){
+    const img = e.target.files[0];
+    const fileData = (data) => {
+        contentsForm.contentIMG = data
+        document.getElementById("icon").setAttribute('src',data)
+    }
+    if (img instanceof Blob) {
+        const reader = new FileReader()
+        reader.readAsDataURL(img)
+        reader.addEventListener("load", function () {
+            fileData(reader.result)
+        }, false);
+
+    }
+
+}
+
+
+</script>
 <template>
     <div>
         <h1>게시글 작성</h1>
@@ -11,76 +72,29 @@
                     </colgroup>
                     <tr>
                         <th>제목</th>
-                        <td><input type="text" v-model="subject" ref="subject" /></td>
+                        <td><input type="text" v-model="contentsForm.title" ref="subject" /></td>
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td><textarea v-model="cont" ref="cont"></textarea></td>
+                        <td><textarea v-model="contentsForm.context" ref="cont"></textarea></td>
                     </tr>
 
                 </table>
             </form>
         </div>
         <div>
-        <button @click="uploadProfile()">제출</button>
+            <input ref="image" class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif" @change="imgChange" multiple="multiple"/>
     </div>
     </div>
     <div>
-        <img alt="image" id="icon">
+        <img alt="image" id="icon" :src="contentsForm.contentIMG">
     </div>
         <div class="btnWrap">
-            <div href="javascript:;" @click="fnList" class="btn">목록</div>
             <div href="javascript:;" @click="fnAddProc" class="btnAdd btn">등록</div>
         </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return{
-            board_code:'news'
-            ,subject:''
-            ,cont:''
-            ,id:'admin'
-            ,form:''
-        }
-    }
-    ,methods:{
-        fnList(){
-            this.$router.push({path:'./list',query:this.body});
 
-        }
-        ,fnAddProc() {
-            if(!this.subject) {
-                alert("제목을 입력해 주세요");
-                this.$refs.subject.focus();
-                return;
-            }
-
-            this.form = {
-                board_code:this.board_code
-                ,subject:this.subject
-                ,cont:this.cont
-                ,id:this.id
-            }
-
-            this.$axios.post('http://localhost:3000/api/board',this.form)
-                .then((res)=>{
-                    if(res.data.success) {
-                        alert('등록되었습니다.');
-                        this.fnList();
-                    } else {
-                        alert("실행중 실패했습니다.\n다시 이용해 주세요");
-                    }
-                })
-                .catch((err)=>{
-                    console.log(err);
-                })
-
-        }
-    }
-}
-</script>
 <style scoped>
 .h1, h1 {font-size: 2rem; text-align: center;}
 .tbAdd {border-top:1px solid #888; width: 100%;}

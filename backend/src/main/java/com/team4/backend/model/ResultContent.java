@@ -1,4 +1,4 @@
-package com.team4.backend.model.dto;
+package com.team4.backend.model;
 
 import lombok.*;
 
@@ -9,14 +9,14 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContentDTO {
+public class ResultContent {
+    private String username;
     private Long id;
     private int writer_id;
     private String title;
     private String content;
-    private Date uploadDate;
+    private String uploadDate;
     private boolean visible;
-    private String contentIMG;
+    private byte[] contentIMG;
     private boolean isImgIn;
-
 }

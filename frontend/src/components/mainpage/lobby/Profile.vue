@@ -20,6 +20,8 @@ let profileForm = reactive({
 
 
 
+
+
 function imgChange(e){
     const img = e.target.files[0];
     const fileData = (data) => {
@@ -34,7 +36,6 @@ function imgChange(e){
         }, false);
 
     }
-
 }
 
 function uploadProfile() {
@@ -43,9 +44,6 @@ function uploadProfile() {
     ).then(()=>{
         router.go(0)
     })
-
-
-
 }
 
 

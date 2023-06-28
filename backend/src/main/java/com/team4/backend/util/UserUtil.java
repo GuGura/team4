@@ -53,4 +53,6 @@ public class UserUtil {
         resultMember.setUser_description(member.getUser_description());
         return resultMember;
     }
+
+
 }
