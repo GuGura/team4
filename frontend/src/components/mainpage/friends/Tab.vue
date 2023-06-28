@@ -59,8 +59,10 @@ export default {
         changeTab(index) {
             if (index === 1) {
                 this.callCalendarLoad();
+                alert("1")
             }else if(index === 0) {
                 this.callProfileLoad();
+                alert("2")
             }
             this.activeTab = index;
         },
