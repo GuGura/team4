@@ -56,3 +56,20 @@ create table channelmember
     CHANNEL_MEMBER_AUTHORITY varchar(100) default 'ROLE_USER' null,
     CHANNEL_MEMBER_JOINDATE  timestamp    default sysdate()   not null
 );
+
+create table chat_messages
+(
+    room_id   varchar(50) null,
+    sender    varchar(50) null,
+    message   varchar(50) null,
+    send_date datetime    null,
+    constraint room_id_sender_message_send_date
+        unique (room_id, sender, message, send_date)
+);
+
+create table chat_room
+(
+    room_id varchar(255) not null
+        primary key,
+    name    varchar(255) null
+);
