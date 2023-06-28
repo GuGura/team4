@@ -1,21 +1,35 @@
 <script setup>
-import { ref, onMounted, onNextTick } from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
-import { useChannelStore } from "../../../../script/stores/channel";
-import api from "axios";
+import {useChannelStore} from "../../../../script/stores/channel";
+import {useLobbyStore} from "../../../../script/stores/lobby";
+import api from "/script/token/axios.js";
+import router from "../../../../script/routes/router";
+import {useServerListStore} from "../../../../script/stores/serverlist";
 
 const channelStore = useChannelStore();
+const lobbyStore = useLobbyStore();
+const serverListStore = useServerListStore();
 
 const room_name = ref(''); // ChatRoom Name
 const textChatrooms = ref([]); // Text Chat Room List
 const voiceChatrooms = ref([]); // Voice Chat Room List
 const room_type = ref(false); // Text and Voice Type
 
+const updateUsername = computed(()=>{
+  return lobbyStore.user.username
+})
+const updateChannelId = computed(() => {
+  return serverListStore.getEndPoint;
+});
+
 const findAllRoom = () => {
-  api.get('/chat/rooms').then(response => {
+  api.get(process.env.VUE_APP_BASEURL_V1+ '/chat/rooms').then(response => {
     console.log(response.data);
     textChatrooms.value = response.data.filter(item => item.roomType === false);
     voiceChatrooms.value = response.data.filter(item => item.roomType === true);
+  }).catch(error => {
+    console.log(error);
   });
 };
 
@@ -27,7 +41,7 @@ const createRoom = () => {
     var params = new URLSearchParams();
     params.append("name", room_name.value);
     params.append("room_type", room_type.value);
-    api.post('/chat/room', params)
+    api.post(process.env.VUE_APP_BASEURL_V1+ '/chat/room', params)
         .then(
             response => {
               alert(response.data.name + "방 개설에 성공하였습니다.")
@@ -42,16 +56,18 @@ const createRoom = () => {
 };
 
 const enterRoom = (roomId) => {
-  var sender =
+  console.log("Start EnterRoom in ChannelSideBar.vue")
+  var sender = updateUsername.value
+  var channelId = updateChannelId.value
   localStorage.setItem('wschat.roomId', roomId);
-  window.location.href = '/channel/:channel_title';
+  localStorage.setItem('wschat.channelId', channelId);
 
-  onNextTick(() => {
-    window.location.href = (`/channel/:channel_title/chat/room/enter/${roomId}`);
-  });
+  console.log("ChannelSideBar.vue sender : " + sender);
+  console.log("ChannelSideBar.vue roomId : " + roomId);
+  console.log("ChannelSideBar.vue channelId : " + channelId);
 
-  console.log("RoomList.vue sender : " + sender);
-  console.log("RoomList.vue roomId : " + roomId);
+  router.push(`/channel/${channelId}/chat/room/enter/${roomId}`);
+
 };
 
 onMounted(() => {

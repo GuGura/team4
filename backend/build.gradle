@@ -16,8 +16,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    //Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // https://mvnrepository.com/artifact/com.auth0/java-jwt
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
     //Mail
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -39,8 +42,6 @@ dependencies {
     implementation('org.projectlombok:lombok')
     annotationProcessor 'org.projectlombok:lombok'
 
-    // https://mvnrepository.com/artifact/com.auth0/java-jwt
-    implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
 
 
 ///////////////////////////////////////////////////////////////이거 밑으로는 세트임

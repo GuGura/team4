@@ -14,22 +14,23 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/chat")
+@RequestMapping("/api/v1/chat")
 public class ChatRoomController {
+
     @Autowired
     private RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
     private final ChatRoomRepository chatRoomRepository;
 
     @GetMapping("/room")
     public String rooms(Model model) {
-        return "/chat/room";
+        return "/api/v1/chat/room";
     }
 
-        @GetMapping("/rooms")
-        @ResponseBody
-        public List<ChatRoom> room() {
-            return chatRoomRepository.findAllRoom();
-        }
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoom> room() {
+        return chatRoomRepository.findAllRoom();
+    }
 
     @PostMapping("/room")
     @ResponseBody
@@ -42,7 +43,7 @@ public class ChatRoomController {
         List<ChatMessage> chatMessages = redisToMariaDBMigrationMapper.getChatMessagesFromDB(roomId);
         model.addAttribute("roomId", roomId);
         model.addAttribute("chatMessages", chatMessages);
-        return "/chat/roomdetail";
+        return "/api/v1/chat/roomdetail";
     }
 
     @GetMapping("/room/{roomId}")

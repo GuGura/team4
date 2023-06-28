@@ -1,11 +1,12 @@
 <script>
-import axios from "axios";
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
 
 import {computed, defineComponent, reactive} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
+import authHeader from "../../../../script/token/authHeader";
+import api from "/script/token/axios.js";
 
 const lobbyStore = useLobbyStore();
 
@@ -53,24 +54,34 @@ export default defineComponent({
   methods: {
     created() {
       this.roomId = localStorage.getItem('wschat.roomId');
+      this.channelId = localStorage.getItem('wschat.channelId')
       this.sender = updateUsername
       console.log("Channel.vue sender : " + this.sender);
       console.log("Channel.vue roomId : " + this.roomId);
+      console.log("Channel.vue channelId : " + this.channelId);
 
       this.disconnect(); // 이전 웹소켓 연결 끊기
       this.messageList.messages = []; // messageList 초기화
       this.connect(); // 새로운 웹소켓 연결 수행
     },
     connect() {
-      const serverURL = "http://localhost:8080";
+      const serverURL = process.env.VUE_APP_BASEURL_V1;
       let socket = new SockJS(serverURL);
+      console.log("1")
       this.ws = Stomp.over(socket);
       console.log('serverURL : ' + serverURL);
 
       this.findRoomMessage();
+      console.log("2")
+
+      const headers = {
+        accessJwt: authHeader()
+      };
+
       this.ws.connect(
-          {},
+          headers,
           frame => {
+            console.log("3")
             this.connected = true;
             console.log('소켓 연결 성공', frame);
             this.ws.subscribe("/sub/chat/room/" + this.roomId, message => {
@@ -146,9 +157,12 @@ export default defineComponent({
       }
     },
     findRoomMessage() {
-      axios.get(`http://localhost:8080/enter/${this.roomId}`).then(response => {
+      console.log('5')
+      api.get(process.env.VUE_APP_BASEURL_V1+`/chat/room/enter/${this.roomId}`).then(response => {
         console.log(response.data);
+        console.log(6)
         this.chatMessages = response.data;
+        console.log('7')
       });
     },
   },
