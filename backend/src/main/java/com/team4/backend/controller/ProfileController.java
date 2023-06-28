@@ -43,7 +43,8 @@ public class ProfileController {
        String fileName = base64.substring(30,50)+".png";
 
        String uploadFolder = "C:\\upload\\images\\users\\"+UserUtil.getEmail().substring(0,UserUtil.getEmail().lastIndexOf("@"))+"\\icons\\";
-
+       File folder = new File(uploadFolder);
+       folder.mkdirs();
        File outputfile = new File(uploadFolder+fileName);
        ImageIO.write(image, "png", outputfile);
        //저장완료

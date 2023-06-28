@@ -17,8 +17,7 @@ public class ContentService {
         return contentMapper.listContent(pageNum, memberUID);
     }
 
-    public void saveContent(String content) {
-        System.out.println(content);
+    public void saveContent(ContentDTO content) {
         contentMapper.saveContent(content);
     }
 

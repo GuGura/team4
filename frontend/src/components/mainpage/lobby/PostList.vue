@@ -1,33 +1,41 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import Post from "@/components/mainpage/lobby/Post.vue";
 import api from "../../../../script/token/axios";
 
 function initPosts() {
-    alert(lastPosting)
     api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPage", {
         lastPosting : lastPosting
-    }).then(() => {
-        postList.posts += {
-            username: "원식킴2",
-            userIcon: '',
-            writtenDate: "2023.05.21 오후 10:41",
-            title: "안녕하세요2",
-            context: '',
-            contentUID: ''
+    }).then(({data}) => {
+        postList.posts = data;
+        lastPosting=postList.posts.at(-1).id
+        })
+}
+function morePost(){
+    api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPage", {
+        lastPosting : lastPosting
+    }).then(({data}) => {
+        for(const item of data){
+            postList.posts.push(item)
         }
+        lastPosting=postList.posts.at(-1).id
     })
 }
+
+onMounted(() => {
+    initPosts()
+})
 
 let postList = reactive({
     posts: [
         {
-            username: "원식킴",
+            username: '',
             userIcon: '',
-            writtenDate: "2023.05.21 오후 10:41",
-            title: "안녕하세요",
-            context: '',
-            contentUID: ''
+            uploadDate:'',
+            title: '',
+            content: '',
+            id: '',
+            contentIMG: ''
         }
 
     ]
@@ -44,7 +52,7 @@ let lastPosting = 0
             <post :post="post"/>
         </div>
         <div class="row my-2 mx-auto">
-            <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="initPosts">더 보기 ({{pagingInfo}})</button>
+            <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost">더 보기 ({{pagingInfo}})</button>
         </div>
     </div>
 </template>
