@@ -22,7 +22,7 @@ let channelCode = reactive({
 
 async function createServer() {
   if (createChannel.serverName !== '') {
-    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/create", createChannel)
+    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/create",createChannel)
         .then(({data}) => {
           console.log(data)
           const result = data.result[0].channel_UID

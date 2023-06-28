@@ -43,14 +43,16 @@ create table channel
     CHANNEL_OWNER       int                            null,
     CHANNEL_INVITE_CODE varchar(100)                   null,
     CHANNEL_IS_OPEN     tinyint(1)   default 0         null,
-    CHANNEL_CREATEDATE  date         default sysdate() not null,
+    CHANNEL_CREATEDATE  timestamp    default sysdate() not null,
     CHANNEL_TYPE        varchar(100) default 'NORMAL'  not null
 );
+
+
 
 create table channelmember
 (
     CHANNEL_UID              int                              null,
     MEMBER_UID               int                              null,
     CHANNEL_MEMBER_AUTHORITY varchar(100) default 'ROLE_USER' null,
-    CHANNEL_MEMBER_JOINDATE  date         default sysdate()   null
+    CHANNEL_MEMBER_JOINDATE  timestamp    default sysdate()   not null
 );
