@@ -1,6 +1,6 @@
 <script setup>
 
-// import Accordion from "@/components/mainpage/lobby/Arccodion.vue";
+
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {onMounted} from "vue";
 // import PostList from "@/components/mainpage/lobby/PostList.vue";
