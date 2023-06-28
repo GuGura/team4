@@ -19,6 +19,35 @@ export default defineComponent({
         return {
             calendarOptions: {
                 customButtons: {
+                    today: { // this overrides the prev button
+                        text: "TODAY",
+                        click: () => {
+                            const isTest=loginService.methodTokenCheck()
+                            if(isTest){
+                                this.getApi().today()
+                                this.getApi().removeAllEvents();
+                                console.log(this.getApi().getDate()+": 프리브")
+                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
+                                    date: this.getApi().getDate()
+                                }).then(({data})=>{
+                                    for(const i in data){
+                                        this.getApi().addEvent({
+                                            id: data[i].id,
+                                            title: data[i].title,
+                                            start: data[i].start,
+                                            end: data[i].end,
+                                            allDay: true
+                                        })
+                                    }
+                                })
+
+                            }else {
+                                router.push("/login").then()
+                            }
+
+
+                        }
+                    },
                     prev: { // this overrides the prev button
                         text: "PREV",
                         click: () => {
@@ -36,7 +65,7 @@ export default defineComponent({
                                             title: data[i].title,
                                             start: data[i].start,
                                             end: data[i].end,
-                                            allDay: data[i].allDay
+                                            allDay: true
                                         })
                                     }
                                 })
@@ -65,7 +94,7 @@ export default defineComponent({
                                             title: data[i].title,
                                             start: data[i].start,
                                             end: data[i].end,
-                                            allDay: data[i].allDay
+                                            allDay: true
                                         })
                                     }
                                 })
@@ -120,7 +149,7 @@ export default defineComponent({
                             title: data[i].title,
                             start: data[i].start,
                             end: data[i].end,
-                            allDay: data[i].allDay
+                            allDay: true
                         })
                     }
                 })
@@ -133,7 +162,7 @@ export default defineComponent({
             this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
         },
         handleDateSelect(selectInfo) {
-            let title = prompt('Please enter a new title for your event')
+            let title = prompt('추가할 일정명을 입력해주세요.')
             let calendarApi = selectInfo.view.calendar
 
             calendarApi.unselect() // clear date selection
@@ -160,7 +189,7 @@ export default defineComponent({
             }
         },
         handleEventClick(clickInfo) {
-            if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+            if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
             }
         },
