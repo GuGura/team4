@@ -1,8 +1,37 @@
 <script>
 export default {
   name:'ChatBox',
+  data() {
+    return {
+      roomId: '',
+      sender: '',
+    }
+  },
   props:{
-    message : Object
+    messages : Object
+  },
+  created() {
+    this.formattedDate();
+  },
+  methods: {
+    formattedDate() {
+      let date;
+      if (typeof this.messages.sendDate === 'number') {
+        date = new Date(this.messages.sendDate);
+      } else {
+        date = new Date(this.messages.sendDate);
+      }
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      console.log(formattedDate);
+      return formattedDate;
+    }
   }
 }
 </script>
@@ -14,10 +43,10 @@ export default {
     </div>
     <div class="UserMessage">
       <div>
-        <div>{{ message.user }}</div>
-        <div>{{message.sendDate}}</div>
+        <div>{{ messages.sender }}</div>
+        <div>{{ formattedDate() }}</div>
       </div>
-      <div>{{message.message}}</div>
+      <div>{{ messages.message }}</div>
     </div>
 
 </template>

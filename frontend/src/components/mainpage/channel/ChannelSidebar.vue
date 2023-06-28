@@ -1,8 +1,78 @@
 <script setup>
+import {computed, onMounted, ref} from 'vue';
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
 import {useChannelStore} from "../../../../script/stores/channel";
+import {useLobbyStore} from "../../../../script/stores/lobby";
+import api from "/script/token/axios.js";
+import router from "../../../../script/routes/router";
+import {useServerListStore} from "../../../../script/stores/serverlist";
 
 const channelStore = useChannelStore();
+const lobbyStore = useLobbyStore();
+const serverListStore = useServerListStore();
+
+const room_name = ref(''); // ChatRoom Name
+const textChatrooms = ref([]); // Text Chat Room List
+const voiceChatrooms = ref([]); // Voice Chat Room List
+const room_type = ref(false); // Text and Voice Type
+
+const updateUsername = computed(()=>{
+  return lobbyStore.user.username
+})
+const updateChannelId = computed(() => {
+  return serverListStore.getEndPoint;
+});
+
+const findAllRoom = () => {
+  api.get(process.env.VUE_APP_BASEURL_V1+ '/chat/rooms').then(response => {
+    console.log(response.data);
+    textChatrooms.value = response.data.filter(item => item.roomType === false);
+    voiceChatrooms.value = response.data.filter(item => item.roomType === true);
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
+const createRoom = () => {
+  if ("" === room_name.value) {
+    alert("방 제목을 입력해 주십시요.");
+    return;
+  } else {
+    var params = new URLSearchParams();
+    params.append("name", room_name.value);
+    params.append("room_type", room_type.value);
+    api.post(process.env.VUE_APP_BASEURL_V1+ '/chat/room', params)
+        .then(
+            response => {
+              alert(response.data.name + "방 개설에 성공하였습니다.")
+              room_name.value = '';
+              findAllRoom();
+            }
+        )
+        .catch(() => {
+          alert("채팅방 개설에 실패하였습니다.");
+        });
+  }
+};
+
+const enterRoom = (roomId) => {
+  console.log("Start EnterRoom in ChannelSideBar.vue")
+  var sender = updateUsername.value
+  var channelId = updateChannelId.value
+  localStorage.setItem('wschat.roomId', roomId);
+  localStorage.setItem('wschat.channelId', channelId);
+
+  console.log("ChannelSideBar.vue sender : " + sender);
+  console.log("ChannelSideBar.vue roomId : " + roomId);
+  console.log("ChannelSideBar.vue channelId : " + channelId);
+
+  router.push(`/channel/${channelId}/chat/room/enter/${roomId}`);
+
+};
+
+onMounted(() => {
+  findAllRoom();
+});
 
 </script>
 
@@ -11,53 +81,46 @@ const channelStore = useChannelStore();
     <div id="chatRooms_Header">{{channelStore.channelInfo.channel_title}}</div>
     <div id="side_content_info">
       <div id="chatRooms">
+
         <div class="chatRoom">
+
           <div class="roomName">
-            <div>room1</div>
-          </div>
-          <div class="btnRooms">
-            <div class="btnRoom">
-              <div>
-                <img src="/img/channel/chat.png">
-              </div>
-              <div class="MyMember_Info">
-                <div class="MyMember_Name">
-                  회의록
-                </div>
-              </div>
-            </div>
+            <div>채팅</div>
           </div>
 
-          <div class="btnRooms">
-            <div class="btnRoom">
+          <ul class="btnRooms">
+            <li class="btnRoom" v-for="item in textChatrooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
               <div>
                 <img src="/img/channel/chat.png">
               </div>
               <div class="MyMember_Info">
                 <div class="MyMember_Name">
-                  메모장
+                  {{ item.name }}
                 </div>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
+
         </div>
 
-        <div class="chatRoom">
+        <div class="voiceRoom">
           <div class="roomName">
-            <div>room2</div>
+            <div>음성 채팅</div>
           </div>
 
-          <div class="btnRooms">
-            <div class="btnRoom">
+          <ul class="btnRooms">
+
+            <li class="btnRoom" v-for="item in voiceChatrooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
               <div>
                 <img src="/img/channel/speak.png">
               </div>
               <div class="MyMember_Info">
                 <div class="MyMember_Name">
-                  음성채팅
+                  {{ item.name }}
                 </div>
               </div>
-            </div>
+            </li>
+
             <div>
               <div class="btnRoomMember">
                 <div>
@@ -69,53 +132,21 @@ const channelStore = useChannelStore();
                   </div>
                 </div>
               </div>
-              <div class="btnRoomMember">
-                <div>
-                  <img src="/img/channel/userIcon.png" >
-                </div>
-                <div class="MyMember_Info">
-                  <div class="MyMember_Name">
-                    박재연
-                  </div>
-                </div>
-              </div>
-              <div class="btnRoomMember">
-                <div>
-                  <img src="/img/channel/userIcon.png" >
-                </div>
-                <div class="MyMember_Info">
-                  <div class="MyMember_Name">
-                    박재연
-                  </div>
-                </div>
-              </div>
+
+            </div>
+          </ul>
+
+          <div class="inputChatRoomName">
+            <div>
+              <label>방제목</label>
+            </div>
+            <input type="text" v-model="room_name" @keyup.enter="createRoom">
+            <div>
+              <input type="checkbox" id="roomType" v-model="room_type">
+              <label for="roomType">음성채팅방으로 설정</label>
             </div>
           </div>
 
-          <div class="btnRooms">
-            <div class="btnRoom">
-              <div>
-                <img src="/img/channel/speak.png">
-              </div>
-              <div class="MyMember_Info">
-                <div class="roomName">
-                  예야
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="btnRoomMember">
-                <div>
-                  <img src="/img/channel/userIcon.png" >
-                </div>
-                <div class="MyMember_Info">
-                  <div class="MyMember_Name">
-                    박재연
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>

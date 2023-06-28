@@ -33,6 +33,15 @@ const routes = [
         name: 'main',
         component: () => import(/*webpackChunkName: "main", webpackPrefetch: true */ "@/Pages/Main.vue"),
         meta: {requiresAuth: true}
+    },
+    {
+        path: '/channel/:channel_title/chat/room/enter/:roomId',
+        name: 'ChannelChat',
+        component: () => import("@/Pages/Main.vue"),
+        meta: {requiresAuth: true}
+    },
+    {
+
     }
 ]
 const router = createRouter({
