@@ -1,11 +1,20 @@
 <script setup>
 import {useModalStore} from "../../../script/stores/modal";
+import {reactive} from "vue";
 
 const modalStore = useModalStore();
+const props = reactive({
+  type:'',
 
+})
+function type(event){
+
+}
 function closeModal() {
   modalStore.terminate('CreateRoom')
 }
+
+
 </script>
 
 <template>
@@ -20,7 +29,8 @@ function closeModal() {
     <form>
       <div id="modalBody">
         <div style="padding: 5px">채널 유형</div>
-        <div class="channelTypeBox">
+
+        <label class="channelTypeBox" >
           <div style="height: 20px;display: flex">
             <img src="/img/channel/chat.png">
           </div>
@@ -32,21 +42,21 @@ function closeModal() {
               style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
             <input type="radio" value="Text" name="type" style="width: 20px;height: 20px;" checked>
           </div>
-        </div>
+        </label>
 
-        <div class="channelTypeBox">
+        <label class="channelTypeBox"  >
           <div style="height: 20px;display: flex">
-            <img src="/img/channel/chat.png">
+            <img src="/img/channel/speak.png">
           </div>
           <div style="display: flex;flex-direction: column;gap: 1px">
-            <div style="color: #DBDEE1;font-size: 18px;font-weight:550;">Text</div>
-            <div style="color:#B5BAC1">메세지,의견,농담을 전송하세요</div>
+            <div style="color:#DBDEE1;font-size: 18px;font-weight:550;">Voice</div>
+            <div style="color:#B5BAC1">음성,영상,화면 공유로 함께 어울리세요</div>
           </div>
           <div
               style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
-            <input type="radio" value="audio" name="type" style="width: 20px;height: 20px;">
+            <input type="radio" value="Voice" name="type" style="width: 20px;height: 20px;">
           </div>
-        </div>
+        </label>
       </div>
     </form>
   </div>
@@ -61,6 +71,7 @@ function closeModal() {
   align-items: center;
   padding: 0 15px;
   gap: 15px;
+  cursor: pointer;
 }
 
 .channelTypeBox:hover {
@@ -94,6 +105,7 @@ function closeModal() {
   height: 16px;
   cursor: pointer;
   filter: opacity(0.5);
+  display: flex;
 }
 
 #exit:hover {
