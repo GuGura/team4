@@ -179,7 +179,6 @@ img {
   min-width: 240px;
   background: #2b2d31;
   border-radius: 10px 0 0 0;
-  z-index: 10;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;

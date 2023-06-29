@@ -1,37 +1,44 @@
 <script setup>
 import {defineProps} from 'vue'
 import {useModalStore} from "../../../../script/stores/modal";
-const props = defineProps( {
-      channel_title: String
+import CreateRoomModal from "@/components/modal/CreateRoomModal.vue";
+
+const props = defineProps({
+  channel_title: String
 });
 const modalStore = useModalStore();
 
+function btnCreateRoom(){
+  modalStore.openClose('RoomToggle')
+  modalStore.open('CreateRoom')
+}
 </script>
 
 <template>
-  <div id="chatRooms_Header" @click="modalStore.openClose('RoomModal')">
+  <div id="chatRooms_Header" @click="modalStore.openClose('RoomToggle')">
     <div style="font-size: 18px;font-weight: bold; color: #fff;">
-      {{ props. channel_title }}
+      {{ props.channel_title }}
     </div>
     <div style="display: flex; height: 25px">
       <img src="/img/sidebar/down.png" style="width: 100%;height: 100%">
     </div>
   </div>
-  <div id="modal" v-if="modalStore.modal.RoomModal ===true">
+  <div id="toggle" v-if="modalStore.modal.RoomToggle ===true">
     <div>초대코드 생성</div>
-    <div>방 생성</div>
+    <div @click="btnCreateRoom()">방 생성</div>
     <div>서버장 넘기기</div> <!-- 오너일때-->
     <div>매니저 위임</div>  <!-- 오너일때-->
     <div>추방</div>       <!-- 오너 or 매니저 일때-->
     <div>서버 나가기</div>   <!-- 유저 or 매니저-->
   </div>
+  <CreateRoomModal v-if="modalStore.modal.CreateRoom === true"/>
 </template>
 
 <style scoped>
-#modal{
+#toggle {
   color: #fff;
   position: absolute;
-  top:53px;
+  top: 53px;
   left: 10px;
 
   gap: 10px;
@@ -43,16 +50,22 @@ const modalStore = useModalStore();
   background-color: #111214;
 }
 
-#modal div{
+#toggle > div {
   color: #B5BAC1;
   cursor: pointer;
   padding: 7px 5px;
   border-radius: 3px;
+  display: flex;
 }
-#modal div:nth-last-child(1){
+
+#toggle div:nth-last-child(1) {
   color: red;
 }
-#modal div:hover{
+#toggle div:nth-of-type(1) {
+  color: #4752C4;
+}
+
+#toggle div:hover {
   background-color: #4752C4;
   color: #fff;
 }
