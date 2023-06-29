@@ -12,7 +12,15 @@ function closeModal() {
   modalStore.terminate('CreateRoom')
 }
 
-
+function createRoom(){
+  if (props.roomName === ''){
+    alert("방이름을 입력해주세요")
+    return
+  }
+  console.log(props.type)
+  console.log(props.roomName)
+ //.. 방생성 로직 작성
+}
 </script>
 
 <template>
@@ -64,19 +72,33 @@ function closeModal() {
           <img src="/img/channel/chat.png" v-if="props.type === 'Text'" >
           <img src="/img/channel/speak.png" v-else-if="props.type === 'Voice'">
         </div>
-        <input v-model="props.roomName" name="roomName" placeholder="새로운 채널">
+        <input v-model="props.roomName" name="roomName" placeholder="새로운 채널(필수입력)">
       </div>
     </div>
 
     <div id="footer">
       <div @click="closeModal">취소</div>
-      <button>채널 만들기</button>
+      <button @click="createRoom">채널 만들기</button>
     </div>
-
   </div>
 </template>
 
 <style scoped>
+#footer > button{
+  width: 100px;
+  outline: none;
+  height: 38px;
+  border: none;
+  color: #fff;
+  background-color: #5865F2;
+  border-radius: 5px;
+}
+#footer > button:hover{
+  background: #4752C4;
+}
+#footer > button:active{
+  background: #3C45A6;
+}
 #footer{
   background-color: #2B2D31;
   width: 100%;
@@ -96,18 +118,12 @@ function closeModal() {
   display: flex;
   font-size: 13px;
   cursor: pointer;
-  border: 1px solid #fff;
   justify-content: center;
   height: 40px;
   align-items: center;
 }
 #footer > div:nth-of-type(1):hover{
   text-decoration: underline;
-}
-
-#footer > button{
-  width: 90px;
-  height: 40px;
 }
 #roomNameBox{
   display: flex;
