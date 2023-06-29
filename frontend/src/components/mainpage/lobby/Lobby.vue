@@ -34,6 +34,7 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import Tab from "@/components/mainpage/lobby/Tab.vue";
 import UserSettingModal from "@/components/modal/UserSettingModal.vue";
 import {useModalStore} from "../../../../script/stores/modal";
+import TodaySchedule from "@/components/mainpage/lobby/TodaySchedule.vue";
 
 const lobbyStore = useLobbyStore();
 const modalStore = useModalStore();

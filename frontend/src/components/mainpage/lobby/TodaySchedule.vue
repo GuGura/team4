@@ -27,8 +27,8 @@ function initEvents() {
 }
 
 onMounted(() => {
+    alert("로드")
     initEvents()
-    console.log(eventList.events)
 })
 
 
