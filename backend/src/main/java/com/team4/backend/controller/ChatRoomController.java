@@ -17,8 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/chat")
 public class ChatRoomController {
 
-    @Autowired
-    private RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
+    private final RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
     private final ChatRoomRepository chatRoomRepository;
 
     @GetMapping("/room")

@@ -22,8 +22,7 @@ public class ChatController {
     private final RedisPublisher redisPublisher;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
-    @Autowired
-    private RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
+    private final RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
 
 
     /**

@@ -60,8 +60,8 @@ export default defineComponent({
       console.log("Channel.vue roomId : " + this.roomId);
       console.log("Channel.vue channelId : " + this.channelId);
 
-      this.disconnect(); // 이전 웹소켓 연결 끊기
       this.messageList.messages = []; // messageList 초기화
+      this.disconnect(); // 이전 웹소켓 연결 끊기
       this.connect(); // 새로운 웹소켓 연결 수행
     },
     connect() {
