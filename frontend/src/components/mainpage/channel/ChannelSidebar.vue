@@ -81,7 +81,15 @@ onMounted(() => {
 
 <template>
   <div id="side_contents">
-    <div id="chatRooms_Header">{{ channelStore.channelInfo.channel_title }}</div>
+    <div id="chatRooms_Header">
+      <div style="font-size: 18px;font-weight: bold; color: #fff;">
+        {{ channelStore.channelInfo.channel_title }}
+      </div>
+      <div style="display: flex; height: 25px">
+        <img src="/img/sidebar/down.png" style="width: 100%;height: 100%">
+      </div>
+    </div>
+
     <div id="side_content_info">
       <div id="chatRooms">
 
@@ -165,19 +173,16 @@ onMounted(() => {
 #chatRooms_Header {
   display: flex;
   min-width: 240px;
-  font-size: 18px;
-  font-weight: bold;
   align-items: center;
-  padding-left: 15px;
-  background: #2B2D31;
+  padding: 0 15px;
   cursor: pointer;
-  color: #fff;
   height: 50px;
   top: 0;
   left: 0;
   position: absolute;
   border-bottom: 1px solid #1F2123;
   border-radius: 10px 0 0 0;
+  justify-content: space-between;
 }
 
 #chatRooms_Header:hover {
