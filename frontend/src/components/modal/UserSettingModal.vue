@@ -6,32 +6,18 @@ import router from "../../../script/routes/router";
 import {useModalStore} from "../../../script/stores/modal";
 
 onMounted(() => {
-
+    lobbyStore.updateMyInfo()
 })
 const modalStore = useModalStore();
 const lobbyStore = useLobbyStore();
 
 let profileForm = reactive({
-    username: getUsername,
-    user_icon_url: getuser_icon_url,
-    user_description: getuser_description
+    username: lobbyStore.user.username,
+    user_icon_url: lobbyStore.user.user_icon_url,
+    user_description: lobbyStore.user.user_description
 })
-function test(){
-    console.log(profileForm.username)
-    console.log(profileForm.user_icon_url)
-    console.log(profileForm.user_description)
-}
-const getUsername = (computed(()=>{
-    return lobbyStore.user.username;
-}))
-const getuser_icon_url = (computed(()=>{
-    return lobbyStore.user.user_icon_url;
-}))
-const getuser_description = (computed(()=>{
-    return lobbyStore.user.user_description;
-}))
-test()
-lobbyStore.updateMyInfo()
+
+
 
 function imgChange(e) {
     const img = e.target.files[0];
@@ -50,7 +36,6 @@ function imgChange(e) {
 }
 
 function uploadProfile() {
-    alert(profileForm.user_description)
     api.post(process.env.VUE_APP_BASEURL_V1 + "/profile/updateProfile", profileForm
     ).then(() => {
         router.go(0)
@@ -58,6 +43,7 @@ function uploadProfile() {
 }
 function exitModal(){
     modalStore.terminate('userSetting')
+    console.log(modalStore.modal.userSetting)
 }
 
 </script>
@@ -68,35 +54,29 @@ function exitModal(){
         <div id="modal">
             <div id="header">
                 <div id="header_sumName">
-                    <div>유저 정보 수정</div>
+                    <div>프로필 수정</div>
                     <img src="/img/serverlist/exit.png" alt="" @click="exitModal">
                 </div>
                 <div id="description">유저 정보 수정 어쩌고</div>
             </div>
             <div id="body">
                 <div id="img_upload">
-                    <div id="Icon" class="IconURL" :style="{backgroundImage: `url(${dataForm.fileURL})`}"
-                         v-if="dataForm.fileURL!=='/img/sidebar/choose.png' "></div>
-                    <div id="Icon" :style="{backgroundImage: `url(${dataForm.fileURL})`}" v-else></div>
+                    <img id="Icon" class="IconURL" :src="profileForm.user_icon_url">
                     <input ref="image" class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif"
                            @change="imgChange"
                            multiple="multiple"/>
                 </div>
                 <div id="ChannelNameInputBox">
-                    <div>유저 이름</div>
+                    <div>Nickname</div>
                     <input type="text" id="nickName" v-model="profileForm.username">
-                    <div id="box3">
-                        <div>서버를 만들어서 잘 운용해보세요. 행운을 빕니다.</div>
-                        <div id="btnCreate">
-                            <button @click="uploadProfile()">제출</button>
-                        </div>
-                    </div>
+                    <div>Description</div>
+                    <textarea rows="5" cols="70" name="text" id="description"
+                              v-model="profileForm.user_description"></textarea>
                 </div>
             </div>
             <div id="footer">
-                <div id="footer_sumName">이미 초대장을 받으셨나요?</div>
                 <div id="btnAttend">
-                    <button>서버 참가하기</button>
+                    <button @click="uploadProfile">Save</button>
                 </div>
             </div>
         </div>
@@ -226,6 +206,12 @@ function exitModal(){
     color: #4E5058;
 }
 
+#ChannelNameInputBox > div:nth-of-type(2) {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4E5058;
+}
+
 #ChannelNameInputBox > input:nth-of-type(1) {
     height: 40px;
     background: #E3E5E8;
@@ -236,13 +222,25 @@ function exitModal(){
     font-size: 15px;
     color: #313338;
 }
-
-#box3 {
-    display: flex;
-    justify-content: space-between;
+#ChannelNameInputBox > textarea {
+    height: 100px;
+    background: #E3E5E8;
+    outline: none;
+    border: none;
+    padding: 0 10px;
+    border-radius: 3px;
+    font-size: 15px;
+    color: #313338;
+    overflow:auto;
 }
 
+
+
 #box3 > div:nth-of-type(1) {
+    color: #5C5E66;
+    font-size: 12px;
+}
+#box3 > div:nth-of-type(2) {
     color: #5C5E66;
     font-size: 12px;
 }
@@ -270,17 +268,9 @@ function exitModal(){
     position: absolute;
     width: 100%;
     align-items: center;
-    height: 90px;
+    height: 70px;
 }
 
-#footer_sumName {
-    font-size: 20px;
-    font-weight: 550;
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    padding: 10px 0 5px 0;
-}
 
 #btnAttend {
     width: 100%;
