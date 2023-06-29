@@ -20,7 +20,9 @@
             <div id="main_content1">
                 <Tab/>
             </div>
-            <div id="main_content2"></div>
+            <div id="main_content2">
+                <TodaySchedule/>
+            </div>
         </div>
     </div>
 </template>
