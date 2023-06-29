@@ -30,7 +30,7 @@ spring:
 
   #DB
   datasource:
-    url: jdbc:mariadb://localhost:3306/project1
+    url: jdbc:mariadb://localhost:3306/projectdb
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
+    username: project1
     password: 1234

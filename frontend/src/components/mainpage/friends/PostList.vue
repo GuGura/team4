@@ -46,8 +46,25 @@
 </template>
 
 <script>
+import api from "../../../../script/token/axios";
+import router from "../../../../script/routes/router";
+
 export default {
     name: "PostList",
+    data(){
+        return{
+            lastPosting: 0
+        }
+    },
+    methods:{
+        boardPaging(){
+            api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPage",this.lastPosting
+            ).then(({data})=>{
+                this.lastPosting = data;
+            })
+
+        }
+    }
 };
 </script>
 
