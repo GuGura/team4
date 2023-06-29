@@ -11,24 +11,95 @@ function closeModal() {
 <template>
   <div id="background" @click="closeModal"></div>
   <div id="modal">
-    <div style="display: flex;align-items: center;justify-content: space-between">
+    <div id="modalHeader">
       <div style="color: #fff;font-size: 21px">채널 만들기</div>
       <div id="exit" @click="closeModal">
         <img src="/img/serverlist/exit.png">
       </div>
     </div>
+    <form>
+      <div id="modalBody">
+        <div style="padding: 5px">채널 유형</div>
+        <div class="channelTypeBox">
+          <div style="height: 20px;display: flex">
+            <img src="/img/channel/chat.png">
+          </div>
+          <div style="display: flex;flex-direction: column;gap: 1px">
+            <div style="color: #DBDEE1;font-size: 18px;font-weight:550;">Text</div>
+            <div style="color:#B5BAC1">메세지,의견,농담을 전송하세요</div>
+          </div>
+          <div
+              style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
+            <input type="radio" value="Text" name="type" style="width: 20px;height: 20px;" checked>
+          </div>
+        </div>
+
+        <div class="channelTypeBox">
+          <div style="height: 20px;display: flex">
+            <img src="/img/channel/chat.png">
+          </div>
+          <div style="display: flex;flex-direction: column;gap: 1px">
+            <div style="color: #DBDEE1;font-size: 18px;font-weight:550;">Text</div>
+            <div style="color:#B5BAC1">메세지,의견,농담을 전송하세요</div>
+          </div>
+          <div
+              style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
+            <input type="radio" value="audio" name="type" style="width: 20px;height: 20px;">
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
 <style scoped>
-#exit{
-  height:16px;
+.channelTypeBox {
+  height: 70px;
+  display: flex;
+  background-color: #2b2d31;
+  border-radius: 5px;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+}
+
+.channelTypeBox:hover {
+  background-color: #3A3C41;
+}
+
+.channelTypeBox:active {
+  background-color: #3F4147;
+}
+
+#modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+#modalBody > div:nth-of-type(1) {
+  font-size: 12px;
+  font-weight: 600;
+  color: #B5BAC1;
+}
+
+#modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#exit {
+  height: 16px;
   cursor: pointer;
   filter: opacity(0.5);
 }
-#exit:hover{
+
+#exit:hover {
   filter: opacity(1);
 }
+
 #modal {
   width: 430px;
   height: 300px;
@@ -42,6 +113,7 @@ function closeModal() {
   display: flex;
   flex-direction: column;
   padding: 20px 15px;
+  gap: 15px;
 }
 
 #background {
@@ -54,8 +126,5 @@ function closeModal() {
   position: fixed;
   z-index: 12;
 }
-img{
-  width: 100%;
-  height: 100%;
-}
+
 </style>
