@@ -5,7 +5,7 @@ import {reactive} from "vue";
 const modalStore = useModalStore();
 const props = reactive({
   type: 'Text',
-
+  roomName: '',
 })
 
 function closeModal() {
@@ -20,7 +20,7 @@ function closeModal() {
 
   <div id="modal">
     <div id="modalHeader">
-      <div style="color: #fff;font-size: 21px">채널 만들기</div>
+      <div style="color: #fff;font-size: 21px">방 만들기</div>
       <div id="exit" @click="closeModal">
         <img src="/img/serverlist/exit.png">
       </div>
@@ -59,21 +59,67 @@ function closeModal() {
 
     <div id="channel_title">
       <div>채널이름</div>
-      <div style="display: flex">
+      <div id="roomNameBox">
         <div style="display: flex;height: 15px">
-          <img src="/img/channel/chat.png">
+          <img src="/img/channel/chat.png" v-if="props.type === 'Text'" >
+          <img src="/img/channel/speak.png" v-else-if="props.type === 'Voice'">
         </div>
-        <input name="searchRoom" placeholder="새로운 채널">
+        <input v-model="props.roomName" name="roomName" placeholder="새로운 채널">
       </div>
+    </div>
+
+    <div id="footer">
+      <div @click="closeModal">취소</div>
+      <button>채널 만들기</button>
     </div>
 
   </div>
 </template>
 
 <style scoped>
-input[name=searchRoom] {
+#footer{
+  background-color: #2B2D31;
+  width: 100%;
+  height: 70px;
+  position: absolute;
   display: flex;
-  height: 60%;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  border-radius: 5px;
+  padding-right: 15px;
+  justify-content: flex-end;
+}
+#footer > div:nth-of-type(1){
+  color: #fff;
+  width: 70px;
+  display: flex;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid #fff;
+  justify-content: center;
+  height: 40px;
+  align-items: center;
+}
+#footer > div:nth-of-type(1):hover{
+  text-decoration: underline;
+}
+
+#footer > button{
+  width: 90px;
+  height: 40px;
+}
+#roomNameBox{
+  display: flex;
+  background: #1E1F22;
+  height: 40px;
+  padding: 0 10px;
+  gap: 3px;
+  align-items: center;
+}
+input[name=roomName] {
+  display: flex;
+  flex: 1;
   background: #1E1F22;
   color: #949BA4;
   outline: none;
@@ -107,7 +153,10 @@ input[name=searchRoom] {
 }
 
 #channel_title {
-
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
 }
 
 #type {
@@ -142,17 +191,16 @@ input[name=searchRoom] {
 
 #modal {
   width: 430px;
-  height: 300px;
   background-color: #313338;
   z-index: 13;
   position: fixed;
   border-radius: 5px;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  padding: 20px 15px;
+  padding: 20px 15px 90px;
   gap: 15px;
 }
 
