@@ -249,7 +249,7 @@ b { /* used for event dates/times */
 }
 .demo-app-calendar{
 
-    width: 70%;
+    width: 100%;
 
 }
 
