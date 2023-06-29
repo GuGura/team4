@@ -2,12 +2,13 @@
 import {onMounted, reactive} from "vue";
 import api from "../../../../script/token/axios";
 
+
 function addEvent(){
     let title = prompt('추가할 일정명을 입력해주세요.')
     if (title) {
         api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
             title,
-            start: today.setDate(today.getDate()-1),
+            start: today.setDate(today.getDate()),
             end: today.setDate(today.getDate()+1),
             allDay: true
         }).then(() => {
@@ -17,24 +18,44 @@ function addEvent(){
 }
 function initEvents() {
     api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listByDate", {
-        year: year,
-        month: month,
-        date: date
+        year: Dates.year,
+        month: Dates.month,
+        date: Dates.date
     }).then(({data}) => {
         eventList.events = data
     })
 }
 
+function prevDate(){
+    eventList.events = null
+    today.setDate(today.getDate()-1)
+    dateCalculating()
+    initEvents();
+}
+
+function nextDate(){
+    eventList.events = null
+    today.setDate(today.getDate()+1)
+    dateCalculating()
+    initEvents();
+}
+
 onMounted(() => {
-    initEvents()
 })
 
-
 let today = new Date();
-let year = today.getFullYear();
-let month = today.getMonth() + 1;
-let date = today.getDate();
 
+let Dates = reactive({
+    year:today.getFullYear(),
+    month: today.getMonth() + 1,
+    date: today.getDate()
+})
+
+function dateCalculating(){
+    Dates.year = today.getFullYear();
+    Dates.month = today.getMonth()+1;
+    Dates.date = today.getDate();
+}
 
 
 let eventList = reactive({
@@ -51,17 +72,23 @@ let eventList = reactive({
     ]
 })
 
+initEvents()
 </script>
 
 <template>
   <div class="container">
-      <div class="card">
+      <div class="card" id="wholeCard">
           <div class="card-header">
-              <h3>{{year}}.{{month}}.{{date}}</h3>
+              <h3>
+                  <button class="btnDate" @click="prevDate">&nbsp&lt;&nbsp</button>
+                     &nbsp{{Dates.year}}.{{Dates.month}}.{{Dates.date}}&nbsp
+                  <button class="btnDate" @click="nextDate">&nbsp&gt;&nbsp</button>
+              </h3>
+
           </div>
           <div class="card-body">
-              <ul class="list-group list-group-flush">
-                  <li v-for="(events) in eventList.events" :key="events.title" class="list-group-item mb-3">
+              <ul class="list-group">
+                  <li v-for="(events) in eventList.events" :key="events.title" class="card">
                       <h5>
                           {{events.title}}
                       </h5>
@@ -70,7 +97,7 @@ let eventList = reactive({
                       </h2>
                   </li>
               </ul>
-              <button class="btn btn-secondary" id="btnAdd" @click="addEvent">Add+</button>
+              <button id="btnAdd" @click="addEvent">Add+</button>
           </div>
       </div>
 
@@ -79,19 +106,52 @@ let eventList = reactive({
 </template>
 
 <style scoped>
+
+.btnDate{
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    background: #36373D;
+    color: white;
+}
+.btnDate:hover{
+    background: #41434A;
+}
+
 .card-header{
     text-align: center;
+    background-color: #36373D;
+    padding: 20px;
+    border-radius: 10px;
 }
 #btnAdd{
     margin:auto;
     display:block;
-}
-.list-group-item:hover{
-    background-color: lightgray;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    background-color: #36373D;
+    color: white;
 }
 
+#btnAdd:hover{
+    background: #41434A;
+}
 .card{
-    height: 500px;
+    background: #36373D;
+    margin: 0px;
+    padding: 20px;
+    color: white;
+    border:none;
+}
+.card:hover{
+    background-color: #41434A;
+}
+
+#wholeCard{
+    height: 600px;
+    border: none;
+    background: #36373D;
 }
 
 </style>

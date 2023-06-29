@@ -26,7 +26,7 @@ public interface EventMapper {
     List<EventDTO> listMonthly(int year, int memberId);
 
 
-    @Select("SELECT * from EVENT WHERE estart = TO_CHAR(NOW(),'yyyy-mm-dd') || END = TO_CHAR(DATE_ADD(NOW(), INTERVAL 1 DAY),'yyyy-mm-dd') and memberId=#{memberId}")
+    @Select("SELECT * from EVENT WHERE TO_CHAR(estart,'yyyy-mm-dd') = #{date} || TO_CHAR(DATE_SUB(end, INTERVAL 1 day),'yyyy-mm-dd') =  #{date} and memberId=#{memberId}")
     @Results({
             @Result(column = "id", property = "id"),
             @Result(column = "estart", property = "start"),
@@ -35,7 +35,7 @@ public interface EventMapper {
             @Result(column = "memberId", property = "memberId"),
             @Result(column = "groupName", property = "groupName")
     })
-    List<EventDTO> listDaily(int year,int month,int date, int memberId);
+    List<EventDTO> listDaily(String date, int memberId);
 
     @Delete("delete from event where id = #{id}")
     void deleteEvent(int id);

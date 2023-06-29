@@ -1,38 +1,3 @@
-<template>
-    <div class="tab-container">
-        <div class="tab-buttons">
-            <button v-for="(tab, index) in tabs" :key="index" :class="{'tab-button': true, 'active': activeTab === index}" @click="changeTab(index)">
-                {{ tab }}
-            </button>
-        </div>
-        <div class="tab-content">
-            <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index}">
-                <div v-if="index === 0">
-                    <div class="content-box">
-
-                    </div>
-                </div>
-                <div v-else-if="index === 1">
-                    <div class="content-box">
-                        <Calendar :key="calendarKey" />
-                    </div>
-                </div>
-                <div v-else-if="index === 2">
-                    <div class="content-box">
-                        <RichTextEditor/>
-                    </div>
-                </div>
-                <div v-else-if="index === 3">
-                    <div class="content-box">
-                        <PostList/>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</template>
-
 <script>
 import RichTextEditor from "@/components/mainpage/lobby/RichTextEditor.vue";
 import Calendar from "@/components/mainpage/lobby/Calendar.vue";
@@ -72,31 +37,78 @@ export default {
     },
 };
 </script>
+<template>
+    <div class="tab-container card">
+        <div class="tab-buttons card-header">
+            <button v-for="(tab, index) in tabs" :key="index" :class="{'tab-button': true, 'active': activeTab === index}" @click="changeTab(index)">
+                {{ tab }}
+            </button>
+        </div>
+        <div class="tab-content">
+            <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index}">
+                <div v-if="index === 0">
+                    <div class="content-box">
+
+                    </div>
+                </div>
+                <div v-else-if="index === 1">
+                    <div class="content-box">
+                        <Calendar :key="calendarKey" />
+                    </div>
+                </div>
+                <div v-else-if="index === 2">
+                    <div class="content-box">
+                        <RichTextEditor/>
+                    </div>
+                </div>
+                <div v-else-if="index === 3">
+                    <div class="content-box">
+                        <PostList/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+
 
 <style scoped>
 .content-box {
     width: 100%;
     height: 100%;
-    background-color: white;
-    border: 1px solid black;
+    background: #41434A;
     padding: 20px;
 }
 
 .tab-container {
     width: 100%;
+    color: white;
+    background: #41434A;
 }
 
 .tab-buttons {
     display: flex;
+    background-color: #36373D;
+    color: white;
+    margin: 0;
+    padding: 0;
+    border-radius: 10px;
 }
 
 .tab-button {
     width: 100%;
     padding: 10px 20px;
-    background-color: lightgray;
-    border: none;
+    background-color: #36373D;
     outline: none;
     cursor: pointer;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+    border: none;
+}
+.tab-button:hover{
+    background: #41434A;
 }
 
 .tab-button.active {
