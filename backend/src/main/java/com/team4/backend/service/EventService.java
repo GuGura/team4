@@ -26,4 +26,8 @@ public class EventService {
     public void deleteEvent(int id) {
         eventMapper.deleteEvent(id);
     }
+
+    public List<EventDTO> listDaily(int year,int month, int date, int memberId) {
+        return eventMapper.listDaily(year,month,date,memberId);
+    }
 }

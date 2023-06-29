@@ -15,5 +15,5 @@ public class EventDTO {
     private Date end;
     private String title;
     private int memberId;
-    private Long groupId;
+    private String groupName;
 }

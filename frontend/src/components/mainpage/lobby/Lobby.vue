@@ -3,6 +3,7 @@
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {onMounted} from "vue";
 import Tab from "@/components/mainpage/lobby/Tab.vue";
+import TodaySchedule from "@/components/mainpage/lobby/TodaySchedule.vue";
 
 const lobbyStore = useLobbyStore();
 
@@ -32,7 +33,9 @@ onMounted(()=>{
                 <div id="main_content1">
                     <Tab/>
                 </div>
-                <div id="main_content2"></div>
+                <div id="main_content2">
+                    <TodaySchedule/>
+                </div>
             </div>
         </div>
     </div>
