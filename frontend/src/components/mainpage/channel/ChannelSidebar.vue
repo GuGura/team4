@@ -13,7 +13,6 @@ import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
 const serverListStore = useServerListStore();
-const modalStore = useModalStore();
 
 const room_name = ref(''); // ChatRoom Name
 const textChatrooms = ref([]); // Text Chat Room List
