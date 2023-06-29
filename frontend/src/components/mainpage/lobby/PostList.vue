@@ -52,27 +52,25 @@ let lastPosting = 0
             <post :post="post"/>
         </div>
         <div class="row my-2 mx-auto">
-            <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost">더 보기 ({{pagingInfo}})</button>
+            <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost"><span class="material-symbols-outlined">more_horiz</span>{{pagingInfo}}</button>
         </div>
     </div>
 </template>
 
 
 <style>
-.content-wrapper {
-    display: flex;
-    align-items: center;
-}
-
-.content {
-    flex: 1;
-}
-
-.image {
-    margin-left: 20px;
-}
 
 img {
     max-width: 100%;
 }
+
+#boardMoreButton{
+    width: 50px;
+    height: 35px;
+    border-radius: 10px;
+    background-color: #1E1F22;
+    --bs-btn-border-color: #1E1F22;
+}
+
+
 </style>

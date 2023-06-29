@@ -9,7 +9,7 @@
             <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index}">
                 <div v-if="index === 0">
                     <div class="content-box">
-                        <Profile/>
+
                     </div>
                 </div>
                 <div v-else-if="index === 1">
@@ -34,13 +34,12 @@
 </template>
 
 <script>
-import Profile from "@/components/mainpage/lobby/Profile.vue";
 import RichTextEditor from "@/components/mainpage/lobby/RichTextEditor.vue";
 import Calendar from "@/components/mainpage/lobby/Calendar.vue";
 import PostList from "@/components/mainpage/lobby/PostList.vue";
 
 export default {
-    components: {PostList, Calendar, RichTextEditor, Profile },
+    components: {PostList, Calendar, RichTextEditor },
     data() {
         return {
             calendarKey: 0,

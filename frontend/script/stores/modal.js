@@ -3,15 +3,20 @@ import {reactive} from "vue";
 
 export const useModalStore = defineStore("modalStore",()=>{
     const modal = reactive({
-        addServer : false
+        addServer : false,
+        attendChannel: false,
+        userSetting: false,
     })
 
     function terminate(index){
-        modal.addServer =  !(index === 'addServer')
+        modal[index] =  !(index === index)
     }
-
+    function open(index){
+        modal[index] = (index === index)
+    }
     return{
         modal,
+        open,
         terminate,
     }
 })

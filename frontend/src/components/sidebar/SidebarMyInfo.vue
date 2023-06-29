@@ -1,12 +1,31 @@
 <script setup>
+
 import router from "../../../script/routes/router";
+import {computed, reactive} from "vue";
+import {useLobbyStore} from "../../../script/stores/lobby";
+
+const lobbyStore = useLobbyStore();
 
 function logout(){
-    if(confirm('로그아웃 하시겠습니까?')){
-        localStorage.clear();
-        router.go(0)
-    }
+  if(confirm('로그아웃 하시겠습니까?')){
+    localStorage.clear();
+    router.go(0)
+  }
 }
+
+const updateUsername = computed(()=>{
+  return lobbyStore.user.username
+})
+const updateEmail = computed(()=>{
+  const email = lobbyStore.user.email
+  return email.split('@')[0]
+})
+
+
+const info = reactive({
+  username: updateUsername,
+  testUID: ''
+})
 </script>
 
 <template>
@@ -17,10 +36,11 @@ function logout(){
       </div>
       <div id="MyInfo">
         <div id="MyName" >
-          meatTeam<!-- 글자제한필요-->
+          {{info.username}}
+
         </div>
         <div id="MyStatus">
-          meatTeam#1234
+          {{updateEmail}}#1234
         </div>
       </div>
     </div>

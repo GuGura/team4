@@ -9,10 +9,7 @@ import com.team4.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -26,8 +23,8 @@ public class ChannelController {
 
     private ResultDTO resultDTO;
     private final ChannelService channelService;
-    @PostMapping("/channel/add")
-    public ResponseEntity<ResultDTO> addChannel(@RequestBody Map<String, String> params, HttpServletRequest request) {
+    @PostMapping("/channel/create")
+    public ResponseEntity<ResultDTO> createChannel(@RequestBody Map<String, String> params, HttpServletRequest request) {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         String inviteCode = params.get("inviteCode");
         List<MyChannelsDTO> myChannelDTO = new ArrayList<>();
@@ -44,5 +41,11 @@ public class ChannelController {
                 .status(true)
                 .build();
         return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/channel/attend/{inviteCode}")
+    public ResponseEntity<?> attendChannel(@PathVariable("inviteCode")String inviteCode, HttpServletRequest request){
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        return channelService.getAttendChannel(inviteCode,memberUID);
     }
 }
