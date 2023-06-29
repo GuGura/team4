@@ -17,15 +17,21 @@
                         <th>내용</th>
                         <td><textarea v-model="cont" ref="cont"></textarea></td>
                     </tr>
+
                 </table>
             </form>
         </div>
-
+        <div>
+        <button @click="uploadProfile()">제출</button>
+    </div>
+    </div>
+    <div>
+        <img alt="image" id="icon">
+    </div>
         <div class="btnWrap">
             <div href="javascript:;" @click="fnList" class="btn">목록</div>
             <div href="javascript:;" @click="fnAddProc" class="btnAdd btn">등록</div>
         </div>
-    </div>
 </template>
 
 <script>
