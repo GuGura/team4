@@ -84,7 +84,7 @@ onMounted(()=>{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+
 }
 
 form[name=list]{
@@ -124,8 +124,8 @@ form[name=list]{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80%;
-    max-width: 1200px;
+    width: 77vw;
+    height: 50vh;
     margin: auto;
 }
 
@@ -134,6 +134,8 @@ form[name=list]{
     align-items: flex-end;
     justify-content: center;
     margin-bottom: 20px;
+    margin-right: 500px;
+    margin-top: 300px;
 }
 #icon_URL{
     display: flex;
@@ -190,8 +192,7 @@ section .box p {margin: 0; color: white; padding: 200px 20px;}
 
 h2 {
 
-    margin: 0;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .lead {
@@ -200,7 +201,6 @@ h2 {
     font-weight: 300;
     background: #3B3D44;
     margin-top: 20px;
-    margin-bottom: 3rem;
-    width: 1300px;
+    width: 100%;
 }
 </style>
