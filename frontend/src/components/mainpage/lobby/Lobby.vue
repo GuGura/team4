@@ -122,7 +122,7 @@ form[name=list]{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 77vw;
+    width: 76vw;
     height: 50vh;
     margin: auto;
 }
