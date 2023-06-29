@@ -228,6 +228,10 @@ export default defineComponent({
   width: 100%;
   height: 50px;
   z-index: 11;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 
 #header > div {
@@ -347,6 +351,10 @@ input[name=message] {
   width: 22%;
   height: 100%; /* 임시로 */
   z-index: 10;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 
 #online {

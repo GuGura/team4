@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -19,7 +20,7 @@ public class Channel {
     private int channel_owner;
     private String channel_inviteCode;
     private boolean channel_is_Open;
-    private Date channel_createDate;
+    private Timestamp channel_createDate;
     private String channel_type;
 
     @Builder

@@ -28,6 +28,7 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
+        console.log("Error object:", JSON.stringify(error));
         const {
             config,
             response: {status}

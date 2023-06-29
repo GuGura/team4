@@ -39,6 +39,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 });
+
 router.beforeEach(async (to, from, next) => {
     const isLogin = await loginService.initCheck();
     if (to.meta.requiresAuth && !isLogin) {

@@ -1,16 +1,14 @@
-<script>
-
-import {defineComponent} from "vue";
+<script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
+import {useChannelStore} from "../../../../script/stores/channel";
 
-export default defineComponent({
-  components: {SidebarMyInfo}
-})
+const channelStore = useChannelStore();
+
 </script>
 
 <template>
   <div id="side_contents">
-    <div id="chatRooms_Header">Test</div>
+    <div id="chatRooms_Header">{{channelStore.channelInfo.channel_title}}</div>
     <div id="side_content_info">
       <div id="chatRooms">
         <div class="chatRoom">
@@ -163,6 +161,10 @@ img{
   border-radius: 10px 0 0 0;
   z-index: 10;
   position: relative;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 #side_content_info{
   display: flex;

@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
-import {reactive, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 import api from "../token/axios";
+import {useRouter} from "vue-router";
 
 export const useServerListStore = defineStore("serverListStore", () => {
 
@@ -13,10 +14,18 @@ export const useServerListStore = defineStore("serverListStore", () => {
             channel_type: 'lobby'
         },
     ])
+    const router = useRouter();
+
+    const getPathEndPoint = (computed(()=> {
+        const path = router.currentRoute.value.path
+        let triumphant = path.substring('/channel/'.length);
+        if (!(triumphant === 'lobby'|| triumphant === 'public' || triumphant === 'addServer'))
+            triumphant = Number(triumphant);
+        return triumphant;
+    } ))
 
     let btnResult = ref({
         endPoint: 'lobby',
-        isActive: 'lobby',
     })
 
     async function initBtn() {
@@ -31,12 +40,14 @@ export const useServerListStore = defineStore("serverListStore", () => {
     }
 
     async function updateBtn(btn) {
-        this.buttons.splice(1, 0, btn[0])
+        this.buttons.splice(1, 0, btn)
     }
 
     return {
         buttons,
         btnResult,
+        getPathEndPoint,
+        router,
         initBtn,
         updateBtn,
     }
