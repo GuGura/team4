@@ -4,12 +4,10 @@ import {reactive} from "vue";
 
 const modalStore = useModalStore();
 const props = reactive({
-  type:'',
+  type: 'Text',
 
 })
-function type(event){
 
-}
 function closeModal() {
   modalStore.terminate('CreateRoom')
 }
@@ -19,6 +17,7 @@ function closeModal() {
 
 <template>
   <div id="background" @click="closeModal"></div>
+
   <div id="modal">
     <div id="modalHeader">
       <div style="color: #fff;font-size: 21px">채널 만들기</div>
@@ -26,43 +25,62 @@ function closeModal() {
         <img src="/img/serverlist/exit.png">
       </div>
     </div>
-    <form>
-      <div id="modalBody">
-        <div style="padding: 5px">채널 유형</div>
 
-        <label class="channelTypeBox" >
-          <div style="height: 20px;display: flex">
-            <img src="/img/channel/chat.png">
-          </div>
-          <div style="display: flex;flex-direction: column;gap: 1px">
-            <div style="color: #DBDEE1;font-size: 18px;font-weight:550;">Text</div>
-            <div style="color:#B5BAC1">메세지,의견,농담을 전송하세요</div>
-          </div>
-          <div
-              style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
-            <input type="radio" value="Text" name="type" style="width: 20px;height: 20px;" checked>
-          </div>
-        </label>
+    <div id="type">
+      <div style="padding: 5px">채널 유형</div>
+      <label class="channelTypeBox">
+        <div style="height: 20px;display: flex">
+          <img src="/img/channel/chat.png">
+        </div>
+        <div style="display: flex;flex-direction: column;gap: 1px">
+          <div style="color: #DBDEE1;font-size: 18px;font-weight:550;">Text</div>
+          <div style="color:#B5BAC1">메세지,의견,농담을 전송하세요</div>
+        </div>
+        <div
+            style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
+          <input type="radio" value="Text" name="type" v-model="props.type" style="width: 20px;height: 20px;" checked>
+        </div>
+      </label>
 
-        <label class="channelTypeBox"  >
-          <div style="height: 20px;display: flex">
-            <img src="/img/channel/speak.png">
-          </div>
-          <div style="display: flex;flex-direction: column;gap: 1px">
-            <div style="color:#DBDEE1;font-size: 18px;font-weight:550;">Voice</div>
-            <div style="color:#B5BAC1">음성,영상,화면 공유로 함께 어울리세요</div>
-          </div>
-          <div
-              style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
-            <input type="radio" value="Voice" name="type" style="width: 20px;height: 20px;">
-          </div>
-        </label>
+      <label class="channelTypeBox">
+        <div style="height: 20px;display: flex">
+          <img src="/img/channel/speak.png">
+        </div>
+        <div style="display: flex;flex-direction: column;gap: 1px">
+          <div style="color:#DBDEE1;font-size: 18px;font-weight:550;">Voice</div>
+          <div style="color:#B5BAC1">음성,영상,화면 공유로 함께 어울리세요</div>
+        </div>
+        <div
+            style="height: 50px;display: flex;flex: 1; justify-content: flex-end;align-items: center;">
+          <input type="radio" value="Voice" name="type" v-model="props.type" style="width: 20px;height: 20px;">
+        </div>
+      </label>
+    </div>
+
+    <div id="channel_title">
+      <div>채널이름</div>
+      <div style="display: flex">
+        <div style="display: flex;height: 15px">
+          <img src="/img/channel/chat.png">
+        </div>
+        <input name="searchRoom" placeholder="새로운 채널">
       </div>
-    </form>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
+input[name=searchRoom] {
+  display: flex;
+  height: 60%;
+  background: #1E1F22;
+  color: #949BA4;
+  outline: none;
+  border: none;
+  padding: 0 10px;
+}
+
 .channelTypeBox {
   height: 70px;
   display: flex;
@@ -82,14 +100,24 @@ function closeModal() {
   background-color: #3F4147;
 }
 
-#modalBody {
+#channel_title > div:nth-of-type(1) {
+  font-size: 12px;
+  font-weight: 600;
+  color: #B5BAC1;
+}
+
+#channel_title {
+
+}
+
+#type {
   display: flex;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
 }
 
-#modalBody > div:nth-of-type(1) {
+#type > div:nth-of-type(1) {
   font-size: 12px;
   font-weight: 600;
   color: #B5BAC1;
