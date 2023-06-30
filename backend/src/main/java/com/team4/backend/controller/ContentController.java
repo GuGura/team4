@@ -71,6 +71,7 @@ public class ContentController {
         RContent.setWriter_id(content.getWriter_id());
         RContent.setContent(content.getContent());
         RContent.setUsername(memberMapper.findMemberByEmail(UserUtil.getEmail()).get().getUsername());
+        RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
         return RContent;
     }
 

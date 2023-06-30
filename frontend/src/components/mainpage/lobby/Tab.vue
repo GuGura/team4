@@ -82,6 +82,26 @@ export default {
     padding: 20px;
     max-height: 400px;
     overflow-y: auto;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+
+.content-box::-webkit-scrollbar{
+    width: 10px;
+}
+
+.content-box::-webkit-scrollbar-thumb{
+    background-color: #1A1B1E;
+    border: 4px solid #1A1B1E;
+    border-radius: 50px;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.content-box::-webkit-scrollbar-track{
+    background-color: rgba(0,0,0,0);
+    width: 15px;
 }
 
 .tab-container {

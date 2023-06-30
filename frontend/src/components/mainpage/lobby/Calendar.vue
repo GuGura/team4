@@ -267,10 +267,13 @@ b { /* used for event dates/times */
 }
 
 .fc-event-main{
-    background-color: #2b2d31;
+    background-color: yellow;
+    border-color: yellow;
+    border-radius: 2px;
 }
-
-
+:root{
+    --fc-event-border-color: black;
+}
 
 
 </style>

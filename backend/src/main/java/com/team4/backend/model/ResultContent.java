@@ -19,4 +19,5 @@ public class ResultContent {
     private boolean visible;
     private byte[] contentIMG;
     private int isImgIn;
+    private byte[] userIcon;
 }

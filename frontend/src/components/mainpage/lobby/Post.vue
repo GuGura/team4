@@ -1,21 +1,25 @@
 <template>
     <div class="card mb-3">
-            <div v-if="post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+post.contentIMG" class="img-fluid"></div>
-        <div class="card-body">
+
+        <div v-if="post.visible" class="card-body" :id="post.id">
             <div class="row">
-            <div class="col-4" style="width: 100px;">
-                <img :src="post.userIcon">
+            <div class="col-4" style="width: 120px;">
+                <img class="iconIMG" :src="'data:image/png;base64,'+post.userIcon">
             </div>
-            <div class="col-8">
+            <div class="col-7">
             <h4 class="card-subtitle mb-2">{{ post.title }}</h4>
             <h6 class="card-title">{{ post.username }}</h6>
-            <p class="card-text"><small class="text-body-secondary">{{ post.uploadDate }}</small></p>
+            <p class="card-text"><small class="card-text fw-lighter">{{ post.uploadDate }}</small></p>
             </div>
+                <div class="col-1 btnDelete" @click="toggleDelete">
+                    <span class="material-symbols-outlined" :class="{ active: showDelete }">close</span>
+                </div>
             </div>
-            <p class="card-text">{{ post.content }}</p>
-            <div class="btnDelete" @click="toggleDelete">
-                <span class="material-symbols-outlined" :class="{ active: showDelete }">close</span>
-            </div>
+            <div v-if="post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+post.contentIMG" class="img-fluid"></div>
+            <p class="card-text contents fw-light">{{ post.content }}</p>
+        </div>
+        <div v-else>
+            <p class="card-text contents fw-light">포스트가 삭제되었습니다.</p>
         </div>
     </div>
 </template>
@@ -26,14 +30,9 @@ export default {
     props: {
         post: Object
     },
-    data() {
-        return {
-            showDelete: false
-        }
-    },
     methods: {
         toggleDelete() {
-            this.showDelete = !this.showDelete;
+
         }
     }
 }
@@ -54,7 +53,7 @@ export default {
 }
 .btnDelete {
     display: flex;
-    margin-left: 690px;
+    margin-left: 140px;
 }
 
 .btnDelete:focus {
@@ -67,5 +66,28 @@ export default {
 
 .material-symbols-outlined.active {
     color: red;
+}
+
+.iconIMG{
+    border-radius: 30px;
+    height: 90px;
+    width: 110px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.img-fluid{
+    border-radius: 10px;
+}
+.contents{
+    margin: 20px;
+}
+
+.card{
+    background-color: #36373D;
+    color: white;
+}
+
+.card-text{
+    color: white;
 }
 </style>

@@ -4,16 +4,23 @@
             <div id="icon_URL">
                 <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded">
             </div>
-            <div id="userName">
+            <div id="userName" class="">
                 <div class="order-md-2">
                     <h2 class="featurette-heading fw-normal lh-1">{{ lobbyStore.user.username }} </h2>
                     <div class="lead"> {{ lobbyStore.user.user_description }}</div>
                 </div>
-                <div class="edit-button" @click="openModal()">
+                <div class="row">
+                <div class="edit-button col-1" @click="openModal()">
                     <span class="material-symbols-outlined">manage_accounts</span>
-                    <div>프로필 수정</div>
+                    <div>프</div>
                 </div>
                 <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
+                <div class="writing-button col-1" @click="openModal2()">
+                    <span class="material-symbols-outlined">manage_accounts</span>
+                    <div>글</div>
+                </div>
+                <WritingContentModal v-if="modalStore.modal.writingContent === true"/>
+                </div>
             </div>
         </div>
         <div id="main_content_body">
@@ -35,12 +42,18 @@ import Tab from "@/components/mainpage/lobby/Tab.vue";
 import UserSettingModal from "@/components/modal/UserSettingModal.vue";
 import {useModalStore} from "../../../../script/stores/modal";
 import TodaySchedule from "@/components/mainpage/lobby/TodaySchedule.vue";
+import WritingContentModal from "@/components/modal/WritingContentModal.vue";
 
 const lobbyStore = useLobbyStore();
 const modalStore = useModalStore();
 
 function openModal(){
     modalStore.open('userSetting')
+}
+
+function openModal2(){
+    modalStore.open('writingContent')
+    console.log(modalStore.modal.writingContent)
 }
 onMounted(() => {
 
@@ -130,6 +143,37 @@ h2.featurette-heading {
     justify-content: flex-end;
     align-items: flex-end;
     font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 30px;
+    background: #41434A;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.writing-button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 30px;
+    background: #41434A;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.writing-button .material-symbols-outlined {
+    font-size: 20px;
+    color: #fff;
+    margin-right: 5px;
 }
 
 .edit-button .material-symbols-outlined {
@@ -143,23 +187,26 @@ h2.featurette-heading {
 }
 
 #userName > div:nth-of-type(2) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    height: 30px;
-    background: #41434A;
-    border-radius: 10px;
-    cursor: pointer;
+
 }
 
-#userName > div:nth-of-type(2):hover {
+.edit-button:hover {
     background: #36373D;
 }
 
-#userName > div:nth-of-type(2):active {
+.edit-button:active {
     background: #3B3D44;
 }
+
+
+.writing-button:hover {
+    background: #36373D;
+}
+
+.writing-button:active {
+    background: #3B3D44;
+}
+
 
 #main_content_body {
     display: flex;

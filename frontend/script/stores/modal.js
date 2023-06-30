@@ -6,6 +6,7 @@ export const useModalStore = defineStore("modalStore",()=>{
         addServer : false,
         attendChannel: false,
         userSetting: false,
+        writingContent: false
     })
 
     function terminate(index){

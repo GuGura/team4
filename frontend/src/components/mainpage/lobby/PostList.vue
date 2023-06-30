@@ -40,7 +40,8 @@ let postList = reactive({
             content: '',
             id: '',
             contentIMG: '',
-            isImgIn: ''
+            isImgIn: '',
+            visible: ''
         }
 
     ]
