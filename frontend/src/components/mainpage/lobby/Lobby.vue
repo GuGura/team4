@@ -2,7 +2,7 @@
     <div id="main_contents">
         <div id="main_content_header">
             <div id="icon_URL">
-                <img src="/img/sidebar/userIcon.png" alt="헬로" style="width: 200px;">
+                <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded">
             </div>
             <div id="userName">
                 <div class="col-md-7 order-md-2">
@@ -12,8 +12,8 @@
                 <div class="edit-button" @click="openModal()">
                     <span class="material-symbols-outlined">manage_accounts</span>
                     <div>프로필 수정</div>
-                    <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
                 </div>
+                <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
             </div>
         </div>
         <div id="main_content_body">
