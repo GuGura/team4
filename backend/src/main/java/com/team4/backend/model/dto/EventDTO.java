@@ -10,10 +10,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDTO {
-    private Long id;
+    private int id;
     private Date start;
     private Date end;
     private String title;
-    private Long memberId;
+    private int memberId;
     private Long groupId;
 }

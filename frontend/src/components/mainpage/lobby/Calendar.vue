@@ -175,15 +175,16 @@ export default defineComponent({
                     end: selectInfo.endStr,
                     allDay: selectInfo.allDay
                 }).then(({data}) => {
-                    id = data;
+                    calendarApi.addEvent({
+                        id: data,
+                        title,
+                        start: selectInfo.startStr,
+                        end: selectInfo.endStr,
+                        allDay: selectInfo.allDay
+                    })
                 })
-                calendarApi.addEvent({
-                    id: id,
-                    title,
-                    start: selectInfo.startStr,
-                    end: selectInfo.endStr,
-                    allDay: selectInfo.allDay
-                })
+
+
 
 
             }
@@ -191,6 +192,15 @@ export default defineComponent({
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent",{
+                    id: clickInfo.event.id,
+                    title: clickInfo.event.title,
+                    start: clickInfo.event.start,
+                    end: clickInfo.event.end,
+                    allDay: clickInfo.event.allDay
+                }).then(() => {
+                    clickInfo.event.remove()
+                })
             }
         },
         handleEvents(events) {
