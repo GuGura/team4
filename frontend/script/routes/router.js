@@ -40,9 +40,7 @@ const routes = [
         component: () => import("@/Pages/Main.vue"),
         meta: {requiresAuth: true}
     },
-    {
 
-    }
 ]
 const router = createRouter({
     history: createWebHistory(),

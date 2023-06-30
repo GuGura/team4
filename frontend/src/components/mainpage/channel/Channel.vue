@@ -1,12 +1,9 @@
 <script>
-import SockJS from 'sockjs-client';
-import Stomp from 'webstomp-client';
-
 import {computed, defineComponent, reactive} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
-import authHeader from "../../../../script/token/authHeader";
-import api from "/script/token/axios.js";
+import {connectSocket, subscribeToRoom, sendMessage, findRoomMessage } from '/script/socket';
+
 
 const lobbyStore = useLobbyStore();
 
@@ -15,9 +12,16 @@ const updateUsername = computed(()=>{
 })
 
 export default defineComponent({
+  created() {
+    this.wsModule();
+  },
   watch: {
-    '$route'() {
-      this.created();
+    '$route.params.roomId'(to, from) {
+      if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
+        console.log("start enterRoom");
+        this.enterRoom();
+        console.log(`Changed from server to room` + this.roomId);
+      }
     }
   },
   components: {ChatBox},
@@ -61,108 +65,44 @@ export default defineComponent({
       console.log("Channel.vue channelId : " + this.channelId);
 
       this.messageList.messages = []; // messageList 초기화
-      this.disconnect(); // 이전 웹소켓 연결 끊기
-      this.connect(); // 새로운 웹소켓 연결 수행
     },
-    connect() {
-      const serverURL = process.env.VUE_APP_BASEURL+'/ws';
-      let socket = new SockJS(serverURL);
-      this.ws = Stomp.over(socket);
-      console.log('serverURL : ' + serverURL);
-
-      this.findRoomMessage();
-      console.log("2")
-
-      const headers = {
-        accessJwt: authHeader()
-      };
-
-      this.ws.connect(
-          headers,
-          frame => {
-            console.log("3")
-            this.connected = true;
-            console.log('소켓 연결 성공', frame);
-            this.ws.subscribe("/sub/chat/room/" + this.roomId, message => {
-              console.log('구독으로 받은 메시지 입니다.', message.body);
-              this.recvMessage(JSON.parse(message.body));
+    async wsModule(){
+      try {
+        this.ws = await connectSocket();
+      } catch (e) {
+        console.log("ws module Error");
+      }
+    },
+    async enterRoom() {
+      try {
+        const roomId = localStorage.getItem('wschat.roomId');
+        await findRoomMessage(roomId)
+            .then((data) => {
+              console.log(data);
+              this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
+              subscribeToRoom(this.ws, roomId, this.sender, this.messageList)
+                  .then(() => {
+                    console.log('구독에 성공했습니다.');
+                  })
+                  .catch((error) => {
+                    console.log('구독에 실패했습니다.', error);
+                  });
+            })
+            .catch((error) => {
+              console.error(error);
             });
-            if (this.ws && this.ws.connected) {
-              console.log('Start ws.connect Channel.vue ')
-              const msg = {
-                type: 'ENTER',
-                roomId: this.roomId,
-                sender: this.sender,
-              };
-
-              this.ws.send(
-                  "/pub/chat/message",
-                  JSON.stringify(msg),
-                  {}
-              );
-            }
-          },
-          error => {
-            console.log('소켓 연결 실패 ', error);
-            this.connected = false;
-          }
-      );
-    },
-    disconnect() {
-      if (this.ws && this.ws.connected) {
-        this.ws.disconnect();
-        this.connected = false;
+      } catch (e) {
+        console.log('enterRoom Error in Channel.vue');
       }
     },
+
     sendMessage() {
-      if (!this.canSend) {
-        return;
-      }
+      const roomId = localStorage.getItem('wschat.roomId');
+      const sender = this.sender;
+      const message = this.inputMessage;
 
-      if (this.ws && this.ws.connected) {
-        const msg = {
-          type: 'TALK',
-          roomId: this.roomId,
-          sender: this.sender,
-          message: this.inputMessage,
-          sendDate: new Date(),
-        };
-        this.ws.send(
-            "/pub/chat/message",
-            JSON.stringify(msg),
-            {}
-        );
-      }
-      this.inputMessage = '';
-      this.canSend = false;
-      setTimeout(() => {
-        this.canSend = true;
-      }, 1000);
-    },
-    recvMessage(recv) {
-      if (recv.type !== 'ENTER') { // 'ENTER' 타입인 경우에는 출력하지 않음
-        this.messageList.messages.push({
-          type: recv.type,
-          sender: recv.sender,
-          message: recv.message,
-          sendDate: recv.sendDate,
-        });
-        this.$nextTick(() => {
-          const chatInfoElement = this.$refs.chatInfoRef;
-          if (chatInfoElement.scrollHeight - chatInfoElement.clientHeight <= chatInfoElement.scrollTop + 100) {
-            chatInfoElement.scrollTop = chatInfoElement.scrollHeight;
-          }
-        });
-      }
-    },
-    findRoomMessage() {
-      console.log('5')
-      api.get(process.env.VUE_APP_BASEURL_V1+`/chat/room/enter/${this.roomId}`).then(response => {
-        console.log(response.data);
-        console.log(6)
-        this.chatMessages = response.data;
-        console.log('7')
-      });
+      sendMessage(this.ws, roomId, sender, message);
+      this.inputMessage = ''; // 입력 필드 초기화
     },
   },
   beforeUnmount() {

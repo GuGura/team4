@@ -6,7 +6,6 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import api from "/script/token/axios.js";
 import router from "../../../../script/routes/router";
 import {useServerListStore} from "../../../../script/stores/serverlist";
-import axios from "axios";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -70,7 +69,7 @@ const enterRoom = (roomId) => {
   console.log("ChannelSideBar.vue roomId : " + roomId);
   console.log("ChannelSideBar.vue channelId : " + channelId);
 
-  axios.get(`/channel/${channelId}/chat/room/enter/${roomId}`);
+  router.push(`/channel/${channelId}/chat/room/enter/${roomId}`);
 };
 
 onMounted(() => {
