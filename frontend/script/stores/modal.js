@@ -6,18 +6,24 @@ export const useModalStore = defineStore("modalStore",()=>{
         addServer : false,
         attendChannel: false,
         userSetting: false,
-        writingContent: false
+        writingContent: false,
+        RoomToggle: false,
+        CreateRoom: false,
     })
 
     function terminate(index){
-        modal[index] =  !(index === index)
+        modal[index] =  false
     }
     function open(index){
-        modal[index] = (index === index)
+        modal[index] = true
+    }
+    function openClose(index){
+        modal[index]? terminate(index):open(index)
     }
     return{
         modal,
         open,
         terminate,
+        openClose,
     }
 })

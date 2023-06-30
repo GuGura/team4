@@ -34,9 +34,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println("요청 URL1: "+request.getRequestURL());
         System.out.println("CHECK JWT : JwtAuthorizationFilter.doFilterInternal");
         String tokenType = jwtService.findTokenType(request);
         System.out.println("1. 권한이나 인증이 필요한 요청이 전달됨: " + tokenType);
+        System.out.println("요청 URL2: "+request.getRequestURL());
         try {
             String jwtToken = jwtService.getTokenFromHeader(request, tokenType);
             User user;
@@ -47,10 +49,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
             System.out.println("3. 서명 확인");
             if (tokenType.equals(JwtProperties.HEADER_ACCESS)) {
+                System.out.println("요청 URL3: "+request.getRequestURL());
                 DecodedJWT accessToken = jwtService.decodedJWT(jwtToken);
                 email = jwtService.getClaim(accessToken, "email", String.class);
             } else if (tokenType.equals(JwtProperties.HEADER_REFRESH)) {
                 try {
+                    System.out.println("요청 URL3: "+request.getRequestURL());
                     DecodedJWT refreshToken = jwtService.decodedJWT(jwtToken);
                     System.out.println("refreshToken 서명이 정상적으로 진행됨");
                     email = jwtService.getClaim(refreshToken, "email", String.class);
@@ -67,6 +71,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     setFailRequest("refreshTokenExpired", response);
                 }
             }
+            System.out.println("요청 URL4: "+request.getRequestURL());
             System.out.println("4. 유저 이름 확인: " + email);
             user = jwtService.findUserByEmail(email);
             PrincipalDetails principalDetails = new PrincipalDetails(user);
@@ -76,6 +81,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             request.setAttribute(ResultDtoProperties.STATUS, true);
             request.setAttribute(ResultDtoProperties.MESSAGE, "SUCCESS");
             request.setAttribute(ResultDtoProperties.USER_UID,user.getId());;
+            System.out.println("요청 URL5: "+request.getRequestURL());
             chain.doFilter(request, response);
         } catch (TokenExpiredException e) {
             setFailRequest("TokenExpired", response);

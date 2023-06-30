@@ -24,6 +24,13 @@ export const useServerListStore = defineStore("serverListStore", () => {
         return triumphant;
     } ))
 
+    const getEndPoint = computed(() => {
+        const pathSegments = router.currentRoute.value.path.split('/');
+        const endPoint = pathSegments[2]; // 첫 번째 경로 세그먼트 추출
+        return endPoint;
+    });
+
+
     let btnResult = ref({
         endPoint: 'lobby',
     })
@@ -47,6 +54,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
         buttons,
         btnResult,
         getPathEndPoint,
+        getEndPoint,
         router,
         initBtn,
         updateBtn,

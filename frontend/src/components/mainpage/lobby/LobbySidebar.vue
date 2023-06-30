@@ -1,34 +1,31 @@
-<script>
+<script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
+import {reactive} from "vue";
 
-export default {
-  name:'LobbySidebar',
-  components: {SidebarMyInfo}
-}
+const props = reactive({
+  type: 'friend',
+})
 </script>
 
 <template>
   <div id="side_contents">
     <div id="side_content_info">
-      <form name="list">
 
-        <div id="btn_DMList" class="btnList">
-          <div style="width: 20px;">
-            <img src="/img/sidebar/DM_icon.png" style="height: 20px;">
-          </div>
-          <input type="checkbox" name="dm" hidden checked>
-          <div>DM</div>
+      <label id="btn_DMList" class="btnList">
+        <div style="width: 20px;">
+          <img src="/img/sidebar/DM_icon.png" style="height: 20px;">
         </div>
+        <div>DM</div>
+          <input type="radio" v-model="props.type" value="DM" name="lobbySidebarType">
+      </label>
 
-        <div id="btn_FriendList" class="btnList">
-          <div style="width: 20px;">
-            <img src="/img/sidebar/friend_icon.png" style="height: 20px;">
-          </div>
-          <input type="checkbox" name="friend" hidden>
-          <div>친구</div>
+      <label id="btn_FriendList" class="btnList" >
+        <div style="width: 20px;">
+          <img src="/img/sidebar/friend_icon.png" style="height: 20px;">
         </div>
-
-      </form>
+        <div>친구</div>
+        <input type="radio" name="lobbySidebarType" v-model="props.type" value="friend" checked>
+      </label>
 
       <div id="searchBox">
         <input name="searchbox" placeholder="친구 찾기">
@@ -67,12 +64,12 @@ export default {
         </div>
       </div>
     </div>
-    <SidebarMyInfo />
+    <SidebarMyInfo/>
   </div>
 </template>
 
 <style scoped>
-#side_contents{
+#side_contents {
   display: flex;
   flex-direction: column;
   min-width: 240px;
@@ -80,23 +77,26 @@ export default {
   border-radius: 10px 0 0 0;
   z-index: 10;
   position: relative;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
-#side_content_info{
+
+#side_content_info {
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 20px 10px;
   gap: 1px;
 }
-form[name=list]{
+
+form[name=list] {
   display: flex;
   flex-direction: column;
 }
-.btnList{
+
+.btnList {
   display: flex;
   height: 45px;
   gap: 20px;
@@ -105,29 +105,35 @@ form[name=list]{
   align-items: center;
   cursor: pointer;
 }
-.btnList:hover{
+
+.btnList:hover {
   background: #36373D;
 }
-.btnList:active{
+
+.btnList:active {
   background: #3B3D44;
 }
-.btnList > div:nth-of-type(1){
+
+.btnList > div:nth-of-type(1) {
   display: flex;
-  color:#fff;
+  color: #fff;
   width: 30px;
 }
-.btnList > div:nth-of-type(2){
+
+.btnList > div:nth-of-type(2) {
   display: flex;
   font-size: 15px;
-  color:#fff;
+  color: #fff;
   flex: 1;
   justify-content: space-between;
   align-items: center;
 }
-#searchBox{
+
+#searchBox {
   display: flex;
 }
-#searchBox > input[name=searchbox]{
+
+#searchBox > input[name=searchbox] {
   display: flex;
   background-color: #1E1F22;
   outline: none;
@@ -139,14 +145,15 @@ form[name=list]{
   width: 100%;
   margin-top: 10px;
 }
-.MyMember_exit{
+
+.MyMember_exit {
   display: flex;
   height: 8px;
   width: 8px;
 }
 
 
-img{
+img {
   width: 100%;
 }
 </style>
