@@ -1,6 +1,6 @@
 <script>
 
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -11,7 +11,7 @@ import api from "../../../../script/token/axios";
 
 export default defineComponent({
     // eslint-disable-next-line vue/multi-word-component-names
-    name:"Calendar",
+    name: "Calendar",
     components: {
         FullCalendar,
     },
@@ -22,15 +22,15 @@ export default defineComponent({
                     today: { // this overrides the prev button
                         text: "TODAY",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
+                            const isTest = loginService.methodTokenCheck()
+                            if (isTest) {
                                 this.getApi().today()
                                 this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 프리브")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
+                                console.log(this.getApi().getDate() + ": 프리브")
+                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly", {
                                     date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
+                                }).then(({data}) => {
+                                    for (const i in data) {
                                         this.getApi().addEvent({
                                             id: data[i].id,
                                             title: data[i].title,
@@ -41,7 +41,7 @@ export default defineComponent({
                                     }
                                 })
 
-                            }else {
+                            } else {
                                 router.push("/login").then()
                             }
 
@@ -51,15 +51,15 @@ export default defineComponent({
                     prev: { // this overrides the prev button
                         text: "PREV",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
+                            const isTest = loginService.methodTokenCheck()
+                            if (isTest) {
                                 this.getApi().prev();
                                 this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 프리브")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
+                                console.log(this.getApi().getDate() + ": 프리브")
+                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn", {
                                     date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
+                                }).then(({data}) => {
+                                    for (const i in data) {
                                         this.getApi().addEvent({
                                             id: data[i].id,
                                             title: data[i].title,
@@ -70,7 +70,7 @@ export default defineComponent({
                                     }
                                 })
 
-                            }else {
+                            } else {
                                 router.push("/login").then()
                             }
 
@@ -80,15 +80,15 @@ export default defineComponent({
                     next: { // this overrides the next button
                         text: "NEXT",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
+                            const isTest = loginService.methodTokenCheck()
+                            if (isTest) {
                                 this.getApi().next();
                                 this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 넥스트")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
+                                console.log(this.getApi().getDate() + ": 넥스트")
+                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn", {
                                     date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
+                                }).then(({data}) => {
+                                    for (const i in data) {
                                         this.getApi().addEvent({
                                             id: data[i].id,
                                             title: data[i].title,
@@ -99,7 +99,7 @@ export default defineComponent({
                                     }
                                 })
 
-                            }else{
+                            } else {
                                 router.push("/login").then()
                             }
 
@@ -136,14 +136,14 @@ export default defineComponent({
         this.initCalendar();
     },
     methods: {
-        initCalendar(){
-            const isTest=loginService.methodTokenCheck()
-            if(isTest){
+        initCalendar() {
+            const isTest = loginService.methodTokenCheck()
+            if (isTest) {
                 console.log("캘린더로드")
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly", {
                     date: this.getApi().getDate()
-                }).then(({data})=>{
-                    for(const i in data){
+                }).then(({data}) => {
+                    for (const i in data) {
                         this.getApi().addEvent({
                             id: data[i].id,
                             title: data[i].title,
@@ -153,7 +153,7 @@ export default defineComponent({
                         })
                     }
                 })
-            }else {
+            } else {
                 router.push("/login").then()
             }
 
@@ -169,7 +169,7 @@ export default defineComponent({
 
             if (title) {
                 let id;
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent", {
                     title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
@@ -185,14 +185,12 @@ export default defineComponent({
                 })
 
 
-
-
             }
         },
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent", {
                     id: clickInfo.event.id,
                     title: clickInfo.event.title,
                     start: clickInfo.event.start,
@@ -257,13 +255,12 @@ li {
 b { /* used for event dates/times */
     margin-right: 3px;
 }
-.demo-app-calendar{
+
+.demo-app-calendar {
 
     width: 100%;
 
 }
-
-
 
 
 </style>

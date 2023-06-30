@@ -80,6 +80,9 @@ export default {
     height: 100%;
     background: #41434A;
     padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+
 }
 
 .tab-container {
