@@ -1,22 +1,37 @@
 <script setup>
-import {useLobbyStore} from "../../../../script/stores/lobby";
-import {onMounted, reactive} from "vue";
-import api from "../../../../script/token/axios";
-import router from "../../../../script/routes/router";
+import {computed, onMounted, reactive} from "vue";
+import {useLobbyStore} from "../../../script/stores/lobby";
+import api from "../../../script/token/axios";
+import router from "../../../script/routes/router";
+import {useModalStore} from "../../../script/stores/modal";
 
 onMounted(() => {
 
 })
-
-
+const modalStore = useModalStore();
 const lobbyStore = useLobbyStore();
 
 let profileForm = reactive({
-    username: lobbyStore.user.username,
-    user_icon_url: lobbyStore.user.user_icon_url,
-    user_description: lobbyStore.user.user_description
+    username: getUsername,
+    user_icon_url: getuser_icon_url,
+    user_description: getuser_description
 })
-
+function test(){
+    console.log(profileForm.username)
+    console.log(profileForm.user_icon_url)
+    console.log(profileForm.user_description)
+}
+const getUsername = (computed(()=>{
+    return lobbyStore.user.username;
+}))
+const getuser_icon_url = (computed(()=>{
+    return lobbyStore.user.user_icon_url;
+}))
+const getuser_description = (computed(()=>{
+    return lobbyStore.user.user_description;
+}))
+test()
+lobbyStore.updateMyInfo()
 
 function imgChange(e) {
     const img = e.target.files[0];
@@ -41,7 +56,9 @@ function uploadProfile() {
         router.go(0)
     })
 }
-
+function exitModal(){
+    modalStore.terminate('userSetting')
+}
 
 </script>
 

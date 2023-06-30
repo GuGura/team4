@@ -9,10 +9,10 @@
                     <h2 class="featurette-heading fw-normal lh-1">{{ lobbyStore.user.username }} </h2>
                     <div class="lead"> {{ lobbyStore.user.user_description }}</div>
                 </div>
-                <div class="edit-button">
+                <div class="edit-button" @click="openModal()">
                     <span class="material-symbols-outlined">manage_accounts</span>
                     <div>프로필 수정</div>
-                    <UserSettingModal/>
+                    <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
                 </div>
             </div>
         </div>
@@ -31,9 +31,14 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 
 import Tab from "@/components/mainpage/lobby/Tab.vue";
 import UserSettingModal from "@/components/modal/UserSettingModal.vue";
+import {useModalStore} from "../../../../script/stores/modal";
 
 const lobbyStore = useLobbyStore();
+const modalStore = useModalStore();
 
+function openModal(){
+    modalStore.open('userSetting')
+}
 onMounted(() => {
 
 })

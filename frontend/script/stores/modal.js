@@ -5,6 +5,7 @@ export const useModalStore = defineStore("modalStore",()=>{
     const modal = reactive({
         addServer : false,
         attendChannel: false,
+        userSetting: false,
     })
 
     function terminate(index){
