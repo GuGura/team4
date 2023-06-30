@@ -5,7 +5,6 @@ import api from "../../../../script/token/axios";
 function addEvent(){
     let title = prompt('추가할 일정명을 입력해주세요.')
     if (title) {
-        let id;
         api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
             title,
             start: today.setDate(today.getDate()-1),
@@ -27,7 +26,6 @@ function initEvents() {
 }
 
 onMounted(() => {
-    alert("로드")
     initEvents()
 })
 
