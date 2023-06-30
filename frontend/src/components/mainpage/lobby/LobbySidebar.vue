@@ -33,6 +33,7 @@ const props = reactive({
 
       <div style="color: #fff;margin-top: 10px; padding: 0 5px;">리스트</div>
       <!----><!---->
+        <a href="">
       <div class="btnList">
         <div style="width: 35px;">
           <img src="/img/sidebar/userIcon.png">
@@ -46,6 +47,7 @@ const props = reactive({
           </div>
         </div>
       </div>
+        </a>
       <!---->
       <!---->
       <div class="btnList">

@@ -5,6 +5,8 @@ export const useModalStore = defineStore("modalStore",()=>{
     const modal = reactive({
         addServer : false,
         attendChannel: false,
+        userSetting: false,
+        writingContent: false,
         RoomToggle: false,
         CreateRoom: false,
     })

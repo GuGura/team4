@@ -50,9 +50,10 @@ public class MyInfoController {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         Member member = memberService.getLobbyInfoByMemberUID(memberUID);
         resultDTO = ResultDTO.builder()
-                .result(member)
+                .result(UserUtil.memberToReturn(member))
                 .message("lobby Info callback")
                 .build();
         return new ResponseEntity<>(resultDTO,HttpStatus.OK);
     }
+
 }

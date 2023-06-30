@@ -27,7 +27,7 @@ dependencies {
     //WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:sockjs-client:1.1.2'
-    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    implementation 'org.webjars:stomp-websocket:2.3.3'
     //MyBatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0'
     //DB
@@ -40,10 +40,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     implementation('org.projectlombok:lombok')
     annotationProcessor 'org.projectlombok:lombok'
-
-    //추가#####
-    implementation 'org.springframework:spring-messaging:6.0.3'
-    implementation 'org.springframework.security:spring-security-messaging:6.0.2'
 
 
 ///////////////////////////////////////////////////////////////이거 밑으로는 세트임
