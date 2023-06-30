@@ -240,6 +240,13 @@ export default defineComponent({
 .fc-daygrid-view .fc-daygrid-day-frame {
     border-color: black;
 }
+.fc-col-header-cell-cushion{
+    color: #1F2123;
+}
+
+.fc-event-main{
+    background-color: #2b2d31;
+}
 
 
 .fc-daygrid-event-harness {

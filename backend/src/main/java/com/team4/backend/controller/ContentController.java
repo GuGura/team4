@@ -61,7 +61,11 @@ public class ContentController {
         }
         RContent.setTitle(content.getTitle());
         RContent.setVisible(content.isVisible());
-        RContent.setImgIn(content.isImgIn());
+        if(content.isImgIn()){
+            RContent.setIsImgIn(1);
+        }else{
+            RContent.setIsImgIn(0);
+        }
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         RContent.setUploadDate(transFormat.format(content.getUploadDate()));
         RContent.setWriter_id(content.getWriter_id());

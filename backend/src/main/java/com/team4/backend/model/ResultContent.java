@@ -18,5 +18,5 @@ public class ResultContent {
     private String uploadDate;
     private boolean visible;
     private byte[] contentIMG;
-    private boolean isImgIn;
+    private int isImgIn;
 }

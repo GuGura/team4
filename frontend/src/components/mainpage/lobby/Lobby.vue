@@ -5,7 +5,7 @@
                 <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded">
             </div>
             <div id="userName">
-                <div class="col-md-7 order-md-2">
+                <div class="order-md-2">
                     <h2 class="featurette-heading fw-normal lh-1">{{ lobbyStore.user.username }} </h2>
                     <div class="lead"> {{ lobbyStore.user.user_description }}</div>
                 </div>
