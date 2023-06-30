@@ -97,6 +97,7 @@ public class ContentController {
             //파일명
             String fileName = base64.substring(30,50)+".png";
             String uploadFolder = "C:\\upload\\images\\users\\"+ UserUtil.getEmail().substring(0,UserUtil.getEmail().lastIndexOf("@"))+"\\contents\\";
+            new File(uploadFolder).mkdirs();
             File outputfile = new File(uploadFolder+fileName);
             ImageIO.write(image, "png", outputfile);
             content.setContentIMG(uploadFolder+fileName);

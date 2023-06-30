@@ -35,8 +35,8 @@ public interface EventMapper {
             @Result(column = "memberId", property = "memberId"),
             @Result(column = "groupName", property = "groupName")
     })
-    List<EventDTO> listDaily(String date, int memberId);
+    List<EventDTO> listDaily(@Param("date") String date, @Param("memberId") int memberId);
 
     @Delete("delete from event where id = #{id}")
-    void deleteEvent(int id);
+    void deleteEvent(@Param("id") int id);
 }

@@ -81,19 +81,20 @@ create table content
     writer_id  int,
     title      varchar(100),
     content    longtext,
-    uploadDate date default current_timestamp(),
-		visible tinyint default TRUE,
-		contentIMG VARCHAR(500),
-		isImgIn tinyint
+    uploadDate date    default current_timestamp(),
+    visible    tinyint default TRUE,
+    contentIMG VARCHAR(500),
+    isImgIn    tinyint
 
 );
 
-create table event(
-id int NOT NULL AUTO_INCREMENT PRIMARY key,
-estart date,
-end date,
-title varchar(500),
-memberId int,
-groupId INT,
-allday BOOLEAN
+create table event
+(
+    id        int NOT NULL AUTO_INCREMENT PRIMARY key,
+    estart    date,
+    end       date,
+    title     varchar(500),
+    memberId  int,
+    groupName varchar(100),
+    allday    BOOLEAN
 );
