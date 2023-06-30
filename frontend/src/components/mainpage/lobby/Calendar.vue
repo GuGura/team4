@@ -113,9 +113,9 @@ export default defineComponent({
                     interactionPlugin // needed for dateClick
                 ],
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next',
                     center: 'title',
-                    right: 'dayGridMonth'
+                    right: 'today'
                 },
                 initialView: 'dayGridMonth',
                 editable: true,
@@ -229,40 +229,42 @@ export default defineComponent({
     </FullCalendar>
 </template>
 
-<style>
-#app {
-    flex: 1;
-    margin: 0;
-    padding: 0;
-
-}
-
-h2 {
-    margin: 0;
-    font-size: 16px;
-}
-
-ul {
-    margin: 0;
-    padding: 0 0 0 1.5em;
-}
-
-li {
-    margin: 1.5em 0;
-    padding: 0;
-}
-
-b { /* used for event dates/times */
-    margin-right: 3px;
-}
-
+<style scoped>
 .demo-app-calendar {
-
     width: 100%;
-
+    background-color: gray;
+    color: #ffffff;
+    border-radius: 5px;
 }
 
+.fc-daygrid-view .fc-daygrid-day-frame {
+    border-color: black;
+}
+
+
+.fc-daygrid-event-harness {
+    background-color: black;
+}
+
+.fc-today-button {
+    margin-top: -10px;
+}
+
+.fc-day-sun a {
+    color: red;
+    text-decoration: none;
+}
+
+.fc-col-header-cell-cushion{
+    color: #1E1F22;
+}
+.fc-daygrid-day-number{
+    color: white;
+}
 
 </style>
+
+
+
 
 
