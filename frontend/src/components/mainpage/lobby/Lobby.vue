@@ -66,7 +66,7 @@ form[name=list]{
     padding: 0 5px;
     height: 35px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 9px;
 }
 
 
