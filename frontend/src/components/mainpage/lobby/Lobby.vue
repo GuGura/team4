@@ -179,7 +179,6 @@ h2.featurette-heading {
 
 #main_content2 {
     display: flex;
-    background: #212529;
     width: 25%;
     height: 60%; /* 임시로 */
 }

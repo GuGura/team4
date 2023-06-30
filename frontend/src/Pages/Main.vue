@@ -62,8 +62,8 @@ onMounted(()=>{
 }
 
 #contents {
-  display: flex;
-  flex: 1;
-  background: #1E1F22;
+    display: flex;
+    flex: 1;
+    background: #1F2123;
 }
 </style>

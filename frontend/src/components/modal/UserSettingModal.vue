@@ -57,7 +57,7 @@ function exitModal(){
                     <div>프로필 수정</div>
                     <img src="/img/serverlist/exit.png" alt="" @click="exitModal">
                 </div>
-                <div id="description">유저 정보 수정 어쩌고</div>
+                <div id="description"></div>
             </div>
             <div id="body">
                 <div id="img_upload">

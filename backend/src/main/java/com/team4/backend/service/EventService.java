@@ -28,6 +28,19 @@ public class EventService {
     }
 
     public List<EventDTO> listDaily(int year,int month, int date, int memberId) {
-        return eventMapper.listDaily(year,month,date,memberId);
+        String sMonth = "";
+        if(month<10){
+            sMonth = "0"+Integer.toString(month);
+        }else{
+            sMonth = Integer.toString(month);
+        }
+        String sDate = "";
+        if(date<10){
+            sDate = "0"+Integer.toString(date);
+        }else{
+            sDate = Integer.toString(date);
+        }
+        String fullDate = Integer.toString(year)+"-"+sMonth+"-"+sDate;
+        return eventMapper.listDaily(fullDate,memberId);
     }
 }
