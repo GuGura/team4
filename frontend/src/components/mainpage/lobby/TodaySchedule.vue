@@ -9,7 +9,7 @@ const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", 
 function addEvent(){
     let title = prompt('추가할 일정명을 입력해주세요.')
     if (title) {
-        api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
+        api.post(process.env.VUE_APP_BASEURL_V1 + "/event/saveEvent",{
             title,
             start: today.setDate(today.getDate()),
             end: today.setDate(today.getDate()+1),
