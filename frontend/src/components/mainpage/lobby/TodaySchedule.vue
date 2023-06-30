@@ -12,6 +12,7 @@ function addEvent(){
             end: today.setDate(today.getDate()+1),
             allDay: true
         }).then(() => {
+            today.setDate(today.getDate()-1),
             initEvents()
         })
     }
@@ -79,11 +80,11 @@ initEvents()
   <div class="container">
       <div class="card" id="wholeCard">
           <div class="card-header">
-              <h3>
-                  <button class="btnDate" @click="prevDate">&nbsp&lt;&nbsp</button>
-                     &nbsp{{Dates.year}}.{{Dates.month}}.{{Dates.date}}&nbsp
-                  <button class="btnDate" @click="nextDate">&nbsp&gt;&nbsp</button>
-              </h3>
+              <h4>
+                  <button class="btnDate" @click="prevDate">&lt;</button>
+                     {{Dates.year}}.{{Dates.month}}.{{Dates.date}}
+                  <button class="btnDate" @click="nextDate">&gt;</button>
+              </h4>
 
           </div>
           <div class="card-body">

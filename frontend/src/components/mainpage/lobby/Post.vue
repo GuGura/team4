@@ -1,11 +1,18 @@
 <template>
     <div class="card mb-3">
-        <img src="/img/sidebar/DM_icon.png" class="card-img-top" alt="Post Image">
+            <div v-if="post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+post.contentIMG" class="img-fluid"></div>
         <div class="card-body">
-            <h5 class="card-title">{{ post.username }}</h5>
+            <div class="row">
+            <div class="col-4" style="width: 100px;">
+                <img :src="post.userIcon">
+            </div>
+            <div class="col-8">
             <h4 class="card-subtitle mb-2">{{ post.title }}</h4>
+            <h6 class="card-title">{{ post.username }}</h6>
+            <p class="card-text"><small class="text-body-secondary">{{ post.uploadDate }}</small></p>
+            </div>
+            </div>
             <p class="card-text">{{ post.content }}</p>
-            <p class="card-text"><small class="text-body-secondary">Last updated {{ post.uploadDate }}</small></p>
             <div class="btnDelete" @click="toggleDelete">
                 <span class="material-symbols-outlined" :class="{ active: showDelete }">close</span>
             </div>

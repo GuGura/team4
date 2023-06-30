@@ -262,6 +262,13 @@ b { /* used for event dates/times */
     width: 100%;
 
 }
+.fc-col-header-cell-cushion{
+    color: #1F2123;
+}
+
+.fc-event-main{
+    background-color: #2b2d31;
+}
 
 
 

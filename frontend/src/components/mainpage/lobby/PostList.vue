@@ -9,6 +9,9 @@ function initPosts() {
     }).then(({data}) => {
         postList.posts = data;
         lastPosting=postList.posts.at(-1).id
+        for(const item of data){
+            console.log(item.isImgIn)
+        }
         })
 }
 function morePost(){
@@ -17,6 +20,7 @@ function morePost(){
     }).then(({data}) => {
         for(const item of data){
             postList.posts.push(item)
+
         }
         lastPosting=postList.posts.at(-1).id
     })
@@ -35,7 +39,8 @@ let postList = reactive({
             title: '',
             content: '',
             id: '',
-            contentIMG: ''
+            contentIMG: '',
+            isImgIn: ''
         }
 
     ]
