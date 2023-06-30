@@ -80,12 +80,6 @@ export default {
     height: 100%;
     background: #41434A;
     padding: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none
 }
 
 .content-box::-webkit-scrollbar{

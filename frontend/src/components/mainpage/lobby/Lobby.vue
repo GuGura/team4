@@ -95,7 +95,13 @@ form[name=list]{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
 
+}
+#main_contents::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 
 #main_content_header {

@@ -73,3 +73,27 @@ create table chat_room
         primary key,
     name    varchar(255) null
 );
+
+create table content
+(
+    id         int auto_increment
+        PRIMARY key,
+    writer_id  int,
+    title      varchar(100),
+    content    longtext,
+    uploadDate date default current_timestamp(),
+		visible tinyint default TRUE,
+		contentIMG VARCHAR(500),
+		isImgIn tinyint
+
+);
+
+create table event(
+id int NOT NULL AUTO_INCREMENT PRIMARY key,
+estart date,
+end date,
+title varchar(500),
+memberId int,
+groupId INT,
+allday BOOLEAN
+);
