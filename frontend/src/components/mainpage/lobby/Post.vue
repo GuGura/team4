@@ -19,7 +19,7 @@
             <p class="card-text contents fw-light">{{ post.content }}</p>
         </div>
         <div v-else>
-            <p class="card-text contents fw-light">포스트가 삭제되었습니다.</p>
+            <p class="card-text contents fw-light">포스트가 존재하지않습니다.</p>
         </div>
     </div>
 </template>

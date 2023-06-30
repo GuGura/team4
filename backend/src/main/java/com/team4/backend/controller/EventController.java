@@ -7,16 +7,14 @@ import com.team4.backend.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping(ControllerProperties.API_VERSION)
 public class EventController {
 
     private final EventService eventService;
@@ -28,7 +26,7 @@ public class EventController {
         this.memberMapper = memberMapper;
     }
 
-    @PostMapping("api/v1/home/saveEvent")
+    @PostMapping("/event/saveEvent")
     public int save(@RequestBody EventDTO event, HttpServletRequest request) throws Exception {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         event.setGroupName(memberMapper.findMemberByUID(memberUID).getUsername());
@@ -37,23 +35,23 @@ public class EventController {
         return id;
     }
 
-    @PostMapping("api/v1/home/deleteEvent")
+    @PostMapping("/event/deleteEvent")
     public void deleteEvent(@RequestBody EventDTO event) throws Exception {
         eventService.deleteEvent(event.getId());
     }
 
     @ResponseBody
-    @PostMapping("api/v1/home/listMonthly")
+    @PostMapping("/event/listMonthly")
     public ResponseEntity<List<EventDTO>> listMonthly(@RequestBody String date, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         String year = date.substring(14,16);
-        System.out.println(year);
+        System.out.println("이벤트컨트롤러 리스트먼슬리 year="+year);
         List<EventDTO> events= eventService.listMonthly(Integer.parseInt(year), memberUID);
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
     @ResponseBody
-    @PostMapping("api/v1/event/listByDate")
+    @PostMapping("/event/listByDate")
     public ResponseEntity<List<EventDTO>> listByDate(@RequestBody Map<String,String> params, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         List<EventDTO> events= eventService.listDaily(Integer.parseInt(params.get("year")),Integer.parseInt(params.get("month")), Integer.parseInt(params.get("date")), memberUID);
@@ -61,7 +59,7 @@ public class EventController {
     }
 
     @ResponseBody
-    @PostMapping("api/v1/home/listMonthlyBtn")
+    @PostMapping("/event/listMonthlyBtn")
     public ResponseEntity<List<EventDTO>> listMonthlyNext(@RequestBody String date, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         String year = date.substring(14,16);

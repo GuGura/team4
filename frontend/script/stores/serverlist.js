@@ -37,9 +37,8 @@ export const useServerListStore = defineStore("serverListStore", () => {
 
     async function initBtn() {
         await api.get(process.env.VUE_APP_BASEURL_V1 + "/myInfo/channelList")
-            .then((res) => {
-                console.log(res)
-                const resultArray = res.data.result;
+            .then(({data}) => {
+                const resultArray = data.result;
                 resultArray.forEach(btn => {
                     buttons.push(btn)
                 })

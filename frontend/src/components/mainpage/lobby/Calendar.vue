@@ -1,6 +1,6 @@
 <script>
 
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -11,7 +11,7 @@ import api from "../../../../script/token/axios";
 
 export default defineComponent({
     // eslint-disable-next-line vue/multi-word-component-names
-    name:"Calendar",
+    name: "Calendar",
     components: {
         FullCalendar,
     },
@@ -19,60 +19,45 @@ export default defineComponent({
         return {
             calendarOptions: {
                 customButtons: {
-                    today: { // this overrides the prev button
+                    today: {
                         text: "TODAY",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
-                                this.getApi().today()
-                                this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 프리브")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
-                                    date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
-                                        this.getApi().addEvent({
-                                            id: data[i].id,
-                                            title: data[i].title,
-                                            start: data[i].start,
-                                            end: data[i].end,
-                                            allDay: true
-                                        })
-                                    }
-                                })
-
-                            }else {
-                                router.push("/login").then()
-                            }
-
-
+                            this.getApi().today()
+                            this.getApi().removeAllEvents();
+                            console.log(this.getApi().getDate() + ": 프리브")
+                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthly", {
+                                date: this.getApi().getDate()
+                            }).then(({data}) => {
+                                for (const i in data) {
+                                    this.getApi().addEvent({
+                                        id: data[i].id,
+                                        title: data[i].title,
+                                        start: data[i].start,
+                                        end: data[i].end,
+                                        allDay: true
+                                    })
+                                }
+                            })
                         }
                     },
                     prev: { // this overrides the prev button
                         text: "PREV",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
-                                this.getApi().prev();
-                                this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 프리브")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
-                                    date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
-                                        this.getApi().addEvent({
-                                            id: data[i].id,
-                                            title: data[i].title,
-                                            start: data[i].start,
-                                            end: data[i].end,
-                                            allDay: true
-                                        })
-                                    }
-                                })
-
-                            }else {
-                                router.push("/login").then()
-                            }
+                            this.getApi().prev();
+                            this.getApi().removeAllEvents();
+                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtn", {
+                                date: this.getApi().getDate()
+                            }).then(({data}) => {
+                                for (const i in data) {
+                                    this.getApi().addEvent({
+                                        id: data[i].id,
+                                        title: data[i].title,
+                                        start: data[i].start,
+                                        end: data[i].end,
+                                        allDay: true
+                                    })
+                                }
+                            })
 
 
                         }
@@ -80,30 +65,22 @@ export default defineComponent({
                     next: { // this overrides the next button
                         text: "NEXT",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
-                                this.getApi().next();
-                                this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 넥스트")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
-                                    date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
-                                        this.getApi().addEvent({
-                                            id: data[i].id,
-                                            title: data[i].title,
-                                            start: data[i].start,
-                                            end: data[i].end,
-                                            allDay: true
-                                        })
-                                    }
-                                })
-
-                            }else{
-                                router.push("/login").then()
-                            }
-
-
+                            this.getApi().next();
+                            this.getApi().removeAllEvents();
+                            console.log(this.getApi().getDate() + ": 넥스트")
+                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtn", {
+                                date: this.getApi().getDate()
+                            }).then(({data}) => {
+                                for (const i in data) {
+                                    this.getApi().addEvent({
+                                        id: data[i].id,
+                                        title: data[i].title,
+                                        start: data[i].start,
+                                        end: data[i].end,
+                                        allDay: true
+                                    })
+                                }
+                            })
                         }
                     }
                 },
@@ -136,26 +113,21 @@ export default defineComponent({
         this.initCalendar();
     },
     methods: {
-        initCalendar(){
-            const isTest=loginService.methodTokenCheck()
-            if(isTest){
-                console.log("캘린더로드")
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
-                    date: this.getApi().getDate()
-                }).then(({data})=>{
-                    for(const i in data){
-                        this.getApi().addEvent({
-                            id: data[i].id,
-                            title: data[i].title,
-                            start: data[i].start,
-                            end: data[i].end,
-                            allDay: true
-                        })
-                    }
-                })
-            }else {
-                router.push("/login").then()
-            }
+        initCalendar() {
+            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthly", {
+                date: this.getApi().getDate()
+            }).then(({data}) => {
+                for (const i in data) {
+                    this.getApi().addEvent({
+                        id: data[i].id,
+                        title: data[i].title,
+                        start: data[i].start,
+                        end: data[i].end,
+                        allDay: true
+                    })
+                }
+            })
+
 
         },
         handleWeekendsToggle() {
@@ -168,8 +140,7 @@ export default defineComponent({
             calendarApi.unselect() // clear date selection
 
             if (title) {
-                let id;
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent", {
                     title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
@@ -185,14 +156,12 @@ export default defineComponent({
                 })
 
 
-
-
             }
         },
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent",{
+                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent", {
                     id: clickInfo.event.id,
                     title: clickInfo.event.title,
                     start: clickInfo.event.start,
@@ -257,21 +226,24 @@ li {
 b { /* used for event dates/times */
     margin-right: 3px;
 }
-.demo-app-calendar{
+
+.demo-app-calendar {
 
     width: 100%;
 
 }
-.fc-col-header-cell-cushion{
+
+.fc-col-header-cell-cushion {
     color: #1F2123;
 }
 
-.fc-event-main{
+.fc-event-main {
     background-color: yellow;
     border-color: yellow;
     border-radius: 2px;
 }
-:root{
+
+:root {
     --fc-event-border-color: black;
 }
 

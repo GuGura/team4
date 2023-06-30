@@ -1,9 +1,9 @@
 server:
   port: 8090
 
-logging:
-  level:
-    org.springframework: DEBUG
+#logging:
+#  level:
+#    org.springframework: DEBUG
 
 spring:
   mail:
@@ -34,3 +34,6 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: project1
     password: 1234
+
+  profiles:
+      active: local

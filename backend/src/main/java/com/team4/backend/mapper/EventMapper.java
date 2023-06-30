@@ -23,7 +23,7 @@ public interface EventMapper {
             @Result(column = "title", property = "title"),
             @Result(column = "memberId", property = "memberId")
     })
-    List<EventDTO> listMonthly(int year, int memberId);
+    List<EventDTO> listMonthly(@Param("year") int year, @Param("memberId") int memberId);
 
 
     @Select("SELECT * from EVENT WHERE TO_CHAR(estart,'yyyy-mm-dd') = #{date} || TO_CHAR(DATE_SUB(end, INTERVAL 1 day),'yyyy-mm-dd') =  #{date} and memberId=#{memberId}")

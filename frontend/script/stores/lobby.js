@@ -19,7 +19,6 @@ export const useLobbyStore = defineStore("lobbyStore", () => {
     function updateMyInfo() {
         api.get(process.env.VUE_APP_BASEURL_V1 + '/myInfo/lobby')
             .then(({data}) => {
-                console.log("updateMyInfo")
                 const userInfo = data.result
                 user.email = userInfo.email
                 user.username = userInfo.username
