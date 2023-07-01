@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue';
+import {computed, onMounted, reactive} from 'vue';
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
 import {useChannelStore} from "../../../../script/stores/channel";
 import {useLobbyStore} from "../../../../script/stores/lobby";
@@ -11,10 +11,13 @@ const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
 const serverListStore = useServerListStore();
 
-const room_name = ref(''); // ChatRoom Name
-const textChatrooms = ref([]); // Text Chat Room List
-const voiceChatrooms = ref([]); // Voice Chat Room List
-const room_type = ref(false); // Text and Voice Type
+const roomInfo = reactive({
+  name: '',
+  room_type: false
+}); // ChatRoom Name
+const textChatRooms = reactive([]); // Text Chat Room List
+const voiceChatRooms = reactive([]); // Voice Chat Room List
+
 
 const updateUsername = computed(() => {
   return lobbyStore.user.username
@@ -26,11 +29,9 @@ const updateChannelId = computed(() => {
 const findAllRoom = async () => {
   console.log("findAllRoom")
   await api.get(process.env.VUE_APP_BASEURL_V1 + '/chat/rooms').then(({data}) => {
-    console.log("findAllRoom Result : " + JSON.stringify(data));
     data.forEach(item => {
-      console.log(item)
-      if (item['roomType'] === true) voiceChatrooms.value.push(item)
-      else if (item['roomType'] === false) textChatrooms.value.push(item)
+      if (item['roomType'] === true) voiceChatRooms.push(item)
+      else if (item['roomType'] === false) textChatRooms.push(item)
     })
   }).catch(err => {
     console.log("err" + err);
@@ -38,20 +39,17 @@ const findAllRoom = async () => {
 };
 
 const createRoom = () => {
-  if ("" === room_name.value) {
+  if ("" === roomInfo.name) {
     alert("방 제목을 입력해 주십시요.");
   } else {
-    let params = new URLSearchParams();
-    params.append("name", room_name.value);
-    params.append("room_type", room_type.value);
-    api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', params)
-        .then(
-            response => {
-              alert(response.data.name + "방 개설에 성공하였습니다.")
-              room_name.value = '';
-              findAllRoom();
-            }
-        )
+    api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', roomInfo)
+        .then(({data}) => {
+          console.log(data)
+          if (data.roomType === false) textChatRooms.push(data)
+          else if (data.roomType === true) voiceChatRooms.push(data)
+          alert(data.name + "방 개설에 성공하였습니다.")
+          roomInfo.name = '';
+        })
         .catch(() => {
           alert("채팅방 개설에 실패하였습니다.");
         });
@@ -99,7 +97,7 @@ onMounted(() => {
           </div>
 
           <ul class="btnRooms">
-            <li class="btnRoom" v-for="item in textChatrooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
+            <li class="btnRoom" v-for="item in textChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
               <div>
                 <img src="/img/channel/chat.png">
               </div>
@@ -120,7 +118,7 @@ onMounted(() => {
 
           <ul class="btnRooms">
 
-            <li class="btnRoom" v-for="item in voiceChatrooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
+            <li class="btnRoom" v-for="item in voiceChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
               <div>
                 <img src="/img/channel/speak.png">
               </div>
@@ -150,9 +148,9 @@ onMounted(() => {
             <div>
               <label>방제목</label>
             </div>
-            <input type="text" v-model="room_name" @keyup.enter="createRoom">
+            <input type="text" v-model="roomInfo.name" @keyup.enter="createRoom">
             <div>
-              <input type="checkbox" id="roomType" v-model="room_type">
+              <input type="checkbox" id="roomType" v-model="roomInfo.room_type">
               <label for="roomType">음성채팅방으로 설정</label>
             </div>
           </div>

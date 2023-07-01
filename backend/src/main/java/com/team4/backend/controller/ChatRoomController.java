@@ -32,11 +32,7 @@ public class ChatRoomController {
         return chatRoomRepository.findAllRoom();
     }
 
-    @PostMapping("/room")
-    @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name, boolean room_type) {
-        return chatRoomRepository.createChatRoom(name, room_type);
-    }
+
 
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody

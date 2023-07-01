@@ -34,6 +34,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println("요청 URL: "+ request.getRequestURL());
         System.out.println("CHECK JWT : JwtAuthorizationFilter.doFilterInternal");
         String tokenType = jwtService.findTokenType(request);
         System.out.println("1. 권한이나 인증이 필요한 요청이 전달됨: " + tokenType);

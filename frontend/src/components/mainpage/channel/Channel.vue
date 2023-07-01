@@ -2,25 +2,24 @@
 import {computed, defineComponent, reactive} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
-import {connectSocket, subscribeToRoom, sendMessage, findRoomMessage } from '/script/socket';
+import {useSocketStore} from '/script/socket';
 
 
 const lobbyStore = useLobbyStore();
 
-const updateUsername = computed(()=>{
+const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
-
+const socketStore = useSocketStore();
 export default defineComponent({
-  created() {
-    this.wsModule();
-  },
+
   watch: {
     '$route.params.roomId'(to, from) {
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
         console.log("start enterRoom");
         this.enterRoom();
-        console.log(`Changed from server to room` + this.roomId);
+        const url = `${to}`
+        console.log(`-----------------------Changed from server to room------------------------` ,url );
       }
     }
   },
@@ -66,48 +65,28 @@ export default defineComponent({
 
       this.messageList.messages = []; // messageList 초기화
     },
-    async wsModule(){
-      try {
-        this.ws = await connectSocket();
-      } catch (e) {
-        console.log("ws module Error");
-      }
-    },
     async enterRoom() {
-      try {
-        const roomId = localStorage.getItem('wschat.roomId');
-        await findRoomMessage(roomId)
-            .then((data) => {
-              console.log(data);
-              this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
-              subscribeToRoom(this.ws, roomId, this.sender, this.messageList)
-                  .then(() => {
-                    console.log('구독에 성공했습니다.');
-                  })
-                  .catch((error) => {
-                    console.log('구독에 실패했습니다.', error);
-                  });
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-      } catch (e) {
-        console.log('enterRoom Error in Channel.vue');
-      }
-    },
-
-    sendMessage() {
       const roomId = localStorage.getItem('wschat.roomId');
-      const sender = this.sender;
-      const message = this.inputMessage;
+      console.log("-----------------------------enterRoom:-------------------------\n ", roomId)
+      const data = await socketStore.findRoomMessage(roomId);
 
-      sendMessage(this.ws, roomId, sender, message);
-      this.inputMessage = ''; // 입력 필드 초기화
+      console.log("------------------------data", data);
+      this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
+      await socketStore.subscribeToRoom(roomId, this.sender)
     },
+
+  sendMessage() {
+
+    const roomId = localStorage.getItem('wschat.roomId');
+    console.log("------------------------------------sendMessage--------------", roomId)
+    const sender = this.sender;
+    const message = this.inputMessage;
+
+    socketStore.sendMessage(this.ws, roomId, sender, message);
+    this.inputMessage = ''; // 입력 필드 초기화
   },
-  beforeUnmount() {
-    this.disconnect(); // 컴포넌트가 해제되기 전에 웹소켓 연결 끊기
-  },
+},
+
 
 });
 </script>
@@ -131,12 +110,12 @@ export default defineComponent({
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
           <div class="scroll box2">
-          <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
-            <ChatBox :messages="message"/>
-          </div>
-          <div class="Box" v-for="(messages,idx) in messageList.messages" :key="idx">
-            <ChatBox :messages="messages"/>
-          </div>
+            <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
+              <ChatBox :messages="message"/>
+            </div>
+            <div class="Box" v-for="(messages,idx) in messageList.messages" :key="idx">
+              <ChatBox :messages="messages"/>
+            </div>
           </div>
         </div>
 
@@ -206,29 +185,30 @@ export default defineComponent({
 
 <style scoped>
 
-.box2::-webkit-scrollbar{
+.box2::-webkit-scrollbar {
   width: 10px;
 }
 
 /* 스크롤바 막대 설정*/
-.box2::-webkit-scrollbar-thumb{
+.box2::-webkit-scrollbar-thumb {
   background-color: #1A1B1E;
   border: 4px solid #1A1B1E;
   border-radius: 50px;
 }
 
 /* 스크롤바 뒷 배경 설정*/
-.box2::-webkit-scrollbar-track{
-  background-color: rgba(0,0,0,0);
+.box2::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
   width: 15px;
 }
 
-.scroll{
+.scroll {
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
+
 /** scroll*/
 #header {
   display: flex;
@@ -237,10 +217,10 @@ export default defineComponent({
   width: 100%;
   height: 50px;
   z-index: 11;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
 
 #header > div {
@@ -266,7 +246,8 @@ export default defineComponent({
 #chatMain_Header > div:nth-of-type(1) > div:nth-of-type(1) {
   height: 15px;
 }
-input[name=searchRoom]{
+
+input[name=searchRoom] {
   display: flex;
   height: 60%;
   background: #1E1F22;
@@ -275,6 +256,7 @@ input[name=searchRoom]{
   border: none;
   padding: 0 10px;
 }
+
 /** Add*/
 .MyMember_Info {
   display: flex;
@@ -360,10 +342,10 @@ input[name=message] {
   width: 22%;
   height: 100%; /* 임시로 */
   z-index: 10;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
 
 #online {

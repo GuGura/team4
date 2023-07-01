@@ -1,106 +1,123 @@
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
-import authHeader from "./token/authHeader";
+
 import api from "./token/axios";
+import {defineStore} from "pinia";
+import {reactive, ref} from "vue";
 
 //소켓에 연결하는 기능
-export function connectSocket() {
-    const serverURL = process.env.VUE_APP_BASEURL + '/ws';
-    let socket = new SockJS(serverURL);
-    const ws = Stomp.over(socket);
-    console.log('serverURL: ' + serverURL);
+export const useSocketStore = defineStore("socketStore", () => {
 
-    return new Promise((resolve, reject) => {
-        ws.connect(
-            {
-                accessJwt: authHeader(),
-            },
-            frame => {
-                console.log('소켓 연결 성공', frame);
-                resolve(ws);
-            },
-            error => {
-                console.log('소켓 연결 실패 ', error);
-                reject(error);
-            }
-        );
-    });
-}
+    let ws = reactive(null)
+    let messageList = reactive([])
+    let wsConnected = ref(false);  // WebSocket 연결 상태 추가
+    function connectSocket() {
+        const serverURL = process.env.VUE_APP_BASEURL + '/ws';
+        let socket = new SockJS(serverURL);
+        console.log(ws)
+        ws = Stomp.over(socket);
+        console.log('serverURL: ' + serverURL);
+        ws.connect({}, connectSuccess, connectFail);
+    }
 
-//구독하는 기능
-export function subscribeToRoom(ws, roomId, sender, messageList) {
-    return new Promise((resolve, reject) => {
+    function connectSuccess(frame) {
+        console.log("호출성공", frame)
+        wsConnected = true
+    }
+
+    function connectFail() {
+        alert("호출 실패")
+        wsConnected = false
+    }
+
+    function socketStatus() {
+// WebSocket 연결 상태 확인
+        console.log('현재 연결 상태:');
+// onopen 이벤트 핸들러 등록
+        ws.onopen = function () {
+            console.log('WebSocket 연결이 열렸습니다.');
+        };
+// onclose 이벤트 핸들러 등록
+        ws.onclose = function () {
+            console.log('WebSocket 연결이 닫혔습니다.');
+        };
+    }
+
+    function subscribeToRoom(roomId, sender) {
         ws.subscribe(
             '/sub/chat/room/' + roomId,
             message => {
                 console.log('구독으로 받은 메시지입니다.', message.body);
                 const recv = JSON.parse(message.body);
-                receiveMessage(recv, messageList); // messageList 객체 전달
+                receiveMessage(recv);
             },
-            {
-                id: 'room-subscription', // 구독 ID를 지정하여 나중에 구독 해제할 수 있습니다.
-            }
+            {id: 'room-subscription'}
         );
         if (ws && ws.connected) {
-            console.log('Start ws.connect Channel.vue ')
+            console.log('Start ws.connect Channel.vue ');
             const msg = {
                 type: 'ENTER',
                 roomId: roomId,
                 sender: sender,
             };
-
-            ws.send(
-                "/pub/chat/message",
-                JSON.stringify(msg),
-                {}
-            );
+            console.log("ddddddddddddddddddddddddddddddddddddddddd", msg)
+            ws.send('/pub/chat/message', JSON.stringify(msg), {});
         } else {
-            reject(new Error('소켓 연결이 실패했습니다.'));
+            throw new Error('소켓 연결이 실패했습니다.');
         }
-    });
-}
 
-
-
-//메세지 전송 기능
-export function sendMessage(ws, roomId, sender, message) {
-    const msg = {
-        type: 'TALK',
-        roomId: roomId,
-        sender: sender,
-        message: message,
-        sendDate: new Date(),
-    };
-    ws.send('/pub/chat/message', JSON.stringify(msg), {});
-}
-
-//메세지 수신 기능
-export function receiveMessage(recv, messageList) {
-    if (recv.type !== 'ENTER') {
-        // 'ENTER' 타입인 경우에는 출력하지 않음
-        messageList.messages.push({
-            type: recv.type,
-            sender: recv.sender,
-            message: recv.message,
-            sendDate: recv.sendDate,
-        });
     }
-}
 
-//채팅방 내역 조회
-export function findRoomMessage(roomId) {
-    return new Promise((resolve, reject) => {
-        console.log("Start findRoomMessage");
-        api.get(process.env.VUE_APP_BASEURL_V1 +`/chat/room/enter/${roomId}`)  // URL 수정
-            .then((response) => {
-                resolve(response.data);
-                console.log("findRoomMessage Data is " + response.data);
-            })
-            .catch((error) => {
-                reject(error);
+    function sendMessage(roomId, sender, message) {
+        const msg = {
+            type: 'TALK',
+            roomId: roomId,
+            sender: sender,
+            message: message,
+            sendDate: new Date(),
+        };
+        ws.send('/pub/chat/message', JSON.stringify(msg), {});
+    }
+
+
+    function receiveMessage(recv) {
+        if (recv.type !== 'ENTER') {
+            messageList.push({
+                type: recv.type,
+                sender: recv.sender,
+                message: recv.message,
+                sendDate: recv.sendDate,
             });
-    });
-}
+        }
+    }
+
+
+    function findRoomMessage(roomId) {
+        console.log('-------------------------------Start findRoomMessage---------------------', roomId);
+        api.get(process.env.VUE_APP_BASEURL_V1 + `/chat/room/enter/${roomId}`)
+            .then(res => {
+                console.log('---------------------------------------------findRoomMessage Data is : ', res);
+                return res.data;
+            })
+            .catch(err => {
+                throw err
+            });
+    }
+
+    return {
+        ws,
+        messageList,
+        wsConnected,
+        connectSocket,
+        connectFail,
+        connectSuccess,
+        socketStatus,
+        subscribeToRoom,
+        sendMessage,
+        receiveMessage,
+        findRoomMessage
+    }
+});
 
 
 

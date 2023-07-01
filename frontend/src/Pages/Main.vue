@@ -10,23 +10,13 @@ import {onMounted, provide, ref, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
 import {useChannelStore} from "../../script/stores/channel";
-import {connectSocket} from '/script/socket';
+import {useSocketStore} from '/script/socket';
 
 
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
 const channelStore = useChannelStore();
-
-const socket = ref(null);
-const wsConnected = ref(false);  // WebSocket 연결 상태 추가
-
-connectSocket().then((ws) => {
-  socket.value = ws;
-  wsConnected.value = true;  // WebSocket 연결 후 상태를 true로 설정
-});
-
-provide('socket', socket);
-provide('wsConnected', wsConnected);  // 상태를 provide로 제공
+const socketStore = useSocketStore();
 
 const route = useRouter()
 
@@ -36,19 +26,22 @@ watch(route.currentRoute, (to,form) => {
    console.log(typeof channel_type)
    switch (channel_type){
      case 'lobby':
-       console.log(channel_type);
        break;
      case 'public':
-       console.log(channel_type);
        break;
      default:
        channelStore.init()
+       socketStore.socketStatus();
        break;
    }
   }
 })
 onMounted(async () => {
   lobbyStore.updateMyInfo();
+  socketStore.connectSocket();
+
+  provide('socket', socketStore.ws);
+  provide('wsConnected', socketStore.wsConnected);  // 상태를 provide로 제공
 });
 
 
