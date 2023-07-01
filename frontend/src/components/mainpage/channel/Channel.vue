@@ -40,16 +40,7 @@ export default defineComponent({
     };
   },
   setup() {
-    const messageList = reactive({
-      messages: [
-        {
-          sender: "보내는 사람의 이름",
-          userIcon: '',
-          sendDate: "보낸 시각",
-          message: "기본 페이지 입니다"
-        },
-      ]
-    });
+    const messageList = socketStore.getter
     return {
       messageList
     };
@@ -82,7 +73,7 @@ export default defineComponent({
     const sender = this.sender;
     const message = this.inputMessage;
 
-    socketStore.sendMessage(this.ws, roomId, sender, message);
+    socketStore.sendMessage(roomId, sender, message);
     this.inputMessage = ''; // 입력 필드 초기화
   },
 },
@@ -113,7 +104,7 @@ export default defineComponent({
             <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
               <ChatBox :messages="message"/>
             </div>
-            <div class="Box" v-for="(messages,idx) in messageList.messages" :key="idx">
+            <div class="Box" v-for="(messages,idx) in messageList" :key="idx">
               <ChatBox :messages="messages"/>
             </div>
           </div>

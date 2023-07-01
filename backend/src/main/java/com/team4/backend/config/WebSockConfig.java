@@ -24,7 +24,7 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        System.out.println("예야");
+        System.out.println("서버 소캣 실행");
         WebSocketMessageBrokerConfigurer.super.configureClientInboundChannel(registration);
     }
 }

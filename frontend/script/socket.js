@@ -3,7 +3,7 @@ import Stomp from 'webstomp-client';
 
 import api from "./token/axios";
 import {defineStore} from "pinia";
-import {reactive, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 
 //소켓에 연결하는 기능
 export const useSocketStore = defineStore("socketStore", () => {
@@ -11,6 +11,10 @@ export const useSocketStore = defineStore("socketStore", () => {
     let ws = reactive(null)
     let messageList = reactive([])
     let wsConnected = ref(false);  // WebSocket 연결 상태 추가
+
+    const getter = computed(() => {
+        return messageList;
+    })
     function connectSocket() {
         const serverURL = process.env.VUE_APP_BASEURL + '/ws';
         let socket = new SockJS(serverURL);
@@ -28,19 +32,6 @@ export const useSocketStore = defineStore("socketStore", () => {
     function connectFail() {
         alert("호출 실패")
         wsConnected = false
-    }
-
-    function socketStatus() {
-// WebSocket 연결 상태 확인
-        console.log('현재 연결 상태:');
-// onopen 이벤트 핸들러 등록
-        ws.onopen = function () {
-            console.log('WebSocket 연결이 열렸습니다.');
-        };
-// onclose 이벤트 핸들러 등록
-        ws.onclose = function () {
-            console.log('WebSocket 연결이 닫혔습니다.');
-        };
     }
 
     function subscribeToRoom(roomId, sender) {
@@ -68,7 +59,7 @@ export const useSocketStore = defineStore("socketStore", () => {
 
     }
 
-    function sendMessage(roomId, sender, message) {
+    function sendMessage( roomId, sender, message) {
         const msg = {
             type: 'TALK',
             roomId: roomId,
@@ -81,13 +72,9 @@ export const useSocketStore = defineStore("socketStore", () => {
 
 
     function receiveMessage(recv) {
+        console.log(recv)
         if (recv.type !== 'ENTER') {
-            messageList.push({
-                type: recv.type,
-                sender: recv.sender,
-                message: recv.message,
-                sendDate: recv.sendDate,
-            });
+            messageList.push(recv);
         }
     }
 
@@ -109,9 +96,9 @@ export const useSocketStore = defineStore("socketStore", () => {
         messageList,
         wsConnected,
         connectSocket,
+        getter,
         connectFail,
         connectSuccess,
-        socketStatus,
         subscribeToRoom,
         sendMessage,
         receiveMessage,

@@ -31,7 +31,6 @@ watch(route.currentRoute, (to,form) => {
        break;
      default:
        channelStore.init()
-       socketStore.socketStatus();
        break;
    }
   }

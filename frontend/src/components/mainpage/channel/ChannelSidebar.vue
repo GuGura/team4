@@ -6,6 +6,7 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import api from "/script/token/axios.js";
 import router from "../../../../script/routes/router";
 import {useServerListStore} from "../../../../script/stores/serverlist";
+import {useSocketStore} from "../../../../script/socket";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -17,7 +18,7 @@ const roomInfo = reactive({
 }); // ChatRoom Name
 const textChatRooms = reactive([]); // Text Chat Room List
 const voiceChatRooms = reactive([]); // Voice Chat Room List
-
+const socketStore = useSocketStore();
 
 const updateUsername = computed(() => {
   return lobbyStore.user.username
@@ -154,7 +155,6 @@ onMounted(() => {
               <label for="roomType">음성채팅방으로 설정</label>
             </div>
           </div>
-
 
         </div>
       </div>
