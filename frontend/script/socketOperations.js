@@ -28,37 +28,34 @@ export function connectSocket() {
 }
 
 //구독하는 기능
+let subscription;
+
 export function subscribeToRoom(ws, roomId, sender, messageList) {
     return new Promise((resolve, reject) => {
-        ws.subscribe(
+        if (subscription) {
+            console.log('구독 취소');
+            subscription.unsubscribe();
+        }
+        subscription = ws.subscribe(
             '/sub/chat/room/' + roomId,
             message => {
                 console.log('구독으로 받은 메시지입니다.', message.body);
                 const recv = JSON.parse(message.body);
                 receiveMessage(recv, messageList); // messageList 객체 전달
-            },
-            {
-                id: 'room-subscription', // 구독 ID를 지정하여 나중에 구독 해제할 수 있습니다.
             }
         );
         if (ws && ws.connected) {
-            console.log('Start ws.connect Channel.vue ')
             const msg = {
                 type: 'ENTER',
                 roomId: roomId,
                 sender: sender,
             };
-
-            ws.send(
-                "/pub/chat/message",
-                JSON.stringify(msg),
-                {}
-            );
         } else {
-            reject(new Error('소켓 연결이 실패했습니다.'));
+            reject(new Error('구독에 실패했습니다.'));
         }
     });
 }
+
 
 
 

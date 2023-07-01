@@ -10,7 +10,7 @@ import {onBeforeMount, onMounted, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
 import {useChannelStore} from "../../script/stores/channel";
-import {connectSocket} from '/script/socket';
+import {connectSocket} from '/script/socketOperations';
 
 
 const serverListStore = useServerListStore();

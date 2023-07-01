@@ -28,15 +28,11 @@ public class ChatRoomController {
 
     @GetMapping("/api/v1/chat/rooms")
     @ResponseBody
-    public List<ChatRoom> room() {
-        return chatRoomRepository.findAllRoom();
+    public List<ChatRoom> room(@RequestParam("channel_id") String channel_id) {
+        return chatRoomRepository.findAllRoom(channel_id);
     }
 
-    @PostMapping("/room")
-    @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name, boolean room_type) {
-        return chatRoomRepository.createChatRoom(name, room_type);
-    }
+
 
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody

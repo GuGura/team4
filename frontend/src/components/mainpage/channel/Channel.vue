@@ -2,7 +2,7 @@
 import {computed, defineComponent, reactive} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
-import {connectSocket, subscribeToRoom, sendMessage, findRoomMessage } from '/script/socket';
+import {connectSocket, subscribeToRoom, sendMessage, findRoomMessage } from '/script/socketOperations';
 
 
 const lobbyStore = useLobbyStore();
@@ -11,6 +11,7 @@ const updateUsername = computed(()=>{
   return lobbyStore.user.username
 })
 
+
 export default defineComponent({
   created() {
     this.wsModule();
@@ -18,9 +19,9 @@ export default defineComponent({
   watch: {
     '$route.params.roomId'(to, from) {
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
-        console.log("start enterRoom");
+        this.roomId = to;
         this.enterRoom();
-        console.log(`Changed from server to room` + this.roomId);
+        this.messageList.messages = [];
       }
     }
   },
@@ -56,16 +57,6 @@ export default defineComponent({
     };
   },
   methods: {
-    created() {
-      this.roomId = localStorage.getItem('wschat.roomId');
-      this.channelId = localStorage.getItem('wschat.channelId')
-      this.sender = updateUsername
-      console.log("Channel.vue sender : " + this.sender);
-      console.log("Channel.vue roomId : " + this.roomId);
-      console.log("Channel.vue channelId : " + this.channelId);
-
-      this.messageList.messages = []; // messageList 초기화
-    },
     async wsModule(){
       try {
         this.ws = await connectSocket();
@@ -75,18 +66,12 @@ export default defineComponent({
     },
     async enterRoom() {
       try {
-        const roomId = localStorage.getItem('wschat.roomId');
+        const roomId = this.roomId;
         await findRoomMessage(roomId)
             .then((data) => {
               console.log(data);
               this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
               subscribeToRoom(this.ws, roomId, this.sender, this.messageList)
-                  .then(() => {
-                    console.log('구독에 성공했습니다.');
-                  })
-                  .catch((error) => {
-                    console.log('구독에 실패했습니다.', error);
-                  });
             })
             .catch((error) => {
               console.error(error);
@@ -97,7 +82,7 @@ export default defineComponent({
     },
 
     sendMessage() {
-      const roomId = localStorage.getItem('wschat.roomId');
+      const roomId = this.roomId;
       const sender = this.sender;
       const message = this.inputMessage;
 
