@@ -334,6 +334,10 @@ fc-h-event{
     --fc-event-border-color: #yellow;
 }
 
+.fc-h-event .fc-event-main{
+    background-color: transparent;
+}
+
 </style>
 
 

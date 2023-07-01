@@ -3,6 +3,9 @@ import {onMounted, reactive} from "vue";
 import api from "../../../../script/token/axios";
 
 
+const days = ["일", "월", "화", "수", "목", "금", "토"];
+const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+
 function addEvent(){
     let title = prompt('추가할 일정명을 입력해주세요.')
     if (title) {
@@ -49,13 +52,18 @@ let today = new Date();
 let Dates = reactive({
     year:today.getFullYear(),
     month: today.getMonth() + 1,
-    date: today.getDate()
+    date: today.getDate(),
+    days: '',
+    months: ''
+
 })
 
 function dateCalculating(){
     Dates.year = today.getFullYear();
     Dates.month = today.getMonth()+1;
     Dates.date = today.getDate();
+    Dates.days = '';
+    Dates.months = '';
 }
 
 
@@ -77,14 +85,14 @@ initEvents()
 </script>
 
 <template>
-  <div class="container">
-      <div class="card" id="wholeCard">
-          <div class="card-header">
-              <h4>
-                  <button class="btnDate" @click="prevDate">&lt;</button>
-                     {{Dates.year}}.{{Dates.month}}.{{Dates.date}}
-                  <button class="btnDate" @click="nextDate">&gt;</button>
-              </h4>
+    <div class="container">
+        <div class="card" id="wholeCard">
+            <div class="card-header">
+                <h4>
+                    <button class="btnDate" @click="prevDate">&lt;</button>
+                    {{ Dates.month }}월 {{ Dates.date }}일 {{ days[Dates.days] }}
+                    <button class="btnDate" @click="nextDate">&gt;</button>
+                </h4>
 
           </div>
           <div class="card-body">
@@ -121,9 +129,9 @@ initEvents()
 
 .card-header{
     text-align: center;
-    background-color: #36373D;
+    background-color: transparent;
     padding: 20px;
-    border-radius: 10px;
+    border-bottom: transparent;
 }
 #btnAdd{
     margin:auto;
@@ -139,14 +147,15 @@ initEvents()
     background: #41434A;
 }
 .card{
-    background: #36373D;
+    background: #41434A;
     margin: 0px;
     padding: 20px;
     color: white;
     border:none;
+    margin-bottom: 10px;
 }
 .card:hover{
-    background-color: #41434A;
+    background-color: #2b2d31;
 }
 
 #wholeCard{

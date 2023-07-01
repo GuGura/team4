@@ -88,6 +88,8 @@ export default {
     width: 100%;
     color: white;
     background: #41434A;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .tab-buttons {
@@ -97,6 +99,7 @@ export default {
     margin: 0;
     padding: 0;
     border-radius: 10px;
+
 }
 
 .tab-button {
@@ -124,5 +127,8 @@ export default {
 
 .tab-pane.active {
     display: block;
+}
+.tab-buttons.card-header{
+    border-radius: 0px;
 }
 </style>
