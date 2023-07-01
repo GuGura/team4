@@ -9,14 +9,14 @@ const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", 
 function addEvent(){
     let title = prompt('추가할 일정명을 입력해주세요.')
     if (title) {
-        api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
+        api.post(process.env.VUE_APP_BASEURL_V1 + "/event/saveEvent",{
             title,
             start: today.setDate(today.getDate()),
             end: today.setDate(today.getDate()+1),
             allDay: true
         }).then(() => {
             today.setDate(today.getDate()-1),
-            initEvents()
+                initEvents()
         })
     }
 }
@@ -94,23 +94,23 @@ initEvents()
                     <button class="btnDate" @click="nextDate">&gt;</button>
                 </h4>
 
-          </div>
-          <div class="card-body">
-              <ul class="list-group">
-                  <li v-for="(events) in eventList.events" :key="events.title" class="card">
-                      <h5>
-                          {{events.title}}
-                      </h5>
-                      <h2 class="fw-light">
-                          By {{events.groupName}}
-                      </h2>
-                  </li>
-              </ul>
-              <button id="btnAdd" @click="addEvent">Add+</button>
-          </div>
-      </div>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li v-for="(events) in eventList.events" :key="events.title" class="card">
+                        <h5>
+                            {{events.title}}
+                        </h5>
+                        <h2 class="fw-light">
+                            By {{events.groupName}}
+                        </h2>
+                    </li>
+                </ul>
+                <button id="btnAdd" @click="addEvent">Add+</button>
+            </div>
+        </div>
 
-  </div>
+    </div>
 
 </template>
 

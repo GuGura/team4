@@ -138,9 +138,8 @@ export default defineComponent({
             let calendarApi = selectInfo.view.calendar
 
             calendarApi.unselect() // clear date selection
-
             if (title) {
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent", {
+                api.post(process.env.VUE_APP_BASEURL_V1 + "/event/saveEvent", {
                     title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
@@ -163,7 +162,7 @@ export default defineComponent({
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent", {
+                api.post(process.env.VUE_APP_BASEURL_V1 + "/event/deleteEvent", {
                     id: clickInfo.event.id,
                     title: clickInfo.event.title,
                     start: clickInfo.event.start,
@@ -191,9 +190,9 @@ export default defineComponent({
 
 <template>
     <FullCalendar
-            class='demo-app-calendar'
-            :options='calendarOptions'
-            ref="fc"
+        class='demo-app-calendar'
+        :options='calendarOptions'
+        ref="fc"
     >
         <template v-slot:eventContent='arg'>
             <b>{{ arg.timeText }}</b>
@@ -328,7 +327,6 @@ fc-h-event{
 }
 
 </style>
-
 
 
 
