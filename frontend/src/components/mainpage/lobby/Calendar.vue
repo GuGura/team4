@@ -229,12 +229,13 @@ export default defineComponent({
     </FullCalendar>
 </template>
 
-<style scoped>
+<style>
+
 .demo-app-calendar {
     width: 100%;
-    background-color: gray;
     color: #ffffff;
     border-radius: 5px;
+    height: 100%;
 }
 
 .fc-daygrid-view .fc-daygrid-day-frame {
@@ -257,16 +258,80 @@ export default defineComponent({
     margin-top: -10px;
 }
 
-.fc-day-sun a {
-    color: red;
+
+
+.fc-col-header-cell-cushion{
+    color: #5965f3;
+}
+.fc-daygrid-day-number{
+    color: #b6b8cf;
+}
+#fc-dom-95.fc-daygrid-day-number{
+    color: #FFFFFF;
+}
+.fc .fc-button-primary:disabled {
+    margin-top: -2px;
+    margin-right: 5px;
+}
+.fc .fc-button-primary:hover{
+    margin-top: -2px;
+}
+.fc-today-button fc-button fc-button-primary{
+    margin-top:-2px
+}
+.fc .fc-button:disabled{
+    margin-top: -2px;
+}
+
+.fc .fc-button-primary{
+    margin-top: -1px;
+    background-color: transparent;
+    border-color: transparent;
+    margin-right: 5px;
+}
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 13px;
+    margin-top: 10px;
+}
+fc-daygrid-more-link fc-more-link{
+    color: #F23F42;
+}
+fc-event-main{
+    background-color: grey;
+}
+
+.fc-h-event .fc-event-main{
+    background-color: #23A559;
+}
+
+a {
+
     text-decoration: none;
 }
 
-.fc-col-header-cell-cushion{
-    color: #1E1F22;
+.fc .fc-more-popover .fc-popover-body{
+    background-color: #FFFFFF;
 }
-.fc-daygrid-day-number{
-    color: white;
+
+.fc-theme-standard .fc-popover-header{
+    background-color: #5965f3;
+
+}
+
+.fc-daygrid-event-harness{
+    background-color: transparent;
+}
+.fc-h-event .fc-event-main{
+    text-align: center;
+}
+
+fc-h-event{
+    background-color: yellow;
+
+
+}
+:root{
+    --fc-event-border-color: #yellow;
 }
 
 </style>
