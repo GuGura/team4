@@ -6,7 +6,7 @@ import LobbySidebar from "@/components/mainpage/lobby/LobbySidebar.vue";
 import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
-import {onMounted, provide, ref, watch} from "vue";
+import {onBeforeMount, onMounted, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
 import {useChannelStore} from "../../script/stores/channel";
@@ -16,17 +16,6 @@ import {connectSocket} from '/script/socket';
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
 const channelStore = useChannelStore();
-
-const socket = ref(null);
-const wsConnected = ref(false);  // WebSocket 연결 상태 추가
-
-connectSocket().then((ws) => {
-  socket.value = ws;
-  wsConnected.value = true;  // WebSocket 연결 후 상태를 true로 설정
-});
-
-provide('socket', socket);
-provide('wsConnected', wsConnected);  // 상태를 provide로 제공
 
 const route = useRouter()
 
@@ -47,8 +36,18 @@ watch(route.currentRoute, (to,form) => {
    }
   }
 })
+
+onBeforeMount(() =>{
+
+});
+
 onMounted(async () => {
   lobbyStore.updateMyInfo();
+  try {
+    const ws = await connectSocket();
+  } catch (error) {
+    console.log('Error in socket connection', error);
+  }
 });
 
 

@@ -105,9 +105,6 @@ export default defineComponent({
       this.inputMessage = ''; // 입력 필드 초기화
     },
   },
-  beforeUnmount() {
-    this.disconnect(); // 컴포넌트가 해제되기 전에 웹소켓 연결 끊기
-  },
 
 });
 </script>
