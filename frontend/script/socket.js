@@ -18,8 +18,9 @@ export const useSocketStore = defineStore("socketStore", () => {
     function connectSocket() {
         const serverURL = process.env.VUE_APP_BASEURL + '/ws';
         let socket = new SockJS(serverURL);
-        console.log(ws)
+        console.log(socket)
         ws = Stomp.over(socket);
+        console.log(ws)
         console.log('serverURL: ' + serverURL);
         ws.connect({}, connectSuccess, connectFail);
     }
@@ -33,7 +34,6 @@ export const useSocketStore = defineStore("socketStore", () => {
         alert("호출 실패")
         wsConnected = false
     }
-
     function subscribeToRoom(roomId, sender) {
         ws.subscribe(
             '/sub/chat/room/' + roomId,
