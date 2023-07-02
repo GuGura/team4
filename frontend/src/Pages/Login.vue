@@ -64,6 +64,7 @@ function forgotPassword() {
 }
 
 function login() {
+  console.log("1")
   axios.post(process.env.VUE_APP_BASEURL + "/login", JSON.stringify(result))
       .then((res) => {
         if (res.data.status) {
@@ -75,7 +76,9 @@ function login() {
         } else {
           alert(res.data.message)
         }
-      })
+      }).catch((err)=>{
+        console.log(err)
+  })
 }
 </script>
 

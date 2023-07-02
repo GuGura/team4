@@ -6,7 +6,6 @@ import com.team4.backend.pubsub.RedisPublisher;
 import com.team4.backend.repo.ChatMessageRepository;
 import com.team4.backend.repo.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +40,7 @@ public class ChatController {
     @ResponseBody
     @GetMapping("/enter/{roomId}")
     public List<ChatMessage> getChatMessages(@PathVariable String roomId) {
+        System.out.print("Start GetChatMessages");
         return redisToMariaDBMigrationMapper.getChatMessagesFromDB(roomId);
     }
 }
