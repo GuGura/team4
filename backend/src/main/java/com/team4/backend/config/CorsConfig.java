@@ -23,6 +23,7 @@ public class CorsConfig implements WebMvcConfigurer {
         config.addAllowedHeader("*"); // 모든 header에 응답을 허용하겠다.
         config.addAllowedMethod("*"); // 모든 post,get,put,delete,patch 요청을 허용하겠다.
         config.addAllowedOriginPattern("http://localhost:3000");
+        config.addAllowedOriginPattern("http://www.meatteam.online");
         config.addExposedHeader("Access-Control-Allow-Origin");
         config.addExposedHeader(JwtProperties.HEADER_ACCESS);
         config.addExposedHeader(JwtProperties.HEADER_REFRESH);
