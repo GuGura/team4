@@ -3,7 +3,7 @@ import refreshHeader from "./refreshHeader";
 import notToken from "../notTokenAxios";
 
 const api = axios.create({
-    baseURL: 'http://localhost:8090/api/v1'
+    baseURL: 'http://api.meatteam.online/api/v1'
 });
 
 api.interceptors.request.use(
