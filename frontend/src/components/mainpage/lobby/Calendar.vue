@@ -25,7 +25,7 @@ export default defineComponent({
                             this.getApi().today()
                             this.getApi().removeAllEvents();
                             console.log(this.getApi().getDate() + ": 프리브")
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthly", {
+                            api.post("/event/listMonthly", {
                                 date: this.getApi().getDate()
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -45,7 +45,7 @@ export default defineComponent({
                         click: () => {
                             this.getApi().prev();
                             this.getApi().removeAllEvents();
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtn", {
+                            api.post("/event/listMonthlyBtn", {
                                 date: this.getApi().getDate()
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -68,7 +68,7 @@ export default defineComponent({
                             this.getApi().next();
                             this.getApi().removeAllEvents();
                             console.log(this.getApi().getDate() + ": 넥스트")
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtn", {
+                            api.post("/event/listMonthlyBtn", {
                                 date: this.getApi().getDate()
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -114,7 +114,7 @@ export default defineComponent({
     },
     methods: {
         initCalendar() {
-            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthly", {
+            api.post("/event/listMonthly", {
                 date: this.getApi().getDate()
             }).then(({data}) => {
                 for (const i in data) {
@@ -140,7 +140,7 @@ export default defineComponent({
             calendarApi.unselect() // clear date selection
 
             if (title) {
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent", {
+                api.post("/home/saveEvent", {
                     title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
@@ -161,7 +161,7 @@ export default defineComponent({
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/deleteEvent", {
+                api.post("/home/deleteEvent", {
                     id: clickInfo.event.id,
                     title: clickInfo.event.title,
                     start: clickInfo.event.start,

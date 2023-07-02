@@ -3,10 +3,11 @@ import authHeader from "./token/authHeader";
 import router from "./routes/router";
 
 import refreshHeader from "./token/refreshHeader";
+import api from "./token/axios";
 
 class LoginService {
     async reissueRefreshJwt() {
-        return await axios.post(process.env.VUE_APP_BASEURL_V1 + "/check-refreshToken", null, {headers: refreshHeader()})
+        return await api.post("/check-refreshToken", null, {headers: refreshHeader()})
             .then((res) => {
                 const accessJwt = res.headers.get('accessJwt');
                 const refreshJwt = res.headers.get('refreshJwt')
@@ -20,7 +21,7 @@ class LoginService {
     }
 
     async initCheck() {
-        return await axios.post(process.env.VUE_APP_BASEURL_V1 + "/check-token", null, {headers: authHeader()})
+        return await api.post("/check-token", null, {headers: authHeader()})
             .then(() => {
                 return true;
             }).catch(() => {
@@ -31,7 +32,7 @@ class LoginService {
     async initTokenCheck() {
         const result = await this.initCheck();
         if (result) {
-            axios.post(process.env.VUE_APP_BASEURL_V1 + "/myInfo/init", null, {headers: authHeader()})
+            api.post("/myInfo/init", null, {headers: authHeader()})
                 .then(({data}) => {
                     console.log(data)
                 })

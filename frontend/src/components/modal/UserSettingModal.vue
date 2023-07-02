@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive} from "vue";
+import { onMounted, reactive} from "vue";
 import {useLobbyStore} from "../../../script/stores/lobby";
 import api from "../../../script/token/axios";
 import router from "../../../script/routes/router";
@@ -36,7 +36,7 @@ function imgChange(e) {
 }
 
 function uploadProfile() {
-    api.post(process.env.VUE_APP_BASEURL_V1 + "/profile/updateProfile", profileForm
+    api.post("/profile/updateProfile", profileForm
     ).then(() => {
         router.go(0)
     })

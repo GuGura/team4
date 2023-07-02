@@ -16,7 +16,7 @@ export const useSocketStore = defineStore("socketStore", () => {
         return messageList;
     })
     function connectSocket() {
-        const serverURL = process.env.VUE_APP_BASEURL + '/ws';
+        const serverURL = 'http://localhost:8090/ws';
         let socket = new SockJS(serverURL);
         console.log(socket);
         ws = Stomp.over(socket);
@@ -81,7 +81,7 @@ export const useSocketStore = defineStore("socketStore", () => {
 
     function findRoomMessage(roomId) {
         console.log('-------------------------------Start findRoomMessage---------------------', roomId);
-        api.get(process.env.VUE_APP_BASEURL_V1 + `/chat/room/enter/${roomId}`)
+        api.get(`/chat/room/enter/${roomId}`)
             .then(res => {
                 console.log('---------------------------------------------findRoomMessage Data is : ', res);
                 return res.data;

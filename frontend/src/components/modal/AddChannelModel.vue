@@ -22,7 +22,7 @@ let channelCode = reactive({
 
 async function createServer() {
   if (createChannel.serverName !== '') {
-    await api.post(process.env.VUE_APP_BASEURL_V1 + "/channel/create",createChannel)
+    await api.post("/channel/create",createChannel)
         .then(({data}) => {
           console.log(data)
           const result = data.result[0].channel_UID
@@ -45,7 +45,7 @@ async function attendChannel() {
   }
   channelCode.result = '*'
   console.log("channelCode.channelCode: "+channelCode.channelCode)
-  await api.get(process.env.VUE_APP_BASEURL_V1 + `/channel/attend/${channelCode.channelCode}`)
+  await api.get(`/channel/attend/${channelCode.channelCode}`)
       .then(({data}) => {
         console.log(data)
         serverListStore.updateBtn(data)

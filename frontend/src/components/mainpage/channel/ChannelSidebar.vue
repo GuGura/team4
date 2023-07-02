@@ -6,7 +6,6 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import api from "/script/token/axios.js";
 import router from "../../../../script/routes/router";
 import {useServerListStore} from "../../../../script/stores/serverlist";
-import {useSocketStore} from "../../../../script/socket";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -18,7 +17,6 @@ const roomInfo = reactive({
 }); // ChatRoom Name
 const textChatRooms = reactive([]); // Text Chat Room List
 const voiceChatRooms = reactive([]); // Voice Chat Room List
-const socketStore = useSocketStore();
 
 const updateUsername = computed(() => {
   return lobbyStore.user.username
@@ -29,7 +27,7 @@ const updateChannelId = computed(() => {
 
 const findAllRoom = async () => {
   console.log("findAllRoom")
-  await api.get(process.env.VUE_APP_BASEURL_V1 + '/chat/rooms').then(({data}) => {
+  await api.get('/chat/rooms').then(({data}) => {
     console.log("findAllRoom Result : " + JSON.stringify(data));
     data.forEach(item => {
       if (item['roomType'] === true) voiceChatRooms.push(item)
@@ -44,7 +42,7 @@ const createRoom = () => {
   if ("" === roomInfo.name) {
     alert("방 제목을 입력해 주십시요.");
   } else {
-    api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', roomInfo)
+    api.post('/chat/room', roomInfo)
         .then(({data}) => {
           console.log(data)
           if (data.roomType === false) textChatRooms.push(data)
@@ -249,11 +247,12 @@ img {
   height: 30px;
   gap: 20px;
   border-radius: 5px;
-  padding: 0px 15px;
   align-items: center;
   cursor: pointer;
 }
-
+li{
+  margin: 0;
+}
 .btnRoom:hover {
   background: #36373D;
 }

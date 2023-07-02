@@ -58,7 +58,7 @@ export default {
     },
     methods:{
         boardPaging(){
-            api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPage",this.lastPosting
+            api.post("/content/listByPage",this.lastPosting
             ).then(({data})=>{
                 this.lastPosting = data;
             })
