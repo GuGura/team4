@@ -4,7 +4,6 @@
       <div id="content">
         <div id="header">
           <div id="headerText1">돌아오신 것을 환영해요!</div>
-          <div id="headerText1">돌아오신 것을 환영해요!</div>
           <div id="headerText2">다시 만나다니 너무 반가워요!</div>
         </div>
         <div id="Form">
