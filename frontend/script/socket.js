@@ -18,9 +18,9 @@ export const useSocketStore = defineStore("socketStore", () => {
     function connectSocket() {
         const serverURL = process.env.VUE_APP_BASEURL + '/ws';
         let socket = new SockJS(serverURL);
-        console.log(socket)
+        console.log(socket);
         ws = Stomp.over(socket);
-        console.log(ws)
+        console.log(ws);
         console.log('serverURL: ' + serverURL);
         ws.connect({}, connectSuccess, connectFail);
     }
