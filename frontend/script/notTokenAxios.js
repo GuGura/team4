@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const notToken = axios.create({
-    baseURL: 'http://api.meatteam.online'
+    baseURL: 'http://www.meatteam.online'
 });
 
 export default notToken
