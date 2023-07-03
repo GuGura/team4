@@ -34,6 +34,7 @@ function nextDate(){
 }
 
 onMounted(() => {
+    friendStore.init()
 })
 
 let today = new Date();

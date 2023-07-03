@@ -1,6 +1,7 @@
 package com.team4.backend.controller;
 
 import com.team4.backend.model.Member;
+import com.team4.backend.model.ResultMember;
 import com.team4.backend.model.dto.MyChannelsDTO;
 import com.team4.backend.model.dto.ResultDTO;
 import com.team4.backend.model.dto.ResultDtoProperties;
@@ -57,8 +58,10 @@ public class MyInfoController {
     @PostMapping("/myInfo/friend")
     public  ResponseEntity<ResultDTO> getFriendInfo(@RequestBody Map<String,String> params, HttpServletRequest request){
         Member member = memberService.getLobbyInfoByMemberUID(Integer.parseInt(params.get("friendId")));
+        ResultMember memberToReturn = UserUtil.memberToReturn(member);
+        memberToReturn.setId(Integer.parseInt(params.get("friendId")));
         resultDTO = ResultDTO.builder()
-                .result(UserUtil.memberToReturn(member))
+                .result(memberToReturn)
                 .message("lobby Info callback")
                 .build();
         return new ResponseEntity<>(resultDTO,HttpStatus.OK);

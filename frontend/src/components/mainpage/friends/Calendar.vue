@@ -110,6 +110,7 @@ export default defineComponent({
 
     },
     mounted() {
+        this.friendStore = useFriendStore().init()
         this.initCalendar(useFriendStore());
     },
     methods: {

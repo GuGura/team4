@@ -54,7 +54,7 @@ onMounted(async () => {
       <LobbySidebar/>
       <Lobby/>
     </div>
-      <div id="contents" v-else-if="route.currentRoute.value.path === '/channel/friend/'">
+      <div id="contents" v-else-if="route.currentRoute.value.path.slice(0,16) === '/channel/friend/'">
           <LobbySidebar/>
           <LobbyF/>
       </div>

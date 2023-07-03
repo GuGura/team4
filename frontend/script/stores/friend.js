@@ -21,6 +21,7 @@ export const useFriendStore = defineStore("friendStore", () => {
         api.post(process.env.VUE_APP_BASEURL_V1 + '/myInfo/friend',{friendId:user.id})
             .then(({data}) => {
                 const userInfo = data.result
+                user.id = userInfo.id
                 user.email = userInfo.email
                 user.username = userInfo.username
                 user.role = userInfo.role
@@ -31,10 +32,20 @@ export const useFriendStore = defineStore("friendStore", () => {
             })
     }
 
+    function init(){
+        user.id = JSON.parse(localStorage.getItem('friend')).id
+        user.username = JSON.parse(localStorage.getItem('friend')).username
+        user.user_icon_url = JSON.parse(localStorage.getItem('friend')).user_icon_url
+        user.role = JSON.parse(localStorage.getItem('friend')).role
+        user.email = JSON.parse(localStorage.getItem('friend')).email
+        user.user_description = JSON.parse(localStorage.getItem('friend')).user_description
+        user.join_date = JSON.parse(localStorage.getItem('friend')).join_date
+    }
 
 
     return {
         user,
-        updateFriendInfo
+        updateFriendInfo,
+        init
     }
 });

@@ -40,8 +40,7 @@ const friendStore = useFriendStore();
 
 
 onMounted(() => {
-
-
+    friendStore.init()
 })
 
 

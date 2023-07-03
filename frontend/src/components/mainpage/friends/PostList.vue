@@ -49,6 +49,7 @@ function morePost() {
 }
 
 onMounted(() => {
+    friendStore.init()
     initPosts()
 })
 

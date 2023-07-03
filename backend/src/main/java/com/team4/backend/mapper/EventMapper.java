@@ -51,6 +51,6 @@ public interface EventMapper {
     })
     List<EventDTO> listDaily(@Param("date") String date, @Param("memberId") int memberId);
 
-    @Delete("delete from event where id = #{id} or groupId = #{groupId}")
+    @Delete("delete from event where (id = #{id} or groupId = #{id}) and memberId = #{memberId}")
     void deleteEvent(@Param("id") int id, @Param("memberId") int memberId);
 }
