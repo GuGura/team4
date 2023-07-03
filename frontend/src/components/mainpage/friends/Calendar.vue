@@ -25,7 +25,7 @@ export default defineComponent({
                         click: () => {
                             this.getApi().today()
                             this.getApi().removeAllEvents();
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyFriend", {
+                            api.post("/event/listMonthlyFriend", {
                                 date: this.getApi().getDate(),id:friendStore.user.id
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -45,7 +45,7 @@ export default defineComponent({
                         click: () => {
                             this.getApi().prev();
                             this.getApi().removeAllEvents();
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtnFriend", {
+                            api.post("/event/listMonthlyBtnFriend", {
                                 date: this.getApi().getDate(),id:friendStore.user.id
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -68,7 +68,7 @@ export default defineComponent({
                             this.getApi().next();
                             this.getApi().removeAllEvents();
                             console.log(this.getApi().getDate() + ": 넥스트")
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtnFriend", {
+                            api.post("/event/listMonthlyBtnFriend", {
                                 date: this.getApi().getDate(),id:friendStore.user.id
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -105,7 +105,9 @@ export default defineComponent({
                 eventsSet: this.handleEvents,
             },
             currentEvents: [],
+
         }
+
     },
     mounted() {
         this.initCalendar(useFriendStore());
@@ -113,7 +115,7 @@ export default defineComponent({
     methods: {
         initCalendar(friendStore) {
             this.getApi().removeAllEvents()
-            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyFriend", {
+            api.post("/event/listMonthlyFriend", {
                 date: this.getApi().getDate(), id:friendStore.user.id
             }).then(({data}) => {
                 for (const i in data) {
@@ -137,7 +139,7 @@ export default defineComponent({
         },
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'을 내 캘린더에 추가하시겠습니까?`)) {
-                api.post(process.env.VUE_APP_BASEURL_V1 + "/event/saveFriendEvent", {
+                api.post("/event/saveFriendEvent", {
                     id: clickInfo.event.id,
                 }).then(() => {
                     alert("추가되었습니다.")
@@ -298,8 +300,5 @@ fc-h-event{
 }
 
 </style>
-
-
-
 
 

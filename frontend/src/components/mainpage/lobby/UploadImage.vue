@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
+import notToken from "../../../../script/notTokenAxios";
 export default {
     name:'UploadImage',
     data: ()=>({
@@ -37,7 +37,7 @@ export default {
             //form data를 생성함.(post 방식으로 서버에 전송)
             form.append('image', image)
 
-            axios.post('/upload', form, {
+            notToken.post('/upload', form, {  // 체크!
                 header: { 'Content-Type': 'multipart/form-data' }
             }).then( ({data}) => {
                 this.images = data

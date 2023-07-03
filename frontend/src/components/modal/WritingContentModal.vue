@@ -55,7 +55,7 @@ function fnAddProc() {
     }else {
         contentsForm.isImgIn = true
     }
-    api.post(process.env.VUE_APP_BASEURL_V1 + "/content/saveContent",contentsForm
+    api.post("/content/saveContent",contentsForm
     ).then(()=>{
         router.go(0)
     })

@@ -1,6 +1,6 @@
 <script>
 
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -11,7 +11,7 @@ import api from "../../../../script/token/axios";
 
 export default defineComponent({
     // eslint-disable-next-line vue/multi-word-component-names
-    name:"Calendar",
+    name: "Calendar",
     components: {
         FullCalendar,
     },
@@ -25,7 +25,7 @@ export default defineComponent({
                             this.getApi().today()
                             this.getApi().removeAllEvents();
                             console.log(this.getApi().getDate() + ": 프리브")
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthly", {
+                            api.post("/event/listMonthly", {
                                 date: this.getApi().getDate()
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -45,7 +45,7 @@ export default defineComponent({
                         click: () => {
                             this.getApi().prev();
                             this.getApi().removeAllEvents();
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtn", {
+                            api.post("/event/listMonthlyBtn", {
                                 date: this.getApi().getDate()
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -68,7 +68,7 @@ export default defineComponent({
                             this.getApi().next();
                             this.getApi().removeAllEvents();
                             console.log(this.getApi().getDate() + ": 넥스트")
-                            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthlyBtn", {
+                            api.post("/event/listMonthlyBtn", {
                                 date: this.getApi().getDate()
                             }).then(({data}) => {
                                 for (const i in data) {
@@ -114,7 +114,7 @@ export default defineComponent({
     },
     methods: {
         initCalendar() {
-            api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listMonthly", {
+            api.post("/event/listMonthly", {
                 date: this.getApi().getDate()
             }).then(({data}) => {
                 for (const i in data) {
@@ -139,11 +139,11 @@ export default defineComponent({
 
             calendarApi.unselect() // clear date selection
             if (title) {
-                api.post(process.env.VUE_APP_BASEURL_V1 + "/event/saveEvent", {
+                api.post("/event/saveEvent", {
                     title: title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
-                    allDay: selectInfo.allDay,
+                    allDay: selectInfo.allDay
                 }).then(({data}) => {
                     calendarApi.addEvent({
                         id: data,
@@ -155,14 +155,12 @@ export default defineComponent({
                 })
 
 
-
-
             }
         },
         handleEventClick(clickInfo) {
             if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
-                api.post(process.env.VUE_APP_BASEURL_V1 + "/event/deleteEvent", {
+                api.post("/event/deleteEvent", {
                     id: clickInfo.event.id,
                     title: clickInfo.event.title,
                     start: clickInfo.event.start,
@@ -218,6 +216,7 @@ ul {
     margin: 0;
     padding: 0 0 0 1.5em;
 }
+
 
 .demo-app-calendar {
     width: 100%;
@@ -318,8 +317,9 @@ fc-h-event{
 
 
 }
-:root{
-    --fc-event-border-color: #yellow;
+
+:root {
+    --fc-event-border-color: black;
 }
 
 .fc-h-event .fc-event-main{
@@ -327,8 +327,5 @@ fc-h-event{
 }
 
 </style>
-
-
-
 
 

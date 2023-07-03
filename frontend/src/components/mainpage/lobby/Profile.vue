@@ -38,7 +38,7 @@ function imgChange(e) {
 
 function uploadProfile() {
     alert(profileForm.user_description)
-    api.post(process.env.VUE_APP_BASEURL_V1 + "/profile/updateProfile", profileForm
+    api.post("/profile/updateProfile", profileForm
     ).then(() => {
         router.go(0)
     })

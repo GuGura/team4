@@ -1,26 +1,31 @@
 <script>
-import SockJS from 'sockjs-client';
-import Stomp from 'webstomp-client';
-
-import {computed, defineComponent, reactive} from "vue";
+import {computed, defineComponent} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
-import authHeader from "../../../../script/token/authHeader";
-import api from "/script/token/axios.js";
+import {useSocketStore} from '/script/socket';
+import router from "../../../../script/routes/router";
+import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
+
 
 const lobbyStore = useLobbyStore();
 
-const updateUsername = computed(()=>{
+const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
-
+const socketStore = useSocketStore();
 export default defineComponent({
+
   watch: {
-    '$route'() {
-      this.created();
+    '$route.params.roomId'(to, from) {
+      if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
+        console.log("start enterRoom");
+        this.enterRoom();
+        const url = `${to}`
+        console.log(`-----------------------Changed from server to room------------------------` ,url );
+      }
     }
   },
-  components: {ChatBox},
+  components: {ChannelMemberInfo, ChatBox},
   data() {
     return {
       roomId: '',
@@ -37,21 +42,15 @@ export default defineComponent({
     };
   },
   setup() {
-    const messageList = reactive({
-      messages: [
-        {
-          sender: "보내는 사람의 이름",
-          userIcon: '',
-          sendDate: "보낸 시각",
-          message: "기본 페이지 입니다"
-        },
-      ]
-    });
+    const messageList = socketStore.getter
     return {
       messageList
     };
   },
   methods: {
+    router() {
+      return router
+    },
     created() {
       this.roomId = localStorage.getItem('wschat.roomId');
       this.channelId = localStorage.getItem('wschat.channelId')
@@ -61,113 +60,29 @@ export default defineComponent({
       console.log("Channel.vue channelId : " + this.channelId);
 
       this.messageList.messages = []; // messageList 초기화
-      this.disconnect(); // 이전 웹소켓 연결 끊기
-      this.connect(); // 새로운 웹소켓 연결 수행
     },
-    connect() {
-      const serverURL = process.env.VUE_APP_BASEURL+'/ws';
-      let socket = new SockJS(serverURL);
-      this.ws = Stomp.over(socket);
-      console.log('serverURL : ' + serverURL);
+    async enterRoom() {
+      const roomId = localStorage.getItem('wschat.roomId');
+      console.log("-----------------------------enterRoom:-------------------------\n ", roomId)
+      const data = await socketStore.findRoomMessage(roomId);
 
-      this.findRoomMessage();
-      console.log("2")
+      console.log("------------------------data", data);
+      this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
+      await socketStore.subscribeToRoom(roomId, this.sender)
+    },
 
-      const headers = {
-        accessJwt: authHeader()
-      };
+  sendMessage() {
 
-      this.ws.connect(
-          headers,
-          frame => {
-            console.log("3")
-            this.connected = true;
-            console.log('소켓 연결 성공', frame);
-            this.ws.subscribe("/sub/chat/room/" + this.roomId, message => {
-              console.log('구독으로 받은 메시지 입니다.', message.body);
-              this.recvMessage(JSON.parse(message.body));
-            });
-            if (this.ws && this.ws.connected) {
-              console.log('Start ws.connect Channel.vue ')
-              const msg = {
-                type: 'ENTER',
-                roomId: this.roomId,
-                sender: this.sender,
-              };
+    const roomId = localStorage.getItem('wschat.roomId');
+    console.log("------------------------------------sendMessage--------------", roomId)
+    const sender = this.sender;
+    const message = this.inputMessage;
 
-              this.ws.send(
-                  "/pub/chat/message",
-                  JSON.stringify(msg),
-                  {}
-              );
-            }
-          },
-          error => {
-            console.log('소켓 연결 실패 ', error);
-            this.connected = false;
-          }
-      );
-    },
-    disconnect() {
-      if (this.ws && this.ws.connected) {
-        this.ws.disconnect();
-        this.connected = false;
-      }
-    },
-    sendMessage() {
-      if (!this.canSend) {
-        return;
-      }
-
-      if (this.ws && this.ws.connected) {
-        const msg = {
-          type: 'TALK',
-          roomId: this.roomId,
-          sender: this.sender,
-          message: this.inputMessage,
-          sendDate: new Date(),
-        };
-        this.ws.send(
-            "/pub/chat/message",
-            JSON.stringify(msg),
-            {}
-        );
-      }
-      this.inputMessage = '';
-      this.canSend = false;
-      setTimeout(() => {
-        this.canSend = true;
-      }, 1000);
-    },
-    recvMessage(recv) {
-      if (recv.type !== 'ENTER') { // 'ENTER' 타입인 경우에는 출력하지 않음
-        this.messageList.messages.push({
-          type: recv.type,
-          sender: recv.sender,
-          message: recv.message,
-          sendDate: recv.sendDate,
-        });
-        this.$nextTick(() => {
-          const chatInfoElement = this.$refs.chatInfoRef;
-          if (chatInfoElement.scrollHeight - chatInfoElement.clientHeight <= chatInfoElement.scrollTop + 100) {
-            chatInfoElement.scrollTop = chatInfoElement.scrollHeight;
-          }
-        });
-      }
-    },
-    findRoomMessage() {
-      console.log('5')
-      api.get(process.env.VUE_APP_BASEURL_V1+`/chat/room/enter/${this.roomId}`).then(response => {
-        console.log(response.data);
-        console.log(6)
-        this.chatMessages = response.data;
-        console.log('7')
-      });
-    },
+    socketStore.sendMessage(roomId, sender, message);
+    this.inputMessage = ''; // 입력 필드 초기화
   },
-  beforeUnmount() {
-    this.disconnect(); // 컴포넌트가 해제되기 전에 웹소켓 연결 끊기
-  },
+},
+
 
 });
 </script>
@@ -186,17 +101,16 @@ export default defineComponent({
         <input name="searchRoom" placeholder="검색하기">
       </div>
     </div>
-
     <div id="chat_body">
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
           <div class="scroll box2">
-          <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
-            <ChatBox :messages="message"/>
-          </div>
-          <div class="Box" v-for="(messages,idx) in messageList.messages" :key="idx">
-            <ChatBox :messages="messages"/>
-          </div>
+            <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
+              <ChatBox :messages="message"/>
+            </div>
+            <div class="Box" v-for="(messages,idx) in messageList" :key="idx">
+              <ChatBox :messages="messages"/>
+            </div>
           </div>
         </div>
 
@@ -209,55 +123,11 @@ export default defineComponent({
       </div>
 
       <div id="chatSidebar">
-        <div id="online">
-          <div class="roomMemberInfo">
-            <div>온라인</div>
-          </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
-        </div>
         <div id="offline">
           <div class="roomMemberInfo">
-            <div>오프라인</div>
+            <div>채널맴버</div>
           </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
+          <ChannelMemberInfo name="박재연"/>
         </div>
       </div>
     </div>
@@ -266,29 +136,30 @@ export default defineComponent({
 
 <style scoped>
 
-.box2::-webkit-scrollbar{
+.box2::-webkit-scrollbar {
   width: 10px;
 }
 
 /* 스크롤바 막대 설정*/
-.box2::-webkit-scrollbar-thumb{
+.box2::-webkit-scrollbar-thumb {
   background-color: #1A1B1E;
   border: 4px solid #1A1B1E;
   border-radius: 50px;
 }
 
 /* 스크롤바 뒷 배경 설정*/
-.box2::-webkit-scrollbar-track{
-  background-color: rgba(0,0,0,0);
+.box2::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
   width: 15px;
 }
 
-.scroll{
+.scroll {
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
+
 /** scroll*/
 #header {
   display: flex;
@@ -297,10 +168,10 @@ export default defineComponent({
   width: 100%;
   height: 50px;
   z-index: 11;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
 
 #header > div {
@@ -326,7 +197,8 @@ export default defineComponent({
 #chatMain_Header > div:nth-of-type(1) > div:nth-of-type(1) {
   height: 15px;
 }
-input[name=searchRoom]{
+
+input[name=searchRoom] {
   display: flex;
   height: 60%;
   background: #1E1F22;
@@ -335,21 +207,9 @@ input[name=searchRoom]{
   border: none;
   padding: 0 10px;
 }
-/** Add*/
-.MyMember_Info {
-  display: flex;
-  font-size: 15px;
-  color: #fff;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.MyMember_exit {
-  display: flex;
-  height: 8px;
-  width: 8px;
-}
+/** Add*/
+
 
 #main_contents {
   display: flex;
@@ -420,49 +280,15 @@ input[name=message] {
   width: 22%;
   height: 100%; /* 임시로 */
   z-index: 10;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
-}
-
-#online {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
 
 #offline {
   display: flex;
   flex-direction: column;
-}
-
-.chatSidebarInfo {
-  display: flex;
-  height: 45px;
-  gap: 10px;
-  border-radius: 5px;
-  margin: 0px 15px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.chatSidebarInfo:hover {
-  background: #36373D;
-}
-
-.chatSidebarInfo:active {
-  background: #3B3D44;
-}
-
-.chatSidebarInfo > div:nth-of-type(1) {
-  display: flex;
-  color: #fff;
-  width: 40px;
-}
-
-.chatSidebarInfo > div:nth-of-type(1) > img:nth-of-type(1) {
-  padding: 2px;
 }
 
 .roomMemberInfo > div:nth-of-type(1) {

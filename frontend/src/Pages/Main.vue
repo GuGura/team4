@@ -7,14 +7,17 @@ import LobbyF from "@/components/mainpage/friends/Lobby.vue";
 import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
-import {onMounted, watch} from "vue";
+import {onMounted, provide, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
 import {useChannelStore} from "../../script/stores/channel";
+import {useSocketStore} from '/script/socket';
+
 
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
 const channelStore = useChannelStore();
+const socketStore = useSocketStore();
 
 const route = useRouter()
 
@@ -24,10 +27,8 @@ watch(route.currentRoute, (to,form) => {
    console.log(typeof channel_type)
    switch (channel_type){
      case 'lobby':
-       console.log(channel_type);
        break;
      case 'public':
-       console.log(channel_type);
        break;
      default:
        channelStore.init()
@@ -35,11 +36,17 @@ watch(route.currentRoute, (to,form) => {
    }
   }
 })
-
-onMounted(()=>{
+onMounted(async () => {
   lobbyStore.updateMyInfo();
-})
+  socketStore.connectSocket();
+
+  provide('socket', socketStore.ws);
+  provide('wsConnected', socketStore.wsConnected);  // 상태를 provide로 제공
+});
+
+
 </script>
+
 <template>
   <div id="container">
     <ServerList/>

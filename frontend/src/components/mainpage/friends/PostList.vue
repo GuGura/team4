@@ -23,7 +23,7 @@ let postList = reactive({
     ]
 })
 function initPosts() {
-    api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPageFriend", {
+    api.post( "/content/listByPageFriend", {
         lastPosting: lastPosting, id:friendStore.user.id
     }).then(({data}) => {
         if(data && data.length){
@@ -34,7 +34,7 @@ function initPosts() {
 }
 
 function morePost() {
-    api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPageFriend", {
+    api.post( "/content/listByPageFriend", {
         lastPosting: lastPosting, id:friendStore.user.id
     }).then(({data}) => {
         if(data && data.length){
@@ -74,6 +74,18 @@ let lastPosting = 0
 
 
 <style>
+.content-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    flex: 1;
+}
+
+.image {
+    margin-left: 20px;
+}
 
 img {
     max-width: 100%;

@@ -58,10 +58,10 @@
 
 <script setup>
 import {reactive} from "vue";
-import axios from "axios";
 import router from "../../script/routes/router";
 import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
+import notToken from "../../script/notTokenAxios";
 
 const joinInfo = reactive({
   email: null,
@@ -83,7 +83,7 @@ const AuthenticatedEmail = () => {
     return;
   }
 
-  axios.post(process.env.VUE_APP_BASEURL_V1 + "/join/sendMail", isInfoTrue.form)
+  notToken.post("/api/v1/join/sendMail", isInfoTrue.form)
       .then(({data}) => {
         console.log("sendMail: " + JSON.stringify(data))
         if (data.status) {
@@ -94,7 +94,8 @@ const AuthenticatedEmail = () => {
           alert(data.message)
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         alert("이메일을 입력해주세요1")
       })
 }
@@ -102,7 +103,7 @@ const checkMail = () => {
   if (isInfoTrue.form.isEmailAuthCode === null) {
     return
   }
-  axios.post(process.env.VUE_APP_BASEURL_V1 + "/join/checkMail", isInfoTrue.form)
+  notToken.post("/api/v1/join/checkMail", isInfoTrue.form)
       .then(({data}) => {
         console.log(data)
         if (data) {
@@ -118,7 +119,7 @@ const checkMail = () => {
 }
 
 const SignUp = () => {
-  axios.put(process.env.VUE_APP_BASEURL_V1 + "/join/signUp", joinInfo)
+  notToken.put("/api/v1/join/signUp", joinInfo)
       .then(({data}) => {
         if (data.status) {
           alert(data.message)

@@ -38,7 +38,8 @@ const routes = [
         path: '/channel/:channel_title/chat/room/enter/:roomId',
         name: 'ChannelChat',
         component: () => import("@/Pages/Main.vue"),
-        meta: {requiresAuth: true}
+        meta: {requiresAuth: true},
+        props: true
     },
     {
         path: '/channel/friend/',

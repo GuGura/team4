@@ -17,17 +17,19 @@ export const useServerListStore = defineStore("serverListStore", () => {
     const router = useRouter();
 
     const getPathEndPoint = (computed(()=> {
-        const path = router.currentRoute.value.path
-        let triumphant = path.substring('/channel/'.length);
-        if (!(triumphant === 'lobby'|| triumphant === 'public' || triumphant === 'addServer'))
-            triumphant = Number(triumphant);
+        const path = router.currentRoute.value.href.split('/');
+        console.log(path)
+        let triumphant = null
+        if (!(path[2] === 'lobby'|| path[2] === 'public' || path[2] === 'addServer'))
+            triumphant = Number(path[2]);
+        else
+            triumphant = path[2]
         return triumphant;
     } ))
 
     const getEndPoint = computed(() => {
         const pathSegments = router.currentRoute.value.path.split('/');
-        const endPoint = pathSegments[2]; // 첫 번째 경로 세그먼트 추출
-        return endPoint;
+        return pathSegments[2];
     });
 
 
@@ -36,7 +38,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
     })
 
     async function initBtn() {
-        await api.get(process.env.VUE_APP_BASEURL_V1 + "/myInfo/channelList")
+        await api.get("/myInfo/channelList")
             .then(({data}) => {
                 const resultArray = data.result;
                 resultArray.forEach(btn => {
@@ -44,7 +46,22 @@ export const useServerListStore = defineStore("serverListStore", () => {
                 })
             })
     }
+    async function leaveChannel(){
+        let channelUID = router.currentRoute.value.path.split('/')[2]
+        api.delete(`/channel/leaveChannel/${channelUID}`)
+            .then(res=>{
+                console.log(res)
+                buttons.forEach((r,index)=>{
+                    if (r.channel_UID === Number(channelUID)){
+                        buttons.splice(index,1)
+                    }
+                })
+            })
+            .catch(()=>{
+                console.log("fail")
+            })
 
+    }
     async function updateBtn(btn) {
         this.buttons.splice(1, 0, btn)
     }
@@ -54,6 +71,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
         btnResult,
         getPathEndPoint,
         getEndPoint,
+        leaveChannel,
         router,
         initBtn,
         updateBtn,

@@ -21,10 +21,9 @@ import java.util.Map;
 @RequestMapping(ControllerProperties.API_VERSION)
 public class ChannelController {
 
-    private ResultDTO resultDTO;
     private final ChannelService channelService;
     @PostMapping("/channel/create")
-    public ResponseEntity<ResultDTO> createChannel(@RequestBody Map<String, String> params, HttpServletRequest request) {
+    public ResponseEntity<?> createChannel(@RequestBody Map<String, String> params, HttpServletRequest request) {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         String inviteCode = params.get("inviteCode");
         List<MyChannelsDTO> myChannelDTO = new ArrayList<>();
@@ -34,18 +33,19 @@ public class ChannelController {
 
             myChannelDTO.add(channelService.createChannel(memberUID,fileURL,serverName));
         }
-
-
-        resultDTO = ResultDTO.builder()
-                .result(myChannelDTO)
-                .status(true)
-                .build();
-        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+        return new ResponseEntity<>(myChannelDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/channel/attend/{inviteCode}")
     public ResponseEntity<?> attendChannel(@PathVariable("inviteCode")String inviteCode, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         return channelService.getAttendChannel(inviteCode,memberUID);
+    }
+    @DeleteMapping("/channel/leaveChannel/{channelUID}")
+    public ResponseEntity<?> leaveChannel(@PathVariable("channelUID") String channelUID,HttpServletRequest request){
+        int channel_UID = Integer.parseInt(channelUID);
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        channelService.leaveChannel(channel_UID,memberUID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
