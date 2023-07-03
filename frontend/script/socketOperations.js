@@ -13,7 +13,6 @@ export const useSocketStore = defineStore("socketStore", () => {
     let wsConnected = ref(false);  // WebSocket 연결 상태 추가
 
     const getter = computed(() => {
-        console.log("getter-----------" ,messageList)
         return messageList;
     })
     //소켓 연결

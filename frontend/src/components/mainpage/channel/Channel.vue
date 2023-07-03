@@ -1,5 +1,5 @@
 <script>
-import {computed, defineComponent, reactive} from "vue";
+import {computed, defineComponent} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socketOperations';
@@ -39,9 +39,7 @@ export default defineComponent({
     };
   },
   setup() {
-    const messageList = reactive(null)
-
-
+    const messageList = socketStore.getter
     return {
       messageList
     };
@@ -109,8 +107,6 @@ export default defineComponent({
             <div class="Box" v-for="(messages,idx) in messageList" :key="idx">
               <ChatBox :messages="messages"/>
             </div>
-            {{messageList}}
-            {{getter}}
           </div>
         </div>
 

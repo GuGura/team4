@@ -31,7 +31,6 @@ onMounted(async () => {
 });
 
 watch(
-    () => updateChannelId.value,
     async () => {
       console.log("update channel_id.value: ", updateChannelId.value)
       if (updateChannelId.value !== "lobby") {
@@ -50,12 +49,8 @@ watch(
         if (textChatRooms.length > 0) {
           enterRoom(textChatRooms[0].roomId);
         }
-        if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId);
-        }
       }
     },
-    {immediate: true}
 );
 
 // To use the createRoom function, the channel_id and roomInfo object are needed

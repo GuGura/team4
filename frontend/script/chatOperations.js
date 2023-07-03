@@ -20,7 +20,7 @@ export async function findAllRoom(channel_id,textChatRooms, voiceChatRooms) {
     textChatRooms.splice(0);
 
     await api
-        .get(process.env.VUE_APP_BASEURL_V1 + '/chat/rooms', {
+        .get('/chat/rooms', {
             params: {
                 channel_id: channel_id
             },
@@ -41,12 +41,13 @@ export async function createRoom(channel_id, roomInfo, textChatRooms, voiceChatR
         alert("방 제목을 입력해 주십시요.");
     } else if (updateChannelId.value !== "lobby"){
         roomInfo.channel_id = channel_id;
-        await api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', roomInfo)
+        await api.post( '/chat/room', roomInfo)
             .then(({data}) => {
                 console.log(data)
                 if (data.roomType === false) textChatRooms.push(data)
                 else if (data.roomType === true) voiceChatRooms.push(data)
                 roomInfo.name = '';
+                enterRoom(data.roomId);
             })
             .catch(() => {
             });
@@ -55,7 +56,6 @@ export async function createRoom(channel_id, roomInfo, textChatRooms, voiceChatR
 
 
 export function enterRoom(roomId) {
-    console.log("Start EnterRoom in ChannelSideBar.vue")
     let sender = updateUsername.value
     let channel_id = updateChannelId.value
     localStorage.setItem('wschat.roomId', roomId);
