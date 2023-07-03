@@ -24,11 +24,12 @@ async function createServer() {
   if (createChannel.serverName !== '') {
     await api.post("/channel/create",createChannel)
         .then(({data}) => {
+          console.log("createServer: ")
           console.log(data)
-          const result = data.result[0].channel_UID
+          const result = data[0].channel_UID
           modalStore.terminate('addServer')
-          serverListStore.updateBtn(data.result[0])
-          localStorage.setItem('selectChannel', data.result[0].channel_title)
+          serverListStore.updateBtn(data[0])
+          localStorage.setItem('selectChannel', data[0].channel_title)
           router.push(`/channel/${result}`)
           router.go(1);
         })
