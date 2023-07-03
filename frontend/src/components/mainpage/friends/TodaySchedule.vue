@@ -8,7 +8,12 @@ const days = ["일", "월", "화", "수", "목", "금", "토"];
 
 const friendStore=useFriendStore();
 
+onMounted(() => {
+    initEvents()
+})
+
 function initEvents() {
+    friendStore.init()
     api.post( "/event/listByDateFriend", {
         year: Dates.year,
         month: Dates.month,
@@ -33,9 +38,6 @@ function nextDate(){
     initEvents();
 }
 
-onMounted(() => {
-    friendStore.init()
-})
 
 let today = new Date();
 
