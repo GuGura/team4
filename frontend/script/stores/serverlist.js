@@ -17,17 +17,16 @@ export const useServerListStore = defineStore("serverListStore", () => {
     const router = useRouter();
 
     const getPathEndPoint = (computed(()=> {
-        const path = router.currentRoute.value.path
-        let triumphant = path.substring('/channel/'.length);
-        if (!(triumphant === 'lobby'|| triumphant === 'public' || triumphant === 'addServer'))
-            triumphant = Number(triumphant);
+        const path = router.currentRoute.value.href.split('/');
+        let triumphant = null
+        if (!(path[2] === 'lobby'|| path[2] === 'public' || path[2] === 'addServer'))
+            triumphant = Number(path[2]);
         return triumphant;
     } ))
 
     const getEndPoint = computed(() => {
         const pathSegments = router.currentRoute.value.path.split('/');
-        const endPoint = pathSegments[2]; // 첫 번째 경로 세그먼트 추출
-        return endPoint;
+        return pathSegments[2];
     });
 
 

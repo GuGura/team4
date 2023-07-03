@@ -32,9 +32,8 @@ function btnClick() {
 <template>
   <div class="server_Icon" @click="btnClick"
        :class=" {br : (serverListStore.getPathEndPoint === props.buttonData.channel_title)||(serverListStore.getPathEndPoint===props.buttonData.channel_UID) }">
-
     <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;"
-         :class="{colorBlue1 :props.buttonData.channel_UID === serverListStore.getPathEndPoint}"
+         :class="{colorBlue1 : props.buttonData.channel_UID === serverListStore.getPathEndPoint}"
          v-if="props.buttonData.channel_icon_url === null">
       <div class="title">{{ props.buttonData.channel_title }}</div>
     </div>

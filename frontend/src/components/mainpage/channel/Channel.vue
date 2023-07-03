@@ -1,8 +1,9 @@
 <script>
-import {computed, defineComponent, reactive} from "vue";
+import {computed, defineComponent} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socket';
+import router from "../../../../script/routes/router";
 
 
 const lobbyStore = useLobbyStore();
@@ -46,6 +47,9 @@ export default defineComponent({
     };
   },
   methods: {
+    router() {
+      return router
+    },
     created() {
       this.roomId = localStorage.getItem('wschat.roomId');
       this.channelId = localStorage.getItem('wschat.channelId')
@@ -96,7 +100,6 @@ export default defineComponent({
         <input name="searchRoom" placeholder="검색하기">
       </div>
     </div>
-
     <div id="chat_body">
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
