@@ -6,6 +6,7 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import api from "/script/token/axios.js";
 import router from "../../../../script/routes/router";
 import {useServerListStore} from "../../../../script/stores/serverlist";
+import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead.vue";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -78,14 +79,8 @@ onMounted(() => {
 
 <template>
   <div id="side_contents">
-    <div id="chatRooms_Header">
-      <div style="font-size: 18px;font-weight: bold; color: #fff;">
-        {{ channelStore.channelInfo.channel_title }}
-      </div>
-      <div style="display: flex; height: 25px">
-        <img src="/img/sidebar/down.png" style="width: 100%;height: 100%">
-      </div>
-    </div>
+    <ChannelSidebarHead
+        :channel_title="channelStore.channelInfo.channel_title"/>
 
     <div id="side_content_info">
       <div id="chatRooms">
@@ -166,24 +161,6 @@ onMounted(() => {
 
 
 /**Add**/
-#chatRooms_Header {
-  display: flex;
-  min-width: 240px;
-  align-items: center;
-  padding: 0 15px;
-  cursor: pointer;
-  height: 50px;
-  top: 0;
-  left: 0;
-  position: absolute;
-  border-bottom: 1px solid #1F2123;
-  border-radius: 10px 0 0 0;
-  justify-content: space-between;
-}
-
-#chatRooms_Header:hover {
-  background: #36373D;
-}
 
 img {
   width: 100%;
@@ -196,7 +173,6 @@ img {
   min-width: 240px;
   background: #2b2d31;
   border-radius: 10px 0 0 0;
-  z-index: 10;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;
