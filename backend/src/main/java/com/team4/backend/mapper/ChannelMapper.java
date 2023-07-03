@@ -3,10 +3,7 @@ package com.team4.backend.mapper;
 import com.team4.backend.model.Channel;
 import com.team4.backend.model.ChannelMember;
 import com.team4.backend.model.dto.MyChannelsDTO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +41,9 @@ public interface ChannelMapper {
 
     @Select("SELECT * FROM channelmember WHERE MEMBER_UID = #{memberUID} and CHANNEL_UID = #{channelUID}")
     Optional<ChannelMember> findChannelMemberByMemberUID(int memberUID,int channelUID);
+
+    @Delete("delete FROM channelmember WHERE CHANNEL_UID = #{channelUID} and MEMBER_UID = #{memberUID}")
+    void deleteChannelMember(int channelUID, int memberUID);
 }
 //select m.CHANNEL_UID, m.MEMBER_UID, c.CHANNEL_TITLE, c.CHANNEL_ICON_URL
 //from channelmember m

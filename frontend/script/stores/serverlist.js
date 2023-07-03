@@ -46,7 +46,22 @@ export const useServerListStore = defineStore("serverListStore", () => {
                 })
             })
     }
+    async function leaveChannel(){
+        let channelUID = router.currentRoute.value.path.split('/')[2]
+        api.delete(`/channel/leaveChannel/${channelUID}`)
+            .then(res=>{
+                console.log(res)
+                buttons.forEach((r,index)=>{
+                    if (r.channel_UID === Number(channelUID)){
+                        buttons.splice(index,1)
+                    }
+                })
+            })
+            .catch(()=>{
+                console.log("fail")
+            })
 
+    }
     async function updateBtn(btn) {
         this.buttons.splice(1, 0, btn)
     }
@@ -56,6 +71,7 @@ export const useServerListStore = defineStore("serverListStore", () => {
         btnResult,
         getPathEndPoint,
         getEndPoint,
+        leaveChannel,
         router,
         initBtn,
         updateBtn,

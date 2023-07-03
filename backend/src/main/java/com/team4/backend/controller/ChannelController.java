@@ -48,4 +48,11 @@ public class ChannelController {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         return channelService.getAttendChannel(inviteCode,memberUID);
     }
+    @DeleteMapping("/channel/leaveChannel/{channelUID}")
+    public ResponseEntity<?> leaveChannel(@PathVariable("channelUID") String channelUID,HttpServletRequest request){
+        int channel_UID = Integer.parseInt(channelUID);
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        channelService.leaveChannel(channel_UID,memberUID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

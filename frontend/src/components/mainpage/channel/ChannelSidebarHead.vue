@@ -2,6 +2,8 @@
 import {defineProps} from 'vue'
 import {useModalStore} from "../../../../script/stores/modal";
 import CreateRoomModal from "@/components/modal/CreateRoomModal.vue";
+import router from "../../../../script/routes/router";
+import {useServerListStore} from "../../../../script/stores/serverlist";
 
 const props = defineProps({
   channel_title: String,
@@ -16,6 +18,13 @@ function btnCreateRoom(){
 function checkInviteCode(){
   // eslint-disable-next-line no-undef
   Swal.fire(props.channel_invite_code);
+  modalStore.openClose('RoomToggle')
+}
+function leaveChannel(){
+  if (confirm('정말 나가겠습니까?')){
+    useServerListStore().leaveChannel()
+    router.push('/channel/lobby')
+  }
   modalStore.openClose('RoomToggle')
 }
 </script>
@@ -35,7 +44,7 @@ function checkInviteCode(){
     <div>서버장 넘기기</div> <!-- 오너일때-->
     <div>매니저 위임</div>  <!-- 오너일때-->
     <div>추방</div>       <!-- 오너 or 매니저 일때-->
-    <div>서버 나가기</div>   <!-- 유저 or 매니저-->
+    <div @click="leaveChannel()">서버 나가기</div>   <!-- 유저 or 매니저-->
   </div>
   <CreateRoomModal v-if="modalStore.modal.CreateRoom === true"/>
 </template>
