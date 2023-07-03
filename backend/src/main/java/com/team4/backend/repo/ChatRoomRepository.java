@@ -40,7 +40,7 @@ public class ChatRoomRepository {
         topics = new HashMap<>();
     }
 
-    public List<ChatRoom> findAllRoom() {
+    public List<ChatRoom> findAllRoom(String channel_id) {
         // MariaDB에서 데이터를 먼저 가져옵니다.
         List<ChatRoom> chatRoomsFromDB = redisToMariaDBMigrationMapper.getAllChatRoomsFromDB();
         // Redis에서 데이터를 가져옵니다.

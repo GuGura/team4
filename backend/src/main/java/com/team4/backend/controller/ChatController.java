@@ -40,7 +40,6 @@ public class ChatController {
     @ResponseBody
     @GetMapping("/enter/{roomId}")
     public List<ChatMessage> getChatMessages(@PathVariable String roomId) {
-        System.out.print("Start GetChatMessages");
         return redisToMariaDBMigrationMapper.getChatMessagesFromDB(roomId);
     }
 }

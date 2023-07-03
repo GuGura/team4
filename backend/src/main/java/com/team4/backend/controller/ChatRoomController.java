@@ -3,10 +3,9 @@ package com.team4.backend.controller;
 import com.team4.backend.mapper.RedisToMariaDBMigrationMapper;
 import com.team4.backend.model.ChatMessage;
 import com.team4.backend.model.ChatRoom;
+import com.team4.backend.repo.ChatMessageRepository;
 import com.team4.backend.repo.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,31 +18,30 @@ public class ChatRoomController {
 
     private final RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     @GetMapping("/room")
     public String rooms(Model model) {
-        System.out.println("get rooms");
         return "api/v1/chat/room";
     }
 
     @GetMapping("/api/v1/chat/rooms")
     @ResponseBody
-    public List<ChatRoom> room() {
-        return chatRoomRepository.findAllRoom();
+    public List<ChatRoom> room(@RequestParam("channel_id") String channel_id) {
+        return chatRoomRepository.findAllRoom(channel_id);
     }
-
 
 
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
     public List<ChatMessage> roomDetail(Model model, @PathVariable String roomId) {
-        // 문자열 대신 필요한 데이터를 반환하도록 수정합니다.
-        System.out.print("GetMapping /room/enter/roomId");
         List<ChatMessage> chatMessages = redisToMariaDBMigrationMapper.getChatMessagesFromDB(roomId);
+        chatMessages.addAll(chatMessageRepository.getChatMessagesByRoomId(roomId));
         model.addAttribute("roomId", roomId);
         model.addAttribute("chatMessages", chatMessages);
-        return chatMessages; // chatMessages 반환
+        return chatMessages;
     }
+
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
