@@ -140,10 +140,10 @@ export default defineComponent({
             calendarApi.unselect() // clear date selection
             if (title) {
                 api.post(process.env.VUE_APP_BASEURL_V1 + "/event/saveEvent", {
-                    title,
+                    title: title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
-                    allDay: selectInfo.allDay
+                    allDay: selectInfo.allDay,
                 }).then(({data}) => {
                     calendarApi.addEvent({
                         id: data,

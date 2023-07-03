@@ -2,8 +2,9 @@
   <div id="main_contents">
     <div id="main_content_header">
       <div id="icon_URL">
-        <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
-        <img src="/img/sidebar/userIcon.png" alt="헬로" style="width: 200px;" class="rounded" v-else>
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url==='' ">
+          <img :src="lobbyStore.user.user_icon_url"  alt="UserIcon" style="width: 200px;" class="rounded" v-else-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-else>
       </div>
       <div id="userName" class="">
         <div class="order-md-2">
@@ -54,7 +55,6 @@ function openModal() {
 
 function openModal2() {
   modalStore.open('writingContent')
-  console.log(modalStore.modal.writingContent)
 }
 
 onMounted(() => {

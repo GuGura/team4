@@ -3,6 +3,7 @@ import ServerList from "@/components/channellist/ChannelList.vue";
 
 import Channel from "@/components/mainpage/channel/Channel.vue";
 import LobbySidebar from "@/components/mainpage/lobby/LobbySidebar.vue";
+import LobbyF from "@/components/mainpage/friends/Lobby.vue";
 import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
@@ -46,6 +47,10 @@ onMounted(()=>{
       <LobbySidebar/>
       <Lobby/>
     </div>
+      <div id="contents" v-else-if="route.currentRoute.value.path === '/channel/friend/'">
+          <LobbySidebar/>
+          <LobbyF/>
+      </div>
     <div id="contents" v-else>
       <ChannelSidebar/>
       <Channel/>

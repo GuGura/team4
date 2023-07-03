@@ -10,13 +10,11 @@ import com.team4.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,6 +47,16 @@ public class MyInfoController {
     public  ResponseEntity<ResultDTO> getLobbyInfo(HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         Member member = memberService.getLobbyInfoByMemberUID(memberUID);
+        resultDTO = ResultDTO.builder()
+                .result(UserUtil.memberToReturn(member))
+                .message("lobby Info callback")
+                .build();
+        return new ResponseEntity<>(resultDTO,HttpStatus.OK);
+    }
+
+    @PostMapping("/myInfo/friend")
+    public  ResponseEntity<ResultDTO> getFriendInfo(@RequestBody Map<String,String> params, HttpServletRequest request){
+        Member member = memberService.getLobbyInfoByMemberUID(Integer.parseInt(params.get("friendId")));
         resultDTO = ResultDTO.builder()
                 .result(UserUtil.memberToReturn(member))
                 .message("lobby Info callback")
