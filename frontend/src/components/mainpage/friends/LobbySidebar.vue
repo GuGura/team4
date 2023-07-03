@@ -1,17 +1,13 @@
-<script>
+<script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
 
-export default {
-  name:'LobbySidebar',
-  components: {SidebarMyInfo}
-}
+
 </script>
 
 <template>
   <div id="side_contents">
     <div id="side_content_info">
       <form name="list">
-
         <div id="btn_DMList" class="btnList">
           <div style="width: 20px;">
             <img src="/img/sidebar/DM_icon.png" style="height: 20px;">

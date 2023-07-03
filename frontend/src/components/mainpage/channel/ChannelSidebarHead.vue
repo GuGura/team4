@@ -41,9 +41,6 @@ function leaveChannel(){
   <div id="toggle" v-if="modalStore.modal.RoomToggle ===true">
     <div @click="checkInviteCode()">초대코드 확인 </div>
     <div @click="btnCreateRoom()">방 생성</div>
-    <div>서버장 넘기기</div> <!-- 오너일때-->
-    <div>매니저 위임</div>  <!-- 오너일때-->
-    <div>추방</div>       <!-- 오너 or 매니저 일때-->
     <div @click="leaveChannel()">서버 나가기</div>   <!-- 유저 or 매니저-->
   </div>
   <CreateRoomModal v-if="modalStore.modal.CreateRoom === true"/>

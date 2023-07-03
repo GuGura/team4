@@ -80,12 +80,14 @@ export const useSocketStore = defineStore("socketStore", () => {
             messageList.push(recv);
         }
     }
-    
+
     //메세지 찾기
-    function findRoomMessage(roomId) {
-        return new Promise((resolve, reject) => {
-            api.get(process.env.VUE_APP_BASEURL_V1 +`/chat/room/enter/${roomId}`)  // URL 수정
+    async function findRoomMessage(roomId) {
+        console.log("쓰이긴해?")
+         return new Promise((resolve, reject) => {
+            api.get( `/chat/room/enter/${roomId}`)  // URL 수정
                 .then((response) => {
+                    console.log("findRoomMessage 예야---------------")
                     resolve(response.data);
                 })
                 .catch((error) => {

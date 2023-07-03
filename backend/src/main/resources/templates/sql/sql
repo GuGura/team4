@@ -87,7 +87,6 @@ create table content
     visible    tinyint default TRUE,
     contentIMG VARCHAR(500),
     isImgIn    tinyint
-
 );
 
 create table event
