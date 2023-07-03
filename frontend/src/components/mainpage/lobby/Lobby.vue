@@ -13,12 +13,12 @@
         <div class="row">
           <div class="edit-button col-1" @click="openModal()">
             <span class="material-symbols-outlined">manage_accounts</span>
-            <div>프</div>
+            <div>프로필 수정</div>
           </div>
           <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
           <div class="writing-button col-1" @click="openModal2()">
-            <span class="material-symbols-outlined">manage_accounts</span>
-            <div>글</div>
+            <span class="material-symbols-outlined">edit_note</span>
+            <div>글 작성</div>
           </div>
           <WritingContentModal v-if="modalStore.modal.writingContent === true"/>
         </div>
@@ -153,7 +153,7 @@ h2.featurette-heading {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
+  width: 100px;
   height: 30px;
   background: #41434A;
   border-radius: 10px;
@@ -170,7 +170,7 @@ h2.featurette-heading {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
+  width: 80px;
   height: 30px;
   background: #41434A;
   border-radius: 10px;
