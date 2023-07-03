@@ -21,8 +21,8 @@ public class RestChatController {
     private final RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
     private final ChatRoomRepository chatRoomRepository;
 
-    @GetMapping("/rooms")
-    public ResponseEntity<?> room(@RequestParam("channel_id") String channel_id) {
+    @GetMapping("/rooms/{channel_id}")
+    public ResponseEntity<?> room(@PathVariable("channel_id") String channel_id) {
         List<ChatRoom> list = chatRoomRepository.findAllRoom(channel_id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

@@ -50,9 +50,6 @@ watch(
         if (textChatRooms.length > 0) {
           enterRoom(textChatRooms[0].roomId);
         }
-        if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId);
-        }
       }
     },
     {immediate: true}

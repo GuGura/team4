@@ -18,7 +18,6 @@ export const useServerListStore = defineStore("serverListStore", () => {
 
     const getPathEndPoint = (computed(()=> {
         const path = router.currentRoute.value.href.split('/');
-        console.log(path)
         let triumphant = null
         if (!(path[2] === 'lobby'|| path[2] === 'public' || path[2] === 'addServer'))
             triumphant = Number(path[2]);
@@ -31,7 +30,6 @@ export const useServerListStore = defineStore("serverListStore", () => {
         const pathSegments = router.currentRoute.value.path.split('/');
         return pathSegments[2];
     });
-
 
     let btnResult = ref({
         endPoint: 'lobby',
@@ -50,7 +48,6 @@ export const useServerListStore = defineStore("serverListStore", () => {
         let channelUID = router.currentRoute.value.path.split('/')[2]
         api.delete(`/channel/leaveChannel/${channelUID}`)
             .then(res=>{
-                console.log(res)
                 buttons.forEach((r,index)=>{
                     if (r.channel_UID === Number(channelUID)){
                         buttons.splice(index,1)

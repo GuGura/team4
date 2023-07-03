@@ -19,12 +19,7 @@ export async function findAllRoom(channel_id,textChatRooms, voiceChatRooms) {
     voiceChatRooms.splice(0);
     textChatRooms.splice(0);
 
-    await api
-        .get(process.env.VUE_APP_BASEURL_V1 + '/chat/rooms', {
-            params: {
-                channel_id: channel_id
-            },
-        })
+    await api.get(`/chat/rooms/${channel_id}`)
         .then(({ data }) => {
             data.forEach(item => {
                 if (item['roomType'] === true) voiceChatRooms.push(item);
@@ -52,14 +47,7 @@ export async function createRoom(channel_id, roomInfo, textChatRooms, voiceChatR
             });
     }
 }
-
-
 export function enterRoom(roomId) {
-    console.log("Start EnterRoom in ChannelSideBar.vue")
-    let sender = updateUsername.value
     let channel_id = updateChannelId.value
-    localStorage.setItem('wschat.roomId', roomId);
-    localStorage.setItem('wschat.channel_id', channel_id);
-
-    router.push(`/channel/${channel_id}/chat/room/enter/${roomId}`);
+    router.push(`/channel/${channel_id}/chat/room/enter/${roomId}`)
 }

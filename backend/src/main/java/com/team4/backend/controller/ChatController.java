@@ -29,6 +29,9 @@ public class ChatController {
      */
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
+        System.out.println("message:" + message);
+        System.out.println("roomID: "+ message.getRoomId());
+
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             chatRoomRepository.enterChatRoom(message.getRoomId());
         }

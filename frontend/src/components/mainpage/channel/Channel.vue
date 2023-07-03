@@ -1,10 +1,10 @@
-<script>
-import {computed, defineComponent, reactive} from "vue";
+<script setup>
+import {computed, reactive, watch} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socketOperations';
-import router from "../../../../script/routes/router";
 import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
+import {useRouter} from "vue-router";
 
 
 const lobbyStore = useLobbyStore();
@@ -13,76 +13,54 @@ const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
 const socketStore = useSocketStore();
-export default defineComponent({
-  watch: {
-    '$route.params.roomId'(to, from) {
-      if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
-        const url = `${to}`
-        this.enterRoom();
-      }
-    }
-  },
-  components: {ChannelMemberInfo, ChatBox},
-  data() {
-    return {
-      roomId: '',
-      room: {},
-      sender: updateUsername,
-      message: '',
-      sendDate: '',
-      messages: [],
-      chatMessages: [],
-      inputMessage: '',
-      canSend: true,
-      ws: null, // WebSocket 객체 추가
-      connected: false, // 소켓 연결 상태 추가
-    };
-  },
-  setup() {
-    const messageList = reactive(null)
+const route = useRouter()
+
+watch(route.currentRoute, (to, from) => {
+  if (to !== from && to)
+    enterRoom();
+})
+
+let props = reactive({
+  roomId: localStorage.getItem('wschat.roomId'),
+  room: {},
+  sender: updateUsername,
+  message: '',
+  sendDate: '',
+  messages: [],
+  chatMessages: [],
+  inputMessage: '',
+  canSend: true,
+  ws: null, // WebSocket 객체 추가
+  connected: false, // 소켓 연결 상태 추가
+  channelId: localStorage.getItem('wschat.channelId')
+})
+let messageList = reactive(null)
 
 
-    return {
-      messageList
-    };
-  },
-  methods: {
-    router() {
-      return router
-    },
-    created() {
-      this.roomId = localStorage.getItem('wschat.roomId');
-      this.channelId = localStorage.getItem('wschat.channelId')
-      this.sender = updateUsername
-    },
-    async enterRoom() {
-      const roomId = localStorage.getItem('wschat.roomId');
-      this.messageList = [];
+async function enterRoom() {
+  const roomId = localStorage.getItem('wschat.roomId');
+  console.log("enterRoom------------------------------",roomId)
+  messageList = [];
+  await socketStore.findRoomMessage(roomId)
+      .then(async (data) => {
+        props.chatMessages = data; // 받은 데이터를 chatMessages에 저장
+        socketStore.subscribeToRoom(roomId, props.sender)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}
 
-      await socketStore.findRoomMessage(roomId)
-          .then(async (data) => {
-            console.log(data);
-            this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
-            await socketStore.subscribeToRoom(roomId, this.sender)
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-    },
+//메세지 보내기
+function sendMessage() {
+  const roomId = localStorage.getItem('wschat.roomId');
+  const sender = props.sender;
+  const message = props.inputMessage;
 
-  sendMessage() {
-
-    const roomId = localStorage.getItem('wschat.roomId');
-    const sender = this.sender;
-    const message = this.inputMessage;
-
-    socketStore.sendMessage(roomId, sender, message);
-    this.inputMessage = ''; // 입력 필드 초기화
-  },
-},
-
-
-});
+  socketStore.sendMessage(roomId, sender, message);
+  props.inputMessage = ''; // 입력 필드 초기화
+}
+enterRoom();
 </script>
 
 <template>
@@ -103,21 +81,21 @@ export default defineComponent({
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
           <div class="scroll box2">
-            <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
+            <div class="Box" v-for="(message, idx) in props.chatMessages" :key="`chat-${idx}`">
               <ChatBox :messages="message"/>
             </div>
             <div class="Box" v-for="(messages,idx) in messageList" :key="idx">
               <ChatBox :messages="messages"/>
             </div>
-            {{messageList}}
-            {{getter}}
+            {{ messageList }}
+
           </div>
         </div>
 
         <div id="MessageBox">
           <form style="width: 100%;" @submit.prevent>
             <input type="text" name="message" placeholder="메세지 보내기"
-                   v-model="inputMessage" @keyup.enter="sendMessage">
+                   v-model="props.inputMessage" @keyup.enter="sendMessage">
           </form>
         </div>
       </div>
