@@ -47,7 +47,11 @@ export async function createRoom(channel_id, roomInfo, textChatRooms, voiceChatR
             });
     }
 }
+
+
 export function enterRoom(roomId) {
+    console.log("Start EnterRoom in ChannelSideBar.vue")
     let channel_id = updateChannelId.value
-    router.push(`/channel/${channel_id}/chat/room/enter/${roomId}`)
+    localStorage.setItem('wschat.roomId', roomId);
+    router.push(`/channel/${channel_id}/chat/room/enter/${roomId}`);
 }
