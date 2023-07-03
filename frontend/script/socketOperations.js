@@ -13,8 +13,10 @@ export const useSocketStore = defineStore("socketStore", () => {
     let wsConnected = ref(false);  // WebSocket 연결 상태 추가
 
     const getter = computed(() => {
+        console.log("getter-----------" ,messageList)
         return messageList;
     })
+    //소켓 연결
     function connectSocket() {
         const serverURL = 'http://localhost:8090/ws';
         let socket = new SockJS(serverURL);
@@ -34,31 +36,34 @@ export const useSocketStore = defineStore("socketStore", () => {
         alert("호출 실패")
         wsConnected = false
     }
+
+    //구독 하는 기능
+    let subscription;
     function subscribeToRoom(roomId, sender) {
-        ws.subscribe(
+        if (subscription) {
+            console.log('구독 취소');
+            subscription.unsubscribe();
+        }
+        subscription = ws.subscribe(
             '/sub/chat/room/' + roomId,
             message => {
                 console.log('구독으로 받은 메시지입니다.', message.body);
                 const recv = JSON.parse(message.body);
-                receiveMessage(recv);
-            },
-            {id: 'room-subscription'}
+                receiveMessage(recv, messageList); // messageList 객체 전달
+            }
         );
         if (ws && ws.connected) {
-            console.log('Start ws.connect Channel.vue ');
             const msg = {
                 type: 'ENTER',
                 roomId: roomId,
                 sender: sender,
             };
-            console.log("ddddddddddddddddddddddddddddddddddddddddd", msg)
-            ws.send('/pub/chat/message', JSON.stringify(msg), {});
         } else {
-            throw new Error('소켓 연결이 실패했습니다.');
+            Error('구독에 실패했습니다.');
         }
-
     }
 
+    //메세지 보내기
     function sendMessage( roomId, sender, message) {
         const msg = {
             type: 'TALK',
@@ -70,25 +75,24 @@ export const useSocketStore = defineStore("socketStore", () => {
         ws.send('/pub/chat/message', JSON.stringify(msg), {});
     }
 
-
+    //메세지 받기
     function receiveMessage(recv) {
-        console.log(recv)
         if (recv.type !== 'ENTER') {
             messageList.push(recv);
         }
     }
-
-
+    
+    //메세지 찾기
     function findRoomMessage(roomId) {
-        console.log('-------------------------------Start findRoomMessage---------------------', roomId);
-        api.get(`/chat/room/enter/${roomId}`)
-            .then(res => {
-                console.log('---------------------------------------------findRoomMessage Data is : ', res);
-                return res.data;
-            })
-            .catch(err => {
-                throw err
-            });
+        return new Promise((resolve, reject) => {
+            api.get(process.env.VUE_APP_BASEURL_V1 +`/chat/room/enter/${roomId}`)  // URL 수정
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
 
     return {

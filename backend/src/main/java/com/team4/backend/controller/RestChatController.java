@@ -1,6 +1,7 @@
 package com.team4.backend.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team4.backend.mapper.RedisToMariaDBMigrationMapper;
 import com.team4.backend.model.ChatRoom;
 import com.team4.backend.repo.ChatRoomRepository;
@@ -21,7 +22,7 @@ public class RestChatController {
     private final ChatRoomRepository chatRoomRepository;
 
     @GetMapping("/rooms")
-    public ResponseEntity<?> room() {
+    public ResponseEntity<?> room(@RequestParam("channel_id") String channel_id) {
         List<ChatRoom> list = chatRoomRepository.findAllRoom(channel_id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -29,7 +30,9 @@ public class RestChatController {
     public ResponseEntity<?> createRoom(@RequestBody Map<String,?> params) {
         String name = (String)params.get("name");
         boolean room_type = (boolean)params.get("room_type");
-        ChatRoom chatRoom = chatRoomRepository.createChatRoom(name, room_type);
+        String channel_id = (String) params.get("channel_id");
+        System.out.println("RestChatController chatnnel_Id= "+channel_id);
+        ChatRoom chatRoom = chatRoomRepository.createChatRoom(name, room_type, channel_id);
         return new ResponseEntity<>(chatRoom,HttpStatus.CREATED);
     }
 }

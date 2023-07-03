@@ -1,12 +1,11 @@
 <script setup>
-import {computed, onMounted, reactive} from 'vue';
+import {computed, onMounted, reactive, watch} from 'vue';
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
 import {useChannelStore} from "../../../../script/stores/channel";
 import {useLobbyStore} from "../../../../script/stores/lobby";
-import api from "/script/token/axios.js";
-import router from "../../../../script/routes/router";
 import {useServerListStore} from "../../../../script/stores/serverlist";
 import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead.vue";
+import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -14,7 +13,7 @@ const serverListStore = useServerListStore();
 
 const roomInfo = reactive({
   name: '',
-  room_type: false
+  room_type: false,
 }); // ChatRoom Name
 const textChatRooms = reactive([]); // Text Chat Room List
 const voiceChatRooms = reactive([]); // Voice Chat Room List
@@ -26,54 +25,48 @@ const updateChannelId = computed(() => {
   return serverListStore.getEndPoint;
 });
 
-const findAllRoom = async () => {
-  console.log("findAllRoom")
-  await api.get('/chat/rooms').then(({data}) => {
-    console.log("findAllRoom Result : " + JSON.stringify(data));
-    data.forEach(item => {
-      if (item['roomType'] === true) voiceChatRooms.push(item)
-      else if (item['roomType'] === false) textChatRooms.push(item)
-    })
-  }).catch(err => {
-    console.log("err" + err);
-  });
-};
-
-const createRoom = () => {
-  if ("" === roomInfo.name) {
-    alert("방 제목을 입력해 주십시요.");
-  } else {
-    api.post('/chat/room', roomInfo)
-        .then(({data}) => {
-          console.log(data)
-          if (data.roomType === false) textChatRooms.push(data)
-          else if (data.roomType === true) voiceChatRooms.push(data)
-          alert(data.name + "방 개설에 성공하였습니다.")
-          roomInfo.name = '';
-        })
-        .catch(() => {
-          alert("채팅방 개설에 실패하였습니다.");
-        });
-  }
-};
-
-const enterRoom = (roomId) => {
-  console.log("Start EnterRoom in ChannelSideBar.vue")
-  let sender = updateUsername.value
-  let channelId = updateChannelId.value
-  localStorage.setItem('wschat.roomId', roomId);
-  localStorage.setItem('wschat.channelId', channelId);
-
-  console.log("ChannelSideBar.vue sender : " + sender);
-  console.log("ChannelSideBar.vue roomId : " + roomId);
-  console.log("ChannelSideBar.vue channelId : " + channelId);
-
-  router.push(`/channel/${channelId}/chat/room/enter/${roomId}`);
-};
-
-onMounted(() => {
-  findAllRoom();
+onMounted(async () => {
+  await findAllRoom(roomInfo.channel_id, textChatRooms, voiceChatRooms);
+  console.log("update channel_id.value: ", updateChannelId.value)
 });
+
+watch(
+    () => updateChannelId.value,
+    async () => {
+      console.log("update channel_id.value: ", updateChannelId.value)
+      if (updateChannelId.value !== "lobby") {
+        await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
+        if (textChatRooms.length === 0) {
+          roomInfo.name = "Text Chatting Room";
+          roomInfo.room_type = false;
+          await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
+          enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
+        }
+        if (voiceChatRooms.length === 0) {
+          roomInfo.name = "Voice Chatting Room";
+          roomInfo.room_type = true;
+          await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
+        }
+        if (textChatRooms.length > 0) {
+          enterRoom(textChatRooms[0].roomId);
+        }
+        if (textChatRooms.length > 0) {
+          enterRoom(textChatRooms[0].roomId);
+        }
+      }
+    },
+    {immediate: true}
+);
+
+// To use the createRoom function, the channel_id and roomInfo object are needed
+const createRoomInChannel = () => {
+  createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
+};
+
+// To use the enterRoom function, the roomId is needed
+const enterChatRoom = (roomId) => {
+  enterRoom(roomId); // Here only roomId is needed
+};
 
 </script>
 
@@ -144,7 +137,7 @@ onMounted(() => {
             <div>
               <label>방제목</label>
             </div>
-            <input type="text" v-model="roomInfo.name" @keyup.enter="createRoom">
+            <input type="text" v-model="roomInfo.name" @keyup.enter="createRoomInChannel">
             <div>
               <input type="checkbox" id="roomType" v-model="roomInfo.room_type">
               <label for="roomType">음성채팅방으로 설정</label>
