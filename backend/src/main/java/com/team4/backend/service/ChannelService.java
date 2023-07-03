@@ -103,5 +103,8 @@ public class ChannelService {
 
     public void leaveChannel(int channelUID, int memberUID) {
         channelMapper.deleteChannelMember(channelUID,memberUID);
+        if(channelMapper.findChannelMemberByChannelUID(channelUID).isEmpty()){
+            channelMapper.deleteChannel(channelUID);
+        }
     }
 }

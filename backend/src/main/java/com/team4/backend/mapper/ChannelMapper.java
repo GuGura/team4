@@ -44,6 +44,12 @@ public interface ChannelMapper {
 
     @Delete("delete FROM channelmember WHERE CHANNEL_UID = #{channelUID} and MEMBER_UID = #{memberUID}")
     void deleteChannelMember(int channelUID, int memberUID);
+
+    @Select("SELECT * FROM channelmember WHERE CHANNEL_UID = #{channelUID}")
+    Optional<ChannelMember> findChannelMemberByChannelUID(int channelUID);
+
+    @Delete("delete from channel WHERE CHANNEL_UID = #{channelUID}")
+    void deleteChannel(int channelUID);
 }
 //select m.CHANNEL_UID, m.MEMBER_UID, c.CHANNEL_TITLE, c.CHANNEL_ICON_URL
 //from channelmember m
