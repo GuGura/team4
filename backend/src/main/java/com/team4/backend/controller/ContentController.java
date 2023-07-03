@@ -86,8 +86,11 @@ public class ContentController {
         RContent.setUploadDate(transFormat.format(content.getUploadDate()));
         RContent.setWriter_id(content.getWriter_id());
         RContent.setContent(content.getContent());
-        RContent.setUsername(memberMapper.findMemberByEmail(UserUtil.getEmail()).get().getUsername());
-        RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
+        RContent.setUsername(memberMapper.findMemberByUID(content.getWriter_id()).getUsername());
+        if(!memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url().equals("")){
+            RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
+        }
+        RContent.setSharingCode(content.getSharingCode());
         return RContent;
     }
 
@@ -101,7 +104,6 @@ public class ContentController {
         if(params.get("isImgIn").substring(0,1).equals("t")){
             content.setImgIn(true);
             String base64Data=params.get("contentIMG");
-            System.out.println(base64Data);
             String base64 = base64Data.substring(base64Data.lastIndexOf(",")+1);
             BufferedImage image = null;
             byte[] imageByte;

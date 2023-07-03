@@ -27,7 +27,10 @@ function initPosts() {
         lastPosting: lastPosting, id:friendStore.user.id
     }).then(({data}) => {
         if(data && data.length){
-            postList.posts = data;
+            for (const item of data) {
+                item.userIcon = "data:image/png;base64,"+item.userIcon
+            }
+            postList.posts = data
             lastPosting = postList.posts.at(-1).id
         }
     })
@@ -39,8 +42,8 @@ function morePost() {
     }).then(({data}) => {
         if(data && data.length){
             for (const item of data) {
+                item.userIcon = "data:image/png;base64,"+item.userIcon
                 postList.posts.push(item)
-
             }
             lastPosting = postList.posts.at(-1).id
         }

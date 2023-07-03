@@ -2,9 +2,8 @@
   <div id="main_contents">
     <div id="main_content_header">
       <div id="icon_URL">
-          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url==='' ">
-          <img :src="lobbyStore.user.user_icon_url"  alt="UserIcon" style="width: 200px;" class="rounded" v-else-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
-          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-else>
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url==='data:image/png;base64,null' ">
+          <img :src="lobbyStore.user.user_icon_url"  alt="UserIcon" style="width: 200px;" class="rounded" v-else>
       </div>
       <div id="userName" class="">
         <div class="order-md-2">

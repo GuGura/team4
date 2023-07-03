@@ -1,26 +1,29 @@
 <template>
     <div class="card mb-3">
-
-        <div v-if="post.visible" class="card-body" :id="post.id">
+        <div v-if="props.post.visible" class="card-body" :id="props.post.id">
             <div class="row">
-                <div class="col-4" style="width: 120px;" v-if="post.userIcon!=='data:image/png;base64,null'">
-                    <img class="iconIMG" :src="'data:image/png;base64,'+post.userIcon">
+                <div class="col-4" style="width: 120px;" v-if="props.post.userIcon === 'data:image/png;base64,null'">
+                    <img class="iconIMG" src="/img/serverlist/user_icon.png">
                 </div>
                 <div class="col-4" style="width: 120px;" v-else>
-                    <img class="iconIMG" src="public/img/serverlist/user_icon.png">
+                    <img class="iconIMG"  :src="props.post.userIcon" >
                 </div>
-                <div class="col-7">
-                    <h4 class="card-subtitle mb-2">{{ post.title }}</h4>
-                    <h6 class="card-title">{{ post.username }}</h6>
-                    <p class="card-text"><small class="card-text fw-lighter">{{ post.uploadDate }}</small></p>
+                <div class="col-8">
+                    <h4 class="card-subtitle mb-2">{{ props.post.title }}</h4>
+                    <h6 class="card-title">{{ props.post.username }}</h6>
+                    <p class="card-text"><small class="card-text fw-lighter">{{ props.post.uploadDate }}</small></p>
                 </div>
-                <div class="col-1 btnDelete" @click="toggleDelete">
+                <div class="btnDelete col-1" @click="viewCode">
                     <span class="material-symbols-outlined">close</span>
                 </div>
+                <div class="btnDelete col-1" @click="toggleDelete">
+                    <span class="material-symbols-outlined">close</span>
+                </div>
+
             </div>
-            <div v-if="post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+post.contentIMG"
+            <div v-if="props.post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+props.post.contentIMG"
                                           class="img-fluid"></div>
-            <p class="card-text contents fw-light">{{ post.content }}</p>
+            <p class="card-text contents fw-light">{{ props.post.content }}</p>
         </div>
         <div v-else>
             <p class="card-text contents fw-light">포스트가 존재하지않습니다.</p>
@@ -28,17 +31,17 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'post',
-    props: {
-        post: Object
-    },
-    methods: {
-        toggleDelete() {
+<script setup>
 
-        }
-    }
+import {defineProps} from "vue";
+
+const props = defineProps({
+    post: Object,
+})
+
+function viewCode(){
+    // eslint-disable-next-line no-undef
+    Swal.fire(props.post.sharingCode);
 }
 </script>
 
@@ -59,7 +62,6 @@ export default {
 
 .btnDelete {
     display: flex;
-    margin-left: 140px;
 }
 
 .btnDelete:focus {

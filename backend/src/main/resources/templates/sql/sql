@@ -84,7 +84,8 @@ create table content
     uploadDate date    default current_timestamp(),
     visible    tinyint default TRUE,
     contentIMG VARCHAR(500),
-    isImgIn    tinyint
+    isImgIn    tinyint,
+    sharingCode varchar(200)
 
 );
 
