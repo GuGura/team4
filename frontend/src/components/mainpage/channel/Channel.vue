@@ -4,6 +4,7 @@ import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socket';
 import router from "../../../../script/routes/router";
+import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
 
 
 const lobbyStore = useLobbyStore();
@@ -24,7 +25,7 @@ export default defineComponent({
       }
     }
   },
-  components: {ChatBox},
+  components: {ChannelMemberInfo, ChatBox},
   data() {
     return {
       roomId: '',
@@ -122,55 +123,11 @@ export default defineComponent({
       </div>
 
       <div id="chatSidebar">
-        <div id="online">
-          <div class="roomMemberInfo">
-            <div>온라인</div>
-          </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
-        </div>
         <div id="offline">
           <div class="roomMemberInfo">
-            <div>오프라인</div>
+            <div>채널맴버</div>
           </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
-          <div class="chatSidebarInfo">
-            <div>
-              <img src="/img/channel/userIcon.png">
-            </div>
-            <div class="MyMember_Info">
-              <div class="MyMember_Name1">
-                박재연
-              </div>
-            </div>
-          </div>
+          <ChannelMemberInfo name="박재연"/>
         </div>
       </div>
     </div>
@@ -252,20 +209,7 @@ input[name=searchRoom] {
 }
 
 /** Add*/
-.MyMember_Info {
-  display: flex;
-  font-size: 15px;
-  color: #fff;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.MyMember_exit {
-  display: flex;
-  height: 8px;
-  width: 8px;
-}
 
 #main_contents {
   display: flex;
@@ -342,43 +286,9 @@ input[name=message] {
   user-select: none
 }
 
-#online {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-}
-
 #offline {
   display: flex;
   flex-direction: column;
-}
-
-.chatSidebarInfo {
-  display: flex;
-  height: 45px;
-  gap: 10px;
-  border-radius: 5px;
-  margin: 0px 15px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.chatSidebarInfo:hover {
-  background: #36373D;
-}
-
-.chatSidebarInfo:active {
-  background: #3B3D44;
-}
-
-.chatSidebarInfo > div:nth-of-type(1) {
-  display: flex;
-  color: #fff;
-  width: 40px;
-}
-
-.chatSidebarInfo > div:nth-of-type(1) > img:nth-of-type(1) {
-  padding: 2px;
 }
 
 .roomMemberInfo > div:nth-of-type(1) {

@@ -16,4 +16,5 @@ public class MyChannelsDTO {
     private String channel_title;
     private String channel_icon_url;
     private String channel_type;
+    private String channel_invite_code;
 }

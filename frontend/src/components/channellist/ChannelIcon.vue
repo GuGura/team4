@@ -23,6 +23,7 @@ function btnClick() {
   if (endPoint !== 'addServer') {
     serverListStore.btnResult.endPoint = endPoint;
     localStorage.setItem('selectChannel',props.buttonData.channel_title)
+    localStorage.setItem('inviteCode',props.buttonData.channel_invite_code)
     router.push(`/channel/${endPoint}`)
   }
 }

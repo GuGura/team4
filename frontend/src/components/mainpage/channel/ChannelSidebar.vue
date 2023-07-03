@@ -80,7 +80,8 @@ onMounted(() => {
 <template>
   <div id="side_contents">
     <ChannelSidebarHead
-        :channel_title="channelStore.channelInfo.channel_title"/>
+        :channel_title="channelStore.channelInfo.channel_title"
+        :channel_invite_code="channelStore.channelInfo.channel_invite_code"/>
 
     <div id="side_content_info">
       <div id="chatRooms">
