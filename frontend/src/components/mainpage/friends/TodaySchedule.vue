@@ -9,7 +9,7 @@ const days = ["일", "월", "화", "수", "목", "금", "토"];
 const friendStore=useFriendStore();
 
 function initEvents() {
-    api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listByDate", {
+    api.post( "/event/listByDateFriend", {
         year: Dates.year,
         month: Dates.month,
         date: Dates.date,

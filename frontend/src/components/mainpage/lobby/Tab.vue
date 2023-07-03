@@ -1,7 +1,7 @@
 <script>
 
 import Calendar from "@/components/mainpage/lobby/Calendar.vue";
-import PostList from "@/components/mainpage/friends/PostList.vue";
+import PostList from "@/components/mainpage/lobby/PostList.vue";
 
 export default {
     components: {PostList, Calendar},
