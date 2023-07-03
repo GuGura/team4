@@ -47,6 +47,8 @@ public class RedisToMariaDBMigrationService {
                 continue; // 중복된 값은 삽입을 건너뜁니다.
             }
 
+            System.out.println("Redis To Maria DB Migration Service Channel Id = " + channel_id);
+
             redisToMariaDBMigrationMapper.insertChatRoom(roomId, name, roomType, channel_id);
         }
 

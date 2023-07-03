@@ -74,7 +74,6 @@ export function sendMessage(ws, roomId, sender, message) {
 //메세지 수신 기능
 export function receiveMessage(recv, messageList) {
     if (recv.type !== 'ENTER') {
-        // 'ENTER' 타입인 경우에는 출력하지 않음
         messageList.messages.push({
             type: recv.type,
             sender: recv.sender,
@@ -87,11 +86,9 @@ export function receiveMessage(recv, messageList) {
 //채팅방 내역 조회
 export function findRoomMessage(roomId) {
     return new Promise((resolve, reject) => {
-        console.log("Start findRoomMessage");
         api.get(process.env.VUE_APP_BASEURL_V1 +`/chat/room/enter/${roomId}`)  // URL 수정
             .then((response) => {
                 resolve(response.data);
-                console.log("findRoomMessage Data is " + response.data);
             })
             .catch((error) => {
                 reject(error);

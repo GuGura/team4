@@ -21,7 +21,6 @@ export default defineComponent({
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
         this.roomId = to;
         this.enterRoom();
-        this.messageList.messages = [];
       }
     }
   },
@@ -66,6 +65,7 @@ export default defineComponent({
     },
     async enterRoom() {
       try {
+        this.messageList.messages = [];
         const roomId = this.roomId;
         await findRoomMessage(roomId)
             .then((data) => {
