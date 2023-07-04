@@ -1,8 +1,7 @@
 <script>
 
 import Calendar from "@/components/mainpage/lobby/Calendar.vue";
-import PostList from "@/components/mainpage/friends/PostList.vue";
-
+import PostList from "@/components/mainpage/lobby/PostList.vue";
 export default {
     components: {PostList, Calendar},
     data() {
@@ -55,7 +54,7 @@ export default {
             </button>
         </div>
         <div class="tab-content">
-            <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index}">
+            <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index }">
                 <div v-if="index === 0">
                     <div class="content-box"></div>
                 </div>
