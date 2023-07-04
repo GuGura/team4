@@ -25,7 +25,7 @@ function initPosts() {
   }).then(({data}) => {
     postList.posts = data;
     console.log(data);
-    lastPosting = postList.posts.at(-1).id
+    // lastPosting = postList.posts.at(-1).id
     for (const item of data) {
       console.log(item.isImgIn)
     }

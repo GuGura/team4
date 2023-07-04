@@ -98,3 +98,13 @@ create table event
     groupName varchar(100),
     allday    BOOLEAN
 );
+
+create table friend
+(
+   FRIEND_UID  INT NOT NULL AUTO_INCREMENT PRIMARY key,
+   FRIEND_SENDER varchar(100)
+   FRIEND_RECEIVER varchar(100)
+   FRIEND_CHECKED  tinyint
+   FRIEND_DATE    DATE
+
+);

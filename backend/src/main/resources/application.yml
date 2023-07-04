@@ -30,10 +30,10 @@ spring:
 
   #DB
   datasource:
-    url: jdbc:mariadb://localhost:3307/park
+    url: jdbc:mariadb://localhost:3306/folder
     driver-class-name: org.mariadb.jdbc.Driver
-    username: park
-    password: 1234
+    username: root
+    password: abc0701!!
 
   profiles:
       active: local
