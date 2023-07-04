@@ -7,6 +7,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -33,7 +34,12 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
 //        for(WebSocketSession sess : sessions){
 //            sess.sendMessage(new TextMessage(senderId + ": "+ message.getPayload()));
 //        }
-        //protocol: 댓글작성자
+        //protocol: cmd, 댓글작성자, 게시글작성자, bno (reply,user2,user1,234)
+        String msg = message.getPayload();
+        if (!StringUtils.isEmpty(msg)){
+            String[] strs = msg.split(",");
+        }
+
     }
 
     //jwt토큰을 추출해서 값 구현하게 변경해야함
