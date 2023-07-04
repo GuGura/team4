@@ -133,12 +133,25 @@ export default defineComponent({
         handleWeekendsToggle() {
             this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
         },
-        handleDateSelect(selectInfo) {
-            let title = prompt('추가할 일정명을 입력해주세요.')
+
+
+        async handleDateSelect(selectInfo) {
+            const title = await Swal.fire({
+                title: '추가할 일정명을 입력해주세요.',
+                html:
+                    '<input id="swal-input1" class="swal2-input">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return document.getElementById('swal-input1').value
+                }
+            })
+
+            console.log("title-------------", title.value)
+
             let calendarApi = selectInfo.view.calendar
 
             calendarApi.unselect() // clear date selection
-            if (title) {
+            if (title.value) {
                 api.post("/event/saveEvent", {
                     title: title,
                     start: selectInfo.startStr,
@@ -153,8 +166,6 @@ export default defineComponent({
                         allDay: selectInfo.allDay
                     })
                 })
-
-
             }
         },
         handleEventClick(clickInfo) {
@@ -228,11 +239,12 @@ ul {
 .fc-daygrid-view .fc-daygrid-day-frame {
     border-color: black;
 }
-.fc-col-header-cell-cushion{
+
+.fc-col-header-cell-cushion {
     color: #1F2123;
 }
 
-.fc-event-main{
+.fc-event-main {
     background-color: #2b2d31;
 }
 
@@ -246,48 +258,56 @@ ul {
 }
 
 
-
-.fc-col-header-cell-cushion{
+.fc-col-header-cell-cushion {
     color: #5965f3;
 }
-.fc-daygrid-day-number{
+
+.fc-daygrid-day-number {
     color: #b6b8cf;
 }
-#fc-dom-95.fc-daygrid-day-number{
+
+#fc-dom-95.fc-daygrid-day-number {
     color: #FFFFFF;
 }
+
 .fc .fc-button-primary:disabled {
     margin-top: -2px;
     margin-right: 5px;
 }
-.fc .fc-button-primary:hover{
-    margin-top: -2px;
-}
-.fc-today-button fc-button fc-button-primary{
-    margin-top:-2px
-}
-.fc .fc-button:disabled{
+
+.fc .fc-button-primary:hover {
     margin-top: -2px;
 }
 
-.fc .fc-button-primary{
+.fc-today-button fc-button fc-button-primary {
+    margin-top: -2px
+}
+
+.fc .fc-button:disabled {
+    margin-top: -2px;
+}
+
+.fc .fc-button-primary {
     margin-top: -1px;
     background-color: transparent;
     border-color: transparent;
     margin-right: 5px;
 }
+
 .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 13px;
     margin-top: 10px;
 }
-fc-daygrid-more-link fc-more-link{
+
+fc-daygrid-more-link fc-more-link {
     color: #F23F42;
 }
-fc-event-main{
+
+fc-event-main {
     background-color: grey;
 }
 
-.fc-h-event .fc-event-main{
+.fc-h-event .fc-event-main {
     background-color: #23A559;
 }
 
@@ -296,23 +316,24 @@ a {
     text-decoration: none;
 }
 
-.fc .fc-more-popover .fc-popover-body{
+.fc .fc-more-popover .fc-popover-body {
     background-color: #FFFFFF;
 }
 
-.fc-theme-standard .fc-popover-header{
+.fc-theme-standard .fc-popover-header {
     background-color: #5965f3;
 
 }
 
-.fc-daygrid-event-harness{
+.fc-daygrid-event-harness {
     background-color: transparent;
 }
-.fc-h-event .fc-event-main{
+
+.fc-h-event .fc-event-main {
     text-align: center;
 }
 
-fc-h-event{
+fc-h-event {
     background-color: yellow;
 
 
@@ -322,7 +343,7 @@ fc-h-event{
     --fc-event-border-color: black;
 }
 
-.fc-h-event .fc-event-main{
+.fc-h-event .fc-event-main {
     background-color: transparent;
 }
 

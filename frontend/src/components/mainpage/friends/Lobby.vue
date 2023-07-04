@@ -13,8 +13,8 @@
                 </div>
                 <div class="row">
                     <div class="edit-button col-1">
-                        <span class="material-symbols-outlined">manage_accounts</span>
-                        <div>친추</div>
+                        <span class="material-symbols-outlined">group_add</span>
+                        <div>친구 추가</div>
                     </div>
                 </div>
             </div>
@@ -135,7 +135,7 @@ h2.featurette-heading {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
+    width: 100px;
     height: 30px;
     background: #41434A;
     border-radius: 10px;

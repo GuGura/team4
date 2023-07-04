@@ -9,12 +9,11 @@ export default {
         return {
             calendarKey: 0,
             profileKey: 0,
-            tabs: ['프로필 수정', '일정 보기', '', '글 목록'],
+            tabs: ['내 피드', '일정 보기', '글 목록'],
             tabContents: [
                 'Content for Tab 1',
                 'Content for Tab 2',
                 null, // Placeholder for the RichTextEditor component
-                'Content for Tab 4'
             ],
             activeTab: 0,
         };
@@ -50,7 +49,7 @@ export default {
                     <span class="material-symbols-outlined">home</span></div>
                 <div v-else-if="index === 1">
                     <span class="material-symbols-outlined">calendar_month</span></div>
-                <div v-else-if="index === 3">
+                <div v-else-if="index === 2">
                     <span class="material-symbols-outlined">list_alt</span></div>
                 {{ tab }}
             </button>
@@ -70,7 +69,7 @@ export default {
 <!--                        <RichTextEditor/>-->
 <!--                    </div>-->
 <!--                </div>-->
-                <div v-else-if="index === 3">
+                <div v-else-if="index === 2">
                     <div class="content-box">
                         <PostList/>
                     </div>

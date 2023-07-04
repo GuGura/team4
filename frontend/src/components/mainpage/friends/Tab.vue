@@ -8,22 +8,19 @@ export default {
         return {
             calendarKey: 0,
             profileKey: 0,
-            tabs: ['프로필 수정', '일정 보기', '글 작성', '글 목록'],
+            tabs: ['일정 보기', '글 목록'],
             tabContents: [
                 'Content for Tab 1',
-                'Content for Tab 2',
-                null, // Placeholder for the RichTextEditor component
-                'Content for Tab 4'
+                null,
             ],
             activeTab: 0,
+
         };
     },
     methods: {
         changeTab(index) {
-            if (index === 1) {
+            if (index === 0) {
                 this.callCalendarLoad();
-            }else if(index === 0) {
-                this.callProfileLoad();
             }
             this.activeTab = index;
         },
@@ -36,40 +33,44 @@ export default {
     },
 };
 </script>
+
 <template>
     <div class="tab-container card">
         <div class="tab-buttons card-header">
-            <button v-for="(tab, index) in tabs" :key="index" :class="{'tab-button': true, 'active': activeTab === index}" @click="changeTab(index)">
+            <button
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :class="{'tab-button': true, 'active': activeTab === index}"
+                @click="changeTab(index)"
+            >
+                <div v-if="index === 0">
+                    <span class="material-symbols-outlined">calendar_month</span></div>
+                <div v-else-if="index === 1">
+                    <span class="material-symbols-outlined">list_alt</span></div>
                 {{ tab }}
             </button>
         </div>
         <div class="tab-content">
-            <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index}">
+            <div
+                v-for="(content, index) in tabContents"
+                :key="index"
+                :class="{'tab-pane': true, 'active': activeTab === index}"
+            >
                 <div v-if="index === 0">
-                    <div class="content-box">
-
-                    </div>
-                </div>
-                <div v-else-if="index === 1">
                     <div class="content-box">
                         <Calendar :key="calendarKey" />
                     </div>
                 </div>
-                <div v-else-if="index === 2">
-                    <div class="content-box">
-
-                    </div>
-                </div>
-                <div v-else-if="index === 3">
+                <div v-else-if="index === 1">
                     <div class="content-box">
                         <PostList/>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </template>
+
 
 
 
@@ -144,4 +145,6 @@ export default {
 .tab-buttons.card-header{
     border-radius: 0px;
 }
+
+
 </style>
