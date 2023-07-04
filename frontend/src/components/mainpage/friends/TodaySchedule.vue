@@ -1,30 +1,19 @@
 <script setup>
 import {onMounted, reactive} from "vue";
 import api from "../../../../script/token/axios";
+import {useFriendStore} from "../../../../script/stores/friend";
 
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
-const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
 
-function addEvent(){
-    let title = prompt('추가할 일정명을 입력해주세요.')
-    if (title) {
-        api.post("/event/saveEvent",{
-            title,
-            start: today.setDate(today.getDate()),
-            end: today.setDate(today.getDate()+1),
-            allDay: true
-        }).then(() => {
-            today.setDate(today.getDate()-1),
-            initEvents()
-        })
-    }
-}
+const friendStore=useFriendStore();
+
 function initEvents() {
-    api.post("/event/listByDate", {
+    api.post(process.env.VUE_APP_BASEURL_V1 + "/event/listByDate", {
         year: Dates.year,
         month: Dates.month,
-        date: Dates.date
+        date: Dates.date,
+        id: friendStore.user.id
     }).then(({data}) => {
         eventList.events = data
     })
@@ -45,6 +34,7 @@ function nextDate(){
 }
 
 onMounted(() => {
+    friendStore.init()
 })
 
 let today = new Date();
@@ -106,7 +96,7 @@ initEvents()
                       </h2>
                   </li>
               </ul>
-              <button id="btnAdd" @click="addEvent">Add+</button>
+
           </div>
       </div>
 

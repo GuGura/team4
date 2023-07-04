@@ -96,5 +96,6 @@ create table event
     title     varchar(500),
     memberId  int,
     groupName varchar(100),
-    allday    BOOLEAN
+    allday    BOOLEAN,
+    groupId int
 );

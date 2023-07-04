@@ -23,12 +23,10 @@ function initPosts() {
   api.post("/content/listByPage", {
     lastPosting: lastPosting
   }).then(({data}) => {
-    postList.posts = data;
-    console.log(data);
-    lastPosting = postList.posts.at(-1).id
-    for (const item of data) {
-      console.log(item.isImgIn)
-    }
+      if(data && data.length) {
+          postList.posts = data;
+          lastPosting = postList.posts.at(-1).id
+      }
   })
 }
 
@@ -36,11 +34,13 @@ function morePost() {
   api.post("/content/listByPage", {
     lastPosting: lastPosting
   }).then(({data}) => {
-    for (const item of data) {
-      postList.posts.push(item)
+      if(data && data.length) {
+          for (const item of data) {
+              postList.posts.push(item)
 
-    }
-    lastPosting = postList.posts.at(-1).id
+          }
+          lastPosting = postList.posts.at(-1).id
+      }
   })
 }
 
@@ -62,7 +62,7 @@ let lastPosting = 0
     </div>
     <div class="row my-2 mx-auto">
       <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost"><span
-          class="material-symbols-outlined">more_horiz</span>{{ pagingInfo }}
+          class="material-symbols-outlined">more_horiz</span>
       </button>
     </div>
   </div>

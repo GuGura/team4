@@ -1,72 +1,78 @@
+<script setup>
+import {onMounted, reactive} from "vue";
+import Post from "@/components/mainpage/friends/Post.vue";
+import api from "../../../../script/token/axios";
+import {useFriendStore} from "../../../../script/stores/friend";
+
+const friendStore = useFriendStore();
+
+let postList = reactive({
+    posts: [
+        {
+            username: '',
+            userIcon: '',
+            uploadDate: '',
+            title: '',
+            content: '',
+            id: '',
+            contentIMG: '',
+            isImgIn: '',
+            visible: ''
+        }
+
+    ]
+})
+function initPosts() {
+    api.post( "/content/listByPageFriend", {
+        lastPosting: lastPosting, id:friendStore.user.id
+    }).then(({data}) => {
+        if(data && data.length){
+            postList.posts = data;
+            lastPosting = postList.posts.at(-1).id
+        }
+    })
+}
+
+function morePost() {
+    api.post( "/content/listByPageFriend", {
+        lastPosting: lastPosting, id:friendStore.user.id
+    }).then(({data}) => {
+        if(data && data.length){
+            for (const item of data) {
+                postList.posts.push(item)
+
+            }
+            lastPosting = postList.posts.at(-1).id
+        }
+
+    })
+}
+
+onMounted(() => {
+    friendStore.init()
+    initPosts()
+})
+
+
+
+let lastPosting = 0
+
+
+</script>
+
 <template>
     <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="content-wrapper">
-                <div class="content">
-                    <h5 class="mb-1">작성자</h5>
-                    <div class="mb-1">작성 날짜</div>
-                    <h4 class="mb-1">게시물 제목</h4>
-                    <div class="mb-1">게시물 내용</div>
-                </div>
-                <div class="image">
-                    <img src="대충 이미지 넣기" alt="Post Image">
-                </div>
-            </div>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="content-wrapper">
-                <div class="content">
-                    <h5 class="mb-1">작성자</h5>
-                    <div class="mb-1">작성 날짜</div>
-                    <h4 class="mb-1">게시물 제목</h4>
-                    <div class="mb-1">게시물 내용</div>
-                </div>
-                <div class="image">
-                    <img src="대충 이미지 넣기2" alt="Post Image">
-                </div>
-            </div>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="content-wrapper">
-                <div class="content">
-                    <h5 class="mb-1">작성자</h5>
-                    <div class="mb-1">작성 날짜</div>
-                    <h4 class="mb-1">게시물 제목</h4>
-                    <div class="mb-1">게시물 내용</div>
-                </div>
-                <div class="image">
-                    <img src="대충 이미지 넣기3" alt="Post Image">
-                </div>
-            </div>
-        </a>
+        <div class="Box" v-for="(post,idx) in postList.posts" :key="idx">
+            <post :post="post"/>
+        </div>
         <div class="row my-2 mx-auto">
-            <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="boardPaging()">더 보기 ({{pagingInfo}})</button>
+            <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost"><span
+                class="material-symbols-outlined">more_horiz</span>
+            </button>
         </div>
     </div>
 </template>
 
-<script>
-import api from "../../../../script/token/axios";
-import router from "../../../../script/routes/router";
-
-export default {
-    name: "PostList",
-    data(){
-        return{
-            lastPosting: 0
-        }
-    },
-    methods:{
-        boardPaging(){
-            api.post("/content/listByPage",this.lastPosting
-            ).then(({data})=>{
-                this.lastPosting = data;
-            })
-
-        }
-    }
-};
-</script>
 
 <style>
 .content-wrapper {
@@ -85,4 +91,14 @@ export default {
 img {
     max-width: 100%;
 }
+
+#boardMoreButton {
+    width: 50px;
+    height: 35px;
+    border-radius: 10px;
+    background-color: #1E1F22;
+    --bs-btn-border-color: #1E1F22;
+}
+
+
 </style>

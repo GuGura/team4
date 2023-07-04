@@ -52,6 +52,22 @@ public class ContentController {
         return returnContents;
     }
 
+    @ResponseBody
+    @PostMapping("/content/listByPageFriend")
+    public List<ResultContent> listContentFriend(@RequestBody Map<String,String> params, HttpServletRequest request){
+        int memberUID = Integer.parseInt(params.get("id"));
+        int pageNum=Integer.parseInt(params.get("lastPosting"));
+        if(pageNum==0){
+            pageNum = 100000000;
+        }
+        List<ContentDTO> contents = contentService.listContent(pageNum, memberUID);
+        List<ResultContent> returnContents = new ArrayList<>();
+        for (ContentDTO content: contents) {
+            returnContents.add(contentToReturn(content));
+        }
+        return returnContents;
+    }
+
     //컨텐츠반환용으로 변환
     public ResultContent contentToReturn(ContentDTO content){
         ResultContent RContent = new ResultContent();

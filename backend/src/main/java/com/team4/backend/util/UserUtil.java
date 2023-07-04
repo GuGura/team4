@@ -45,7 +45,9 @@ public class UserUtil {
 
     public static ResultMember memberToReturn(Member member){
         ResultMember resultMember = new ResultMember();
-        resultMember.setUser_icon_url(pathToBytes(member.getUser_icon_url()));
+        if(!member.getUser_icon_url().equals("")){
+            resultMember.setUser_icon_url(pathToBytes(member.getUser_icon_url()));
+        }
         resultMember.setRole(member.getRole());
         resultMember.setUsername(member.getUsername());
         resultMember.setEmail(member.getEmail());

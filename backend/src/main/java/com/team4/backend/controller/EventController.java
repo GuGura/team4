@@ -26,6 +26,22 @@ public class EventController {
         this.memberMapper = memberMapper;
     }
 
+    @GetMapping("/friend/{id}")
+    public int friendTest(@PathVariable("id") int id){
+        return id;
+    }
+
+    @PostMapping("/event/saveFriendEvent")
+    public int saveFriend(@RequestBody EventDTO eventOrigin, HttpServletRequest request) throws Exception {
+        EventDTO event = eventService.viewEventById(eventOrigin.getId());
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        int memberId = event.getMemberId();
+        event.setMemberId(memberUID);
+        event.setGroupId(memberId);
+        int id = eventService.saveEvent(event);
+        return id;
+    }
+
     @PostMapping("/event/saveEvent")
     public int save(@RequestBody EventDTO event, HttpServletRequest request) throws Exception {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
@@ -36,8 +52,9 @@ public class EventController {
     }
 
     @PostMapping("/event/deleteEvent")
-    public void deleteEvent(@RequestBody EventDTO event) throws Exception {
-        eventService.deleteEvent(event.getId());
+    public void deleteEvent(@RequestBody EventDTO event,HttpServletRequest request) throws Exception {
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        eventService.deleteEvent(event.getId(),memberUID);
     }
 
     @ResponseBody
@@ -45,8 +62,18 @@ public class EventController {
     public ResponseEntity<List<EventDTO>> listMonthly(@RequestBody String date, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         String year = date.substring(14,16);
-        System.out.println("이벤트컨트롤러 리스트먼슬리 year="+year);
         List<EventDTO> events= eventService.listMonthly(Integer.parseInt(year), memberUID);
+        return new ResponseEntity<>(events, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping("/event/listMonthlyFriend")
+    public ResponseEntity<List<EventDTO>> listMonthlyFriend(@RequestBody Map<String,String> params, HttpServletRequest request){
+        int memberUID =Integer.parseInt(params.get("id"));
+        String year = params.get("date");
+        String date = year.substring(5,7);
+        System.out.println(date);
+        List<EventDTO> events= eventService.listMonthly(Integer.parseInt(date), memberUID);
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
@@ -59,12 +86,30 @@ public class EventController {
     }
 
     @ResponseBody
+    @PostMapping("/event/listByDateFriend")
+    public ResponseEntity<List<EventDTO>> listByDateFriend(@RequestBody Map<String,String> params, HttpServletRequest request){
+        int memberUID = Integer.parseInt(params.get("id"));
+        List<EventDTO> events= eventService.listDaily(Integer.parseInt(params.get("year")),Integer.parseInt(params.get("month")), Integer.parseInt(params.get("date")), memberUID);
+        return new ResponseEntity<>(events, HttpStatus.OK);
+    }
+
+    @ResponseBody
     @PostMapping("/event/listMonthlyBtn")
     public ResponseEntity<List<EventDTO>> listMonthlyNext(@RequestBody String date, HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         String year = date.substring(14,16);
         System.out.println(Integer.parseInt(year)+1);
         List<EventDTO> events= eventService.listMonthly(Integer.parseInt(year)+1, memberUID);
+        return new ResponseEntity<>(events, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping("/event/listMonthlyBtnFriend")
+    public ResponseEntity<List<EventDTO>> listMonthlyNextFriend(@RequestBody Map<String,String> params, HttpServletRequest request){
+        int memberUID =Integer.parseInt(params.get("id"));
+        String year = params.get("date");
+        String date = year.substring(5,7);
+        List<EventDTO> events= eventService.listMonthly(Integer.parseInt(date)+1, memberUID);
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 

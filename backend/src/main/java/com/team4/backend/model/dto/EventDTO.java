@@ -16,4 +16,5 @@ public class EventDTO {
     private String title;
     private int memberId;
     private String groupName;
+    private int groupId;
 }

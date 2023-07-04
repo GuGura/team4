@@ -1,111 +1,61 @@
+<template>
+    <div id="main_contents">
+        <div id="main_content_header">
+            <div id="icon_URL">
+                <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-if="friendStore.user.user_icon_url==='' ">
+                <img :src="friendStore.user.user_icon_url"  alt="UserIcon" style="width: 200px;" class="rounded" v-else-if="friendStore.user.user_icon_url!=='data:image/png;base64,null'">
+                <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-else>
+            </div>
+            <div id="userName" class="">
+                <div class="order-md-2">
+                    <h2 class="featurette-heading fw-normal lh-1">{{ friendStore.user.username }} </h2>
+                    <div class="lead"> {{ friendStore.user.user_description }}</div>
+                </div>
+                <div class="row">
+                    <div class="edit-button col-1">
+                        <span class="material-symbols-outlined">manage_accounts</span>
+                        <div>친추</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main_content_body">
+            <div id="main_content1">
+                <Tab/>
+            </div>
+            <div id="main_content2">
+                <TodaySchedule/>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup>
-
-
-import {useLobbyStore} from "../../../../script/stores/lobby";
 import {onMounted} from "vue";
-// import PostList from "@/components/mainpage/lobby/PostList.vue";
-import Tab from "@/components/mainpage/lobby/Tab.vue";
+import Tab from "@/components/mainpage/friends/Tab.vue";
+import TodaySchedule from "@/components/mainpage/friends/TodaySchedule.vue";
+import {useFriendStore} from "../../../../script/stores/friend";
 
-const lobbyStore = useLobbyStore();
+const friendStore = useFriendStore();
 
-onMounted(()=>{
 
+onMounted(() => {
+    friendStore.init()
 })
 
 
 </script>
 
 
-<template>
-    <div id="contents">
-        <div id="main_contents">
-            <div id="main_content_header">
-                <div id="icon_URL">
-                    <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px; position:relative; z-index: 4;">
-                </div>
-                <div id="userName" style="z-index: 3;">
-                    <div class="col-md-7 order-md-2">
-                        <h2 class="featurette-heading fw-normal lh-1">{{lobbyStore.user.username}} </h2>
-                        <div class="lead"> {{lobbyStore.user.user_description}}</div>
-                    </div>
-                </div>
-            </div>
-            <div id="main_content_body">
-                <div id="main_content1">
-                    <Tab/>
-                </div>
-                <div id="main_content2"></div>
-            </div>
-        </div>
-    </div>
-</template>
 <style scoped>
 
-
-#description{
-    background: #41434A;
-    width: 71.5%;
-    height: 10%;
-    margin-left: 30px;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    display: flex;
-
-}
-#user_description{
-    display: flex;
-    color: #FFFFFF;
-    font-family: arial;
-    font-size: 2em;
-}
-.accordion-button {
-    background-color: white;
-}
-
-.accordion-button.collapsed {
-    background-color: white;
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-}
-
-/**  contents */
-#contents {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-form[name=list]{
+form[name=list] {
     display: flex;
     flex-direction: column;
 }
-.btnList > div:nth-of-type(1){
-    display: flex;
-    color:#fff;
-    width: 30px;
-}
-.btnList > div:nth-of-type(2){
-    display: flex;
-    font-size: 15px;
-    color:#fff;
-    flex: 1;
-    justify-content: space-between;
-    align-items: center;
-}
 
-#searchBox > input[name=searchbox]{
+
+#searchBox > input[name=searchbox] {
     display: flex;
     background-color: #1E1F22;
     outline: none;
@@ -115,42 +65,90 @@ form[name=list]{
     padding: 0 5px;
     height: 35px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 9px;
 }
 
 
 #main_contents {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    max-width: 1200px;
-    margin: auto;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+
+}
+
+#main_contents::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 
 #main_content_header {
     display: flex;
+    height: 25%;
     align-items: flex-end;
-    justify-content: center;
-    margin-bottom: 20px;
+    padding: 10px 30px 15px;
+    gap: 35px;
+    color: #fff;
 }
-#icon_URL{
+
+#icon_URL {
     display: flex;
-    width: 13em;
-    height: 13em;
+    width: 10em;
+    height: 10em;
 }
-#userName{
+
+#userName {
     display: flex;
-    flex-direction: column;
     color: #fff;
     height: 70%;
-    justify-content: space-around;
+    justify-content: flex-start;
+    flex-direction: column-reverse;
 }
-#userName > div:nth-of-type(1){
-    font-size: 3em;
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
-#userName > div:nth-of-type(2){
+
+h2.featurette-heading {
+    font-size: 0.8em;
+    margin: 0;
+}
+
+.lead {
+    font-size: 0.4em;
+    margin-top: 10px;
+}
+
+.edit-button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 30px;
+    background: #41434A;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.writing-button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -160,47 +158,64 @@ form[name=list]{
     border-radius: 10px;
     cursor: pointer;
 }
-#userName > div:nth-of-type(2):hover{
+
+.writing-button .material-symbols-outlined {
+    font-size: 20px;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.edit-button .material-symbols-outlined {
+    font-size: 20px;
+    color: #fff;
+    margin-right: 5px;
+}
+
+#userName > div:nth-of-type(1) {
+    font-size: 3em;
+}
+
+#userName > div:nth-of-type(2) {
+
+}
+
+.edit-button:hover {
     background: #36373D;
 }
-#userName > div:nth-of-type(2):active{
+
+.edit-button:active {
     background: #3B3D44;
 }
-#main_content_body{
+
+
+.writing-button:hover {
+    background: #36373D;
+}
+
+.writing-button:active {
+    background: #3B3D44;
+}
+
+
+#main_content_body {
     display: flex;
-    flex:1;
+    flex: 1;
+    padding: 5px 0 0 30px;
     gap: 10px;
-    width: 100%;
-    height: 100%;
+    padding-top: 30px;
+    background-color: #36373d;
 }
+
 #main_content1 {
+    display: flex;
     background: #36393F;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
+    width: 73%;
+    height: 98%;
 }
+
 #main_content2 {
     display: flex;
-    background: #36393F;
-    width: 30%;
-    height: 40vh;
-}
-
-section .box p {margin: 0; color: white; padding: 200px 20px;}
-
-h2 {
-
-    margin: 0;
-    font-size: 50px;
-}
-
-.lead {
-    padding: 10px;
-    font-size: 1.25rem;
-    font-weight: 300;
-    background: #3B3D44;
-    margin-top: 20px;
-    margin-bottom: 3rem;
-    width: 1300px;
+    width: 25%;
+    height: 60%; /* 임시로 */
 }
 </style>
