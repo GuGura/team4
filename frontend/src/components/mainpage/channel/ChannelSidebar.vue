@@ -26,13 +26,12 @@ const updateChannelId = computed(() => {
 });
 
 onMounted(async () => {
-  await findAllRoom(roomInfo.channel_id, textChatRooms, voiceChatRooms);
+  await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
   console.log("update channel_id.value: ", updateChannelId.value)
 });
 
-watch(
+watch(()=>updateChannelId.value,
     async () => {
-      console.log("update channel_id.value: ", updateChannelId.value)
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
         if (textChatRooms.length === 0) {
@@ -47,8 +46,15 @@ watch(
           await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
         }
         if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId);
+          enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
         }
+      }
+    },
+);
+watch(
+    async () => {
+      if (updateChannelId.value !== "lobby") {
+        await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
       }
     },
 );
@@ -58,10 +64,6 @@ const createRoomInChannel = () => {
   createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
 };
 
-// To use the enterRoom function, the roomId is needed
-const enterChatRoom = (roomId) => {
-  enterRoom(roomId); // Here only roomId is needed
-};
 
 </script>
 

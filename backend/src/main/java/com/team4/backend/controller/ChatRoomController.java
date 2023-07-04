@@ -25,6 +25,12 @@ public class ChatRoomController {
         return "api/v1/chat/room";
     }
 
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoom> room(@RequestParam("channel_id") String channel_id) {
+        return chatRoomRepository.findAllRoom(channel_id);
+    }
+
     @GetMapping("/room/enter/{roomId}")
     @ResponseBody
     public List<ChatMessage> roomDetail(Model model, @PathVariable String roomId) {

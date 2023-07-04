@@ -1,12 +1,10 @@
 <script setup>
 import {useModalStore} from "../../../script/stores/modal";
 import {computed, reactive} from "vue";
-import {createRoom, enterRoom} from '/script/chatOperations';
+import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
 import {useServerListStore} from "../../../script/stores/serverlist";
-import {useLobbyStore} from "../../../script/stores/lobby";
 
 const serverListStore = useServerListStore();
-const lobbyStore = useLobbyStore();
 const modalStore = useModalStore();
 const props = reactive({
   type: 'Text',
@@ -16,9 +14,6 @@ const props = reactive({
 const updateChannelId = computed(() => {
   return serverListStore.getEndPoint;
 });
-const updateUsername = computed(() => {
-  return lobbyStore.user.username
-})
 const textChatRooms = reactive([]); // Text Chat Room List
 const voiceChatRooms = reactive([]); // Voice Chat Room List
 
@@ -33,18 +28,8 @@ function createRoomInChannel() {
   } else {
     createRoom(updateChannelId.value, props, textChatRooms, voiceChatRooms)
         .then((data) => {
-          // Create Room 성공 시 처리
           closeModal();
-
-          // 방 목록을 갱신
-          if (props.type === 'Text') {
-            textChatRooms.push(data);
-          } else if (props.type === 'Voice') {
-            voiceChatRooms.push(data);
-          }
-
-          // 방에 입장
-          enterRoom(data.roomId);
+          enterRoom(textChatRooms[textChatRooms.length - 1].roomId);
         })
         .catch(() => {
           console.log("CreateRoomModal.vue Error CreateRoomInChannel()");
