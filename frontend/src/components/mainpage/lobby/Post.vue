@@ -13,12 +13,14 @@
                     <h6 class="card-title">{{ props.post.username }}</h6>
                     <p class="card-text"><small class="card-text fw-lighter">{{ props.post.uploadDate }}</small></p>
                 </div>
+
                 <div class="btnDelete col-1" @click="viewCode">
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined">content_copy</span>
                 </div>
                 <div class="btnDelete col-1" @click="toggleDelete">
                     <span class="material-symbols-outlined">close</span>
                 </div>
+
 
             </div>
             <div v-if="props.post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+props.post.contentIMG"
@@ -60,16 +62,13 @@ function viewCode(){
     object-fit: cover;
 }
 
-.btnDelete {
-    display: flex;
-}
 
 .btnDelete:focus {
     outline: none;
 }
 
 .material-symbols-outlined {
-    transition: color 0.2s; /* Added transition property */
+    display: flex;
 }
 
 .material-symbols-outlined.active {
@@ -100,4 +99,5 @@ function viewCode(){
 .card-text {
     color: white;
 }
+
 </style>
