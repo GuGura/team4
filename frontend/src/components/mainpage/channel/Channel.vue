@@ -32,15 +32,13 @@ let props = reactive({
   canSend: true,
   ws: null, // WebSocket 객체 추가
   connected: false, // 소켓 연결 상태 추가
-  channelId: localStorage.getItem('wschat.channelId')
+  channelId: localStorage.getItem('wschat.channelId'),
 })
-let messageList = reactive(null)
 
 
 async function enterRoom() {
   const roomId = localStorage.getItem('wschat.roomId');
   console.log("enterRoom------------------------------",roomId)
-  messageList = [];
   await socketStore.findRoomMessage(roomId)
       .then(async (data) => {
         props.chatMessages = data; // 받은 데이터를 chatMessages에 저장
@@ -50,14 +48,20 @@ async function enterRoom() {
         console.error(error);
       });
 }
-
 //메세지 보내기
-function sendMessage() {
+async function sendMessage() {
   const roomId = localStorage.getItem('wschat.roomId');
   const sender = props.sender;
   const message = props.inputMessage;
-
   socketStore.sendMessage(roomId, sender, message);
+   let form = reactive({
+     message: message,
+     roomId: roomId,
+     sendDate:1688381637000,
+     sender: sender,
+     type:null,
+   })
+  props.chatMessages.push(form)
   props.inputMessage = ''; // 입력 필드 초기화
 }
 enterRoom();
@@ -84,11 +88,6 @@ enterRoom();
             <div class="Box" v-for="(message, idx) in props.chatMessages" :key="`chat-${idx}`">
               <ChatBox :messages="message"/>
             </div>
-            <div class="Box" v-for="(messages,idx) in messageList" :key="idx">
-              <ChatBox :messages="messages"/>
-            </div>
-            {{ messageList }}
-
           </div>
         </div>
 
