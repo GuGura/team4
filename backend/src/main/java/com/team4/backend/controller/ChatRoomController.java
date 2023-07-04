@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController // @Controller 대신 @RestController를 사용하여, JSON 형태로 응답할 수 있게 만듭니다.
 @RequestMapping("/api/v1/chat")
 public class ChatRoomController {
 
@@ -23,27 +23,26 @@ public class ChatRoomController {
     @GetMapping("/room")
     public String rooms(Model model) {
         System.out.println("get rooms");
-        return "/api/v1/chat/room";
+        return "api/v1/chat/room";
     }
 
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoom> room() {
-//        return chatRoomRepository.findAllRoom();
-//    }
-
-    @PostMapping("/room")
+    @GetMapping("/api/v1/chat/rooms")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name, boolean room_type) {
-        return chatRoomRepository.createChatRoom(name, room_type);
+    public List<ChatRoom> room() {
+        return chatRoomRepository.findAllRoom();
     }
+
+
 
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
+    @ResponseBody
+    public List<ChatMessage> roomDetail(Model model, @PathVariable String roomId) {
+        // 문자열 대신 필요한 데이터를 반환하도록 수정합니다.
+        System.out.print("GetMapping /room/enter/roomId");
         List<ChatMessage> chatMessages = redisToMariaDBMigrationMapper.getChatMessagesFromDB(roomId);
         model.addAttribute("roomId", roomId);
         model.addAttribute("chatMessages", chatMessages);
-        return "/api/v1/chat/roomdetail";
+        return chatMessages; // chatMessages 반환
     }
 
     @GetMapping("/room/{roomId}")

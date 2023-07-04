@@ -45,10 +45,10 @@
 
 <script setup>
 import {reactive} from "vue";
-import axios from "axios";
 import SubmitBtn from "@/components/sign/SubmitBtn.vue";
 import TextBox from "@/components/sign/TextBox.vue";
 import router from "../../script/routes/router";
+import notToken from "../../script/notTokenAxios";
 
 const result = reactive({
   username: '',
@@ -64,7 +64,8 @@ function forgotPassword() {
 }
 
 function login() {
-  axios.post(process.env.VUE_APP_BASEURL + "/login", JSON.stringify(result))
+  console.log("1")
+  notToken.post("/login", JSON.stringify(result))
       .then((res) => {
         if (res.data.status) {
           const accessJwt = res.headers.get('accessJwt');
@@ -75,7 +76,9 @@ function login() {
         } else {
           alert(res.data.message)
         }
-      })
+      }).catch((err)=>{
+        console.log(err)
+  })
 }
 </script>
 

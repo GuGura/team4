@@ -1,7 +1,11 @@
 import axios from "axios";
 import refreshHeader from "./refreshHeader";
+import notToken from "../notTokenAxios";
 
-const api = axios.create();
+const api = axios.create({
+    baseURL: 'http://localhost:8090/api/v1'
+    //http://api.meatteam.online/api/v1
+});
 
 api.interceptors.request.use(
     function (config) {
@@ -37,7 +41,7 @@ api.interceptors.response.use(
             if (error.response.data.message === "TokenExpired") {
                 const originalRequest = config;
          //       console.log(originalRequest)
-                await axios.post(process.env.VUE_APP_BASEURL_V1 + "/check-refreshToken", null, {headers: refreshHeader()})
+                await notToken.post( "/api/v1/check-refreshToken", null, {headers: refreshHeader()})
                     .then((res) => {
                         const accessJwt = res.headers.get('accessJwt');
                         const refreshJwt = res.headers.get('refreshJwt')

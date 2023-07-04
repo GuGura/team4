@@ -20,7 +20,7 @@ let postList = reactive({
   ]
 })
 function initPosts() {
-  api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPage", {
+  api.post("/content/listByPage", {
     lastPosting: lastPosting
   }).then(({data}) => {
     postList.posts = data;
@@ -33,7 +33,7 @@ function initPosts() {
 }
 
 function morePost() {
-  api.post(process.env.VUE_APP_BASEURL_V1 + "/content/listByPage", {
+  api.post("/content/listByPage", {
     lastPosting: lastPosting
   }).then(({data}) => {
     for (const item of data) {

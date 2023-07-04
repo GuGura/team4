@@ -27,7 +27,7 @@ export default defineComponent({
                                 this.getApi().prev();
                                 this.getApi().removeAllEvents();
                                 console.log(this.getApi().getDate()+": 프리브")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
+                                api.post("/home/listMonthlyBtn",{
                                     date: this.getApi().getDate()
                                 }).then(({data})=>{
                                     for(const i in data){
@@ -56,7 +56,7 @@ export default defineComponent({
                                 this.getApi().next();
                                 this.getApi().removeAllEvents();
                                 console.log(this.getApi().getDate()+": 넥스트")
-                                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthlyBtn",{
+                                api.post("/home/listMonthlyBtn",{
                                     date: this.getApi().getDate()
                                 }).then(({data})=>{
                                     for(const i in data){
@@ -111,7 +111,7 @@ export default defineComponent({
             const isTest=loginService.methodTokenCheck()
             if(isTest){
                 console.log("캘린더로드")
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/listMonthly",{
+                api.post("/home/listMonthly",{
                     date: this.getApi().getDate()
                 }).then(({data})=>{
                     for(const i in data){
@@ -140,7 +140,7 @@ export default defineComponent({
 
             if (title) {
                 let id;
-                api.post(process.env.VUE_APP_BASEURL + "/api/v1/home/saveEvent",{
+                api.post("/home/saveEvent",{
                     title,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
