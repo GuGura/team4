@@ -1,5 +1,6 @@
 package com.team4.backend.controller;
 
+import com.team4.backend.model.FriendDTO;
 import com.team4.backend.model.Member;
 import com.team4.backend.model.ResultMember;
 import com.team4.backend.model.dto.MyChannelsDTO;
@@ -66,5 +67,11 @@ public class MyInfoController {
                 .build();
         return new ResponseEntity<>(resultDTO,HttpStatus.OK);
     }
-
+    @GetMapping("/myInfo/friendList")
+    public ResponseEntity<?> getFriendList(HttpServletRequest request){
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        List<FriendDTO> friendsList = memberService.myFriendList(memberUID);
+        System.out.println("getFriendList:"+friendsList);
+        return new ResponseEntity<>(friendsList,HttpStatus.OK);
+    }
 }

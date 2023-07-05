@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import api from "../token/axios";
 
 
@@ -16,7 +16,23 @@ export const useFriendStore = defineStore("friendStore", () => {
         user_icon_url: '',
         user_description: ''
     })
+    let friendList = reactive([])
 
+    let getFriendList = ()=>(computed(()=>{
+        return friendList
+    }))
+    function initFriendList(){
+        api.get('/myInfo/friendList')
+            .then(({data})=>{
+                data.forEach(member =>{
+                    friendList.push(member)
+                    console.log(member)
+                })
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+    }
     function updateFriendInfo() {
         api.post('/myInfo/friend',{friendId:user.id})
             .then(({data}) => {
@@ -53,6 +69,9 @@ export const useFriendStore = defineStore("friendStore", () => {
 
     return {
         user,
+        friendList,
+        getFriendList,
+        initFriendList,
         updateFriendInfo,
         init
     }
