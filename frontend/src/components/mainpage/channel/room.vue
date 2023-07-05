@@ -1,5 +1,4 @@
 <script setup>
-import {enterRoom} from "../../../../script/chatOperations";
 import {defineProps} from 'vue'
 
 let props = defineProps({
@@ -8,7 +7,7 @@ let props = defineProps({
 </script>
 
 <template>
-  <li class="btnRoom" @:click="enterRoom(props.item.roomId)">
+  <li class="btnRoom" >
     <div>
       <img src="/img/channel/speak.png">
     </div>
@@ -48,7 +47,7 @@ let props = defineProps({
   height: 30px;
   gap: 5px;
   border-radius: 5px;
-  padding: 0px 15px;
+  padding: 0 15px;
   align-items: center;
   cursor: pointer;
   width: 90%;
@@ -114,15 +113,6 @@ let props = defineProps({
 
 .btnRoom > div:nth-of-type(1) > img:nth-of-type(1) {
   padding: 8px;
-}
-
-
-
-.btnRooms > div:nth-of-type(2) {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
 }
 
 li{
