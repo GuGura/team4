@@ -1,35 +1,54 @@
 <script setup>
-import {defineProps} from 'vue'
+import {defineProps, reactive} from 'vue'
+import {useLobbyStore} from "../../../../script/stores/lobby";
 
 let props = defineProps({
-  item: Object
+  item: Object,
+  username: String,
 })
+let roomMembers = reactive([]);
+const lobbyStore = useLobbyStore();
+
+function video() {
+  let isExist = false;
+  roomMembers.forEach((r,index)=>{
+    console.log(r.username)
+    if(r.username === props.username){
+      isExist = true;
+      roomMembers.splice(index,1)
+    }
+  })
+  if (!isExist){
+    let roomId = props.item.roomId;
+    let userEmail = lobbyStore.user.email
+    roomMembers.push({roomId:roomId,username:props.username,userEmail:userEmail})
+  }
+}
 </script>
 
 <template>
-  <li class="btnRoom" >
+  <li class="btnRoom" @click="video()">
     <div>
       <img src="/img/channel/speak.png">
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
-        {{ props.item.name }}
+        {{item.name}}
       </div>
     </div>
   </li>
-
-  <div>
-    <div class="btnRoomMember">
+  <div style="color:#fff">{{props.item}}</div>
+  <div v-for="(roomMember,idx) in roomMembers " :key="idx" >
+    <div class="btnRoomMember" v-if="roomMembers !== ''">
       <div>
         <img src="/img/channel/userIcon.png">
       </div>
       <div class="MyMember_Info">
         <div class="MyMember_Name">
-          박재연
+          {{roomMember.username}}
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -41,24 +60,6 @@ let props = defineProps({
   border-radius: 5px;
   align-items: center;
   cursor: pointer;
-}
-.btnRoomMember {
-  display: flex;
-  height: 30px;
-  gap: 5px;
-  border-radius: 5px;
-  padding: 0 15px;
-  align-items: center;
-  cursor: pointer;
-  width: 90%;
-}
-
-.btnRoomMember:hover {
-  background: #36373D;
-}
-
-.btnRoomMember:active {
-  background: #3B3D44;
 }
 
 .MyMember_Info {
@@ -88,6 +89,7 @@ let props = defineProps({
   justify-content: space-between;
   align-items: center;
 }
+
 .btnRoom:hover {
   background: #36373D;
 }
@@ -114,8 +116,25 @@ let props = defineProps({
 .btnRoom > div:nth-of-type(1) > img:nth-of-type(1) {
   padding: 8px;
 }
+.btnRoomMember {
+  display: flex;
+  height: 30px;
+  gap: 5px;
+  border-radius: 5px;
+  padding: 0 15px;
+  align-items: center;
+  cursor: pointer;
+  width: 90%;
+}
 
-li{
+.btnRoomMember:hover {
+  background: #36373D;
+}
+
+.btnRoomMember:active {
+  background: #3B3D44;
+}
+li {
   margin: 0;
 }
 </style>

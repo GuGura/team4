@@ -6,7 +6,7 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useServerListStore} from "../../../../script/stores/serverlist";
 import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead.vue";
 import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
-import Room from "@/components/mainpage/channel/room.vue";
+import Room from "@/components/mainpage/channel/Room.vue";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -33,7 +33,7 @@ onMounted(async () => {
   }
 });
 
-watch(()=>updateChannelId.value,
+watch(() => updateChannelId.value,
     async () => {
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
@@ -97,8 +97,9 @@ const createRoomInChannel = () => {
           </div>
 
           <ul class="btnRooms">
-            <room  v-for="voiceRoom in voiceChatRooms" :key="voiceRoom.roomId"
-                    :item="voiceRoom" />
+            <Room v-for="voiceRoom in voiceChatRooms" :key="voiceRoom.roomId"
+                  :item="voiceRoom"
+                  :username="lobbyStore.user.username"/>
           </ul>
 
           <div class="inputChatRoomName">
@@ -188,9 +189,11 @@ img {
   align-items: center;
   cursor: pointer;
 }
-li{
+
+li {
   margin: 0;
 }
+
 .btnRoom:hover {
   background: #36373D;
 }
