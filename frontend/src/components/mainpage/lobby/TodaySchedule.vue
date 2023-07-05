@@ -145,9 +145,12 @@ initEvents()
     color: white;
     border:none;
 }
+
+
 .card:hover{
     background-color: #41434A;
 }
+
 
 #wholeCard{
     height: 600px;

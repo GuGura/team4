@@ -4,7 +4,8 @@ import {reactive, onMounted} from "vue";
  import notToken from "../../../../script/notTokenAxios";
 import api from "../../../../script/token/axios";
 const friends = reactive([]);
-const friend_SENDER = 'jhon';
+// const friend_SENDER = 'richard';
+// const friend_RECEIVER = '';
 const props = reactive({
   type: 'friend',
 })
@@ -12,10 +13,13 @@ const props = reactive({
 //null 값을 함께 보내는 이유는 데이터를 전송하지 않고
 // friend_SENDER라는  매개변수를 서버로 전달하기 위해서 작성함
 
+
 const find = async()=> {
     try {
         const response = await
-            api.post("/findFriend", null, {params: { friend_SENDER }})
+               api.post("/findFriend")
+              // notToken.post("/findFriend")
+             // api.post("/findFriend", null, {params: { friend_SENDER }})
             // notToken.post("/findFriend", {params: {friend_SENDER}})
 
         // axios.post(notToken+ "/findFriend", null, { params: {friend_SENDER}} )
@@ -24,27 +28,21 @@ const find = async()=> {
        console.log(data);
     }catch (error) {
         console.log(error);
-
     }
 };
 
-const decline = async() => {
-      try {
-        const response = await
-           api.post("deleteFriend/", )
-          const data = response.data;
-        friends.push(...data);
-        console.log(data);
-      }catch (error) {
-          console.log(error);
-      }
-
-    }
-
-
-
-
-
+// const decline = async() => {
+//       try {
+//         const response = await
+//            api.post("deleteFriend/", null, {params: {}} )
+//           const data = response.data;
+//         friends.push(...data);
+//         console.log(data);
+//       }catch (error) {
+//           console.log(error);
+//       }
+//
+//     }
 
 onMounted(()=> {
      find();
@@ -89,7 +87,7 @@ onMounted(()=> {
           <div class="MyMember_Name">
               {{ friend.friend_RECEIVER }}
           </div>
-          <div class="MyMember_exit" @click="decline()">
+          <div class="MyMember_exit" @click="decline(friend)">
             <img src="/img/sidebar/exit.png">
           </div>
         </div>
@@ -98,7 +96,7 @@ onMounted(()=> {
 
       <!---->
       <!---->
-        <div v-for="friend in friends" :key="friend.id">
+<!--        <div v-for="friend in friends" :key="friend.id">-->
       <div class="btnList">
         <div style="width: 35px;">
           <img src="/img/sidebar/userIcon.png">
@@ -112,7 +110,7 @@ onMounted(()=> {
           </div>
         </div>
       </div>
-        </div>
+<!--        </div>-->
     </div>
     <SidebarMyInfo/>
   </div>

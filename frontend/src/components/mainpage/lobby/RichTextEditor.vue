@@ -22,7 +22,9 @@ function fnAddProc() {
     if(!contentsForm.title) {
         alert("제목을 입력해 주세요");
         return;
+
     }
+
     if(!contentsForm.context) {
         alert("내용을 입력해 주세요");
         return;

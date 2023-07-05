@@ -56,8 +56,5 @@ public class ProfileController {
        member.setUser_icon_url(uploadFolder+fileName);
        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
        profileService.updateProfile(member, memberUID);
-
     }
-
-
 }
