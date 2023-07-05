@@ -5,12 +5,10 @@ import com.team4.backend.model.FriendDTO2;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.FriendService;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,11 +19,18 @@ import java.util.List;
 public class FriendController {
 
     private final FriendService friendService;
+
     @GetMapping("/friend/search/{username}")
-    public ResponseEntity<?> getSearchList(@PathVariable("username") String username, HttpServletRequest request){
+    public ResponseEntity<?> getSearchList(@PathVariable("username") String username, HttpServletRequest request) {
         int memberUID = (int) request.getAttribute(ResultDtoProperties.USER_UID);
-        List<FriendDTO2> list = friendService.findSearchUsers(username,memberUID);
-        return new ResponseEntity<>(list,HttpStatus.OK);
+        List<FriendDTO2> list = friendService.findSearchUsers(username, memberUID);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping("/friend/send/{friendUID}")
+    public ResponseEntity<?> sendFriendRequest(@PathVariable("friendUID") int sendMemberUID, HttpServletRequest request) {
+        int memberUID = (int) request.getAttribute(ResultDtoProperties.USER_UID);
+        return friendService.save(memberUID,sendMemberUID);
     }
 
 }

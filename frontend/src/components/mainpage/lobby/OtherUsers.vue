@@ -9,11 +9,14 @@ const props = defineProps({
 const friendStore = useFriendStore();
 
 function friendSend() {
-  api.get(`/friend/send/${props.friendInfo.friend_RECEIVER}`)
+console.log(props.friendInfo.id)
+  api.post(`/friend/send/${props.friendInfo.id}`)
       .then(({data}) => {
-        // friendStore.user.id = data
-        // friendStore.updateFriendInfo()
         console.log(data)
+      })
+      .catch(err=>{
+        console.log(err)
+        alert(err.response.data)
       })
 }
 </script>
