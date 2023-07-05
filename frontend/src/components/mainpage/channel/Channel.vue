@@ -73,15 +73,24 @@ export default defineComponent({
           });
     },
 
-  sendMessage() {
+    sendMessage() {
+      if (this.isSending) {
+        return; // 이미 전송 중인 경우 중복 전송 방지
+      }
 
-    const roomId = localStorage.getItem('wschat.roomId');
-    const sender = this.sender;
-    const message = this.inputMessage;
+      const roomId = localStorage.getItem('wschat.roomId');
+      const sender = this.sender;
+      const message = this.inputMessage;
 
-    socketStore.sendMessage(roomId, sender, message);
-    this.inputMessage = ''; // 입력 필드 초기화
-  },
+      this.isSending = true;
+      socketStore.sendMessage(roomId, sender, message);
+      this.inputMessage = ''; // 입력 필드 초기화
+
+      setTimeout(() => {
+        this.isSending = false;
+      }, 1000);
+    }
+
 },
 
 
