@@ -117,15 +117,17 @@ export default defineComponent({
             api.post("/event/listMonthly", {
                 date: this.getApi().getDate()
             }).then(({data}) => {
-                for (const i in data) {
-                    this.getApi().addEvent({
-                        id: data[i].id,
-                        title: data[i].title,
-                        start: data[i].start,
-                        end: data[i].end,
-                        allDay: true
-                    })
-                }
+                    if(data && data.length) {
+                        for (const i in data) {
+                            this.getApi().addEvent({
+                                id: data[i].id,
+                                title: data[i].title,
+                                start: data[i].start,
+                                end: data[i].end,
+                                allDay: true
+                            })
+                        }
+                    }
             })
 
 
@@ -145,22 +147,19 @@ export default defineComponent({
                     return document.getElementById('swal-input1').value
                 }
             })
-
             console.log("title-------------", title.value)
-
             let calendarApi = selectInfo.view.calendar
-
             calendarApi.unselect() // clear date selection
             if (title.value) {
                 api.post("/event/saveEvent", {
-                    title: title,
+                    title: title.value,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
                     allDay: selectInfo.allDay
                 }).then(({data}) => {
                     calendarApi.addEvent({
                         id: data,
-                        title,
+                        title:title.value,
                         start: selectInfo.startStr,
                         end: selectInfo.endStr,
                         allDay: selectInfo.allDay
@@ -169,7 +168,8 @@ export default defineComponent({
             }
         },
         handleEventClick(clickInfo) {
-            if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
+
+            if (Swal.fire(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
                 api.post("/event/deleteEvent", {
                     id: clickInfo.event.id,
