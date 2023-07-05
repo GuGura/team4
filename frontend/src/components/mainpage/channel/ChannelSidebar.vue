@@ -27,33 +27,30 @@ const updateChannelId = computed(() => {
 });
 
 onMounted(async () => {
-  await findAllRoom(roomInfo.channel_id, textChatRooms, voiceChatRooms);
-  console.log("update channel_id.value: ", updateChannelId.value)
+  await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
+  if (textChatRooms.length > 0) {
+    enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
+  }
 });
 
-watch(
-    () => updateChannelId.value,
+watch(()=>updateChannelId.value,
     async () => {
-      console.log("update channel_id.value: ", updateChannelId.value)
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-        if (textChatRooms.length === 0) {
+        if (textChatRooms.length === 0 && voiceChatRooms.length === 0) {
           roomInfo.name = "Text Chatting Room";
           roomInfo.room_type = false;
           await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-          enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
-        }
-        if (voiceChatRooms.length === 0) {
           roomInfo.name = "Voice Chatting Room";
           roomInfo.room_type = true;
           await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
+          enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
         }
         if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId);
+          enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
         }
       }
     },
-    {immediate: true}
 );
 
 // To use the createRoom function, the channel_id and roomInfo object are needed
@@ -61,10 +58,6 @@ const createRoomInChannel = () => {
   createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
 };
 
-// To use the enterRoom function, the roomId is needed
-const enterChatRoom = (roomId) => {
-  enterRoom(roomId); // Here only roomId is needed
-};
 
 </script>
 
