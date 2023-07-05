@@ -4,6 +4,7 @@ import Stomp from 'webstomp-client';
 import api from "./token/axios";
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
+import {useLobbyStore} from "./stores/lobby";
 
 //소켓에 연결하는 기능
 export const useSocketStore = defineStore("socketStore", () => {
@@ -11,6 +12,10 @@ export const useSocketStore = defineStore("socketStore", () => {
     let ws = reactive(null)
     let wsConnected = ref(false);  // WebSocket 연결 상태 추가
     const messageList = reactive([]);
+    const lobbyStore = useLobbyStore();
+    const updateUsername = computed(() => {
+        return lobbyStore.user.username
+    })
     let subscription;
 
     //소켓 연결
@@ -24,6 +29,19 @@ export const useSocketStore = defineStore("socketStore", () => {
     function connectSuccess(frame) {
         console.log("호출성공", frame)
         wsConnected = true
+        ws.subscribe('/sub/chat/room/"UserList"',
+            message => {
+                console.log('구독으로 받은 메시지입니다.', message.body);
+                const recv = JSON.parse(message.body);
+                receiveMessage(recv);
+            });
+        if (ws && ws.connected) {
+            const msg = {
+                type: 'ENTER',
+                roomId: "UserList",
+                sender: updateUsername,
+            };
+        }
     }
 
     function connectFail() {

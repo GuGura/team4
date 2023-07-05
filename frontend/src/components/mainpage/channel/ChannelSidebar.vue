@@ -34,7 +34,6 @@ onMounted(async () => {
 
 watch(()=>updateChannelId.value,
     async () => {
-      console.log("ChannelId.value -------- : " + updateChannelId.value);
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
         if (textChatRooms.length === 0 && voiceChatRooms.length === 0) {
