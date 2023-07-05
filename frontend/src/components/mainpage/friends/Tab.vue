@@ -50,7 +50,7 @@ export default {
                 {{ tab }}
             </button>
         </div>
-        <div class="tab-content">
+     <div class="tab-content">
             <div
                 v-for="(content, index) in tabContents"
                 :key="index"
