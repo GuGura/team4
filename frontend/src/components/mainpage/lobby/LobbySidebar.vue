@@ -1,10 +1,26 @@
 <script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
 import {reactive} from "vue";
+import api from "../../../../script/token/axios";
+import {useFriendStore} from "../../../../script/stores/friend";
+import {useRouter} from "vue-router";
 
 const props = reactive({
   type: 'friend',
 })
+
+const friendStore = useFriendStore();
+const router = useRouter();
+
+
+function openFriend(){
+    api.get(process.env.VUE_APP_BASEURL_V1 + "/friend/2", {
+    }).then(({data}) => {
+        friendStore.user.id = data
+        friendStore.updateFriendInfo()
+        router.push(`/channel/friend/`)
+    })
+}
 </script>
 
 <template>
@@ -33,8 +49,7 @@ const props = reactive({
 
       <div style="color: #fff;margin-top: 10px; padding: 0 5px;">리스트</div>
       <!----><!---->
-        <a href="">
-      <div class="btnList">
+      <div class="btnList"  @click="openFriend">
         <div style="width: 35px;">
           <img src="/img/sidebar/userIcon.png">
         </div>
@@ -47,7 +62,6 @@ const props = reactive({
           </div>
         </div>
       </div>
-        </a>
       <!---->
       <!---->
       <div class="btnList">

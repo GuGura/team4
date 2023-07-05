@@ -18,5 +18,5 @@ public class ContentDTO {
     private boolean visible;
     private String contentIMG;
     private boolean isImgIn;
-
+    private String sharingCode;
 }

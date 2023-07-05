@@ -20,4 +20,5 @@ public class ResultContent {
     private byte[] contentIMG;
     private int isImgIn;
     private byte[] userIcon;
+    private String sharingCode;
 }

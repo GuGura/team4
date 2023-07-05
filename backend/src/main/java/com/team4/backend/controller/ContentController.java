@@ -52,6 +52,22 @@ public class ContentController {
         return returnContents;
     }
 
+    @ResponseBody
+    @PostMapping("/content/listByPageFriend")
+    public List<ResultContent> listContentFriend(@RequestBody Map<String,String> params, HttpServletRequest request){
+        int memberUID = Integer.parseInt(params.get("id"));
+        int pageNum=Integer.parseInt(params.get("lastPosting"));
+        if(pageNum==0){
+            pageNum = 100000000;
+        }
+        List<ContentDTO> contents = contentService.listContent(pageNum, memberUID);
+        List<ResultContent> returnContents = new ArrayList<>();
+        for (ContentDTO content: contents) {
+            returnContents.add(contentToReturn(content));
+        }
+        return returnContents;
+    }
+
     //컨텐츠반환용으로 변환
     public ResultContent contentToReturn(ContentDTO content){
         ResultContent RContent = new ResultContent();
@@ -70,8 +86,11 @@ public class ContentController {
         RContent.setUploadDate(transFormat.format(content.getUploadDate()));
         RContent.setWriter_id(content.getWriter_id());
         RContent.setContent(content.getContent());
-        RContent.setUsername(memberMapper.findMemberByEmail(UserUtil.getEmail()).get().getUsername());
-        RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
+        RContent.setUsername(memberMapper.findMemberByUID(content.getWriter_id()).getUsername());
+        if(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()!=null){
+            RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
+        }
+        RContent.setSharingCode(content.getSharingCode());
         return RContent;
     }
 
@@ -85,7 +104,6 @@ public class ContentController {
         if(params.get("isImgIn").substring(0,1).equals("t")){
             content.setImgIn(true);
             String base64Data=params.get("contentIMG");
-            System.out.println(base64Data);
             String base64 = base64Data.substring(base64Data.lastIndexOf(",")+1);
             BufferedImage image = null;
             byte[] imageByte;

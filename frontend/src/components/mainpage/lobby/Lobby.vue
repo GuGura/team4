@@ -2,8 +2,9 @@
   <div id="main_contents">
     <div id="main_content_header">
       <div id="icon_URL">
-        <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
-        <img src="/img/sidebar/userIcon.png" alt="헬로" style="width: 200px;" class="rounded" v-else>
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url==='data:image/png;base64,null' ">
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-else-if="lobbyStore.user.user_icon_url==='' ">
+          <img :src="lobbyStore.user.user_icon_url"  alt="UserIcon" style="width: 200px;" class="rounded" v-else>
       </div>
       <div id="userName" class="">
         <div class="order-md-2">
@@ -13,12 +14,12 @@
         <div class="row">
           <div class="edit-button col-1" @click="openModal()">
             <span class="material-symbols-outlined">manage_accounts</span>
-            <div>프</div>
+            <div>프로필 수정</div>
           </div>
           <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
           <div class="writing-button col-1" @click="openModal2()">
-            <span class="material-symbols-outlined">manage_accounts</span>
-            <div>글</div>
+            <span class="material-symbols-outlined">edit_note</span>
+            <div>글 작성</div>
           </div>
           <WritingContentModal v-if="modalStore.modal.writingContent === true"/>
         </div>
@@ -54,7 +55,6 @@ function openModal() {
 
 function openModal2() {
   modalStore.open('writingContent')
-  console.log(modalStore.modal.writingContent)
 }
 
 onMounted(() => {
@@ -153,7 +153,7 @@ h2.featurette-heading {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
+  width: 100px;
   height: 30px;
   background: #41434A;
   border-radius: 10px;
@@ -170,7 +170,7 @@ h2.featurette-heading {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
+  width: 80px;
   height: 30px;
   background: #41434A;
   border-radius: 10px;

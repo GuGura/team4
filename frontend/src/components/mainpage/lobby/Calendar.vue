@@ -90,9 +90,9 @@ export default defineComponent({
                     interactionPlugin // needed for dateClick
                 ],
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next',
                     center: 'title',
-                    right: 'dayGridMonth'
+                    right: 'today'
                 },
                 initialView: 'dayGridMonth',
                 editable: true,
@@ -117,15 +117,17 @@ export default defineComponent({
             api.post("/event/listMonthly", {
                 date: this.getApi().getDate()
             }).then(({data}) => {
-                for (const i in data) {
-                    this.getApi().addEvent({
-                        id: data[i].id,
-                        title: data[i].title,
-                        start: data[i].start,
-                        end: data[i].end,
-                        allDay: true
-                    })
-                }
+                    if(data && data.length) {
+                        for (const i in data) {
+                            this.getApi().addEvent({
+                                id: data[i].id,
+                                title: data[i].title,
+                                start: data[i].start,
+                                end: data[i].end,
+                                allDay: true
+                            })
+                        }
+                    }
             })
 
 
@@ -133,35 +135,43 @@ export default defineComponent({
         handleWeekendsToggle() {
             this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
         },
-        handleDateSelect(selectInfo) {
-            let title = prompt('추가할 일정명을 입력해주세요.')
+
+
+        async handleDateSelect(selectInfo) {
+            const title = await Swal.fire({
+                title: '추가할 일정명을 입력해주세요.',
+                html:
+                    '<input id="swal-input1" class="swal2-input">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return document.getElementById('swal-input1').value
+                }
+            })
+            console.log("title-------------", title.value)
             let calendarApi = selectInfo.view.calendar
-
             calendarApi.unselect() // clear date selection
-
-            if (title) {
-                api.post("/home/saveEvent", {
-                    title,
+            if (title.value) {
+                api.post("/event/saveEvent", {
+                    title: title.value,
                     start: selectInfo.startStr,
                     end: selectInfo.endStr,
                     allDay: selectInfo.allDay
                 }).then(({data}) => {
                     calendarApi.addEvent({
                         id: data,
-                        title,
+                        title:title.value,
                         start: selectInfo.startStr,
                         end: selectInfo.endStr,
                         allDay: selectInfo.allDay
                     })
                 })
-
-
             }
         },
         handleEventClick(clickInfo) {
-            if (confirm(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
+
+            if (Swal.fire(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
-                api.post("/home/deleteEvent", {
+                api.post("/event/deleteEvent", {
                     id: clickInfo.event.id,
                     title: clickInfo.event.title,
                     start: clickInfo.event.start,
@@ -218,19 +228,16 @@ ul {
     padding: 0 0 0 1.5em;
 }
 
-li {
-    margin: 1.5em 0;
-    padding: 0;
-}
-
-b { /* used for event dates/times */
-    margin-right: 3px;
-}
 
 .demo-app-calendar {
-
     width: 100%;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 100%;
+}
 
+.fc-daygrid-view .fc-daygrid-day-frame {
+    border-color: black;
 }
 
 .fc-col-header-cell-cushion {
@@ -238,15 +245,107 @@ b { /* used for event dates/times */
 }
 
 .fc-event-main {
+    background-color: #2b2d31;
+}
+
+
+.fc-daygrid-event-harness {
+    background-color: black;
+}
+
+.fc-today-button {
+    margin-top: -10px;
+}
+
+
+.fc-col-header-cell-cushion {
+    color: #5965f3;
+}
+
+.fc-daygrid-day-number {
+    color: #b6b8cf;
+}
+
+#fc-dom-95.fc-daygrid-day-number {
+    color: #FFFFFF;
+}
+
+.fc .fc-button-primary:disabled {
+    margin-top: -2px;
+    margin-right: 5px;
+}
+
+.fc .fc-button-primary:hover {
+    margin-top: -2px;
+}
+
+.fc-today-button fc-button fc-button-primary {
+    margin-top: -2px
+}
+
+.fc .fc-button:disabled {
+    margin-top: -2px;
+}
+
+.fc .fc-button-primary {
+    margin-top: -1px;
+    background-color: transparent;
+    border-color: transparent;
+    margin-right: 5px;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 13px;
+    margin-top: 10px;
+}
+
+fc-daygrid-more-link fc-more-link {
+    color: #F23F42;
+}
+
+fc-event-main {
+    background-color: grey;
+}
+
+.fc-h-event .fc-event-main {
+    background-color: #23A559;
+}
+
+a {
+
+    text-decoration: none;
+}
+
+.fc .fc-more-popover .fc-popover-body {
+    background-color: #FFFFFF;
+}
+
+.fc-theme-standard .fc-popover-header {
+    background-color: #5965f3;
+
+}
+
+.fc-daygrid-event-harness {
+    background-color: transparent;
+}
+
+.fc-h-event .fc-event-main {
+    text-align: center;
+}
+
+fc-h-event {
     background-color: yellow;
-    border-color: yellow;
-    border-radius: 2px;
+
+
 }
 
 :root {
     --fc-event-border-color: black;
 }
 
+.fc-h-event .fc-event-main {
+    background-color: transparent;
+}
 
 </style>
 

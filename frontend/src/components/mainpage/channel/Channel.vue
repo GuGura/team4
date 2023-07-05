@@ -48,7 +48,17 @@ export default defineComponent({
       messageList
     };
   },
+    mounted() {
+        this.scrollToBottom();
+    },
+    updated() {
+        this.scrollToBottom(); // 업데이트 되어도 스크롤 바닥 고정(채팅 하단에서 시작시, 스크롤 사라짐)
+    },
   methods: {
+      scrollToBottom() {
+          const chatScroll = this.$refs.chatScroll;
+          chatScroll.scrollTop = chatScroll.scrollHeight; // 바닥 스크롤
+      },
     router() {
       return router
     },
@@ -105,7 +115,7 @@ export default defineComponent({
     <div id="chat_body">
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
-          <div class="scroll box2">
+          <div class="scroll box2" ref="chatScroll">
             <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
               <ChatBox :messages="message"/>
             </div>
@@ -159,8 +169,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   flex: 1;
-}
+    justify-content: flex-end;
 
+}
 /** scroll*/
 #header {
   display: flex;

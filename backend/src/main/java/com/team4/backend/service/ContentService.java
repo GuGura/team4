@@ -2,6 +2,7 @@ package com.team4.backend.service;
 
 import com.team4.backend.mapper.ContentMapper;
 import com.team4.backend.model.dto.ContentDTO;
+import com.team4.backend.util.CodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,8 @@ public class ContentService {
     }
 
     public void saveContent(ContentDTO content) {
-        contentMapper.saveContent(content);
+        String code = CodeGenerator.createCode();
+        contentMapper.saveContent(content,code);
     }
 
 }
