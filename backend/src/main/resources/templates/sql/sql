@@ -99,3 +99,10 @@ create table event
     groupName varchar(100),
     allday    BOOLEAN
 );
+create table friend
+(
+    FRIEND_SENDER   int                  null,
+    FRIEND_RECEIVER int                  null,
+    FRIEND_CHECKED  tinyint(1) default 0 not null,
+    FRIEND_DATE     timestamp            not null
+);
