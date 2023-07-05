@@ -29,12 +29,7 @@ public class ChatController {
      */
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
-        System.out.println("message:" + message);
-        System.out.println("roomID: "+ message.getRoomId());
-
-        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            chatRoomRepository.enterChatRoom(message.getRoomId());
-        }
+        chatRoomRepository.enterChatRoom(message.getRoomId());
         chatMessageRepository.save(message);
         // Websocket에 발행된 메시지를 redis로 발행한다(publish)
         redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);

@@ -13,11 +13,14 @@ const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
 const socketStore = useSocketStore();
+let beforeRoomId;
+
 export default defineComponent({
   watch: {
     '$route.params.roomId'(to, from) {
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
-        const url = `${to}`
+        this.roomId = to;
+        beforeRoomId = from;
         this.enterRoom();
       }
     }
@@ -39,8 +42,7 @@ export default defineComponent({
     };
   },
   setup() {
-    const messageList = reactive(null)
-
+    const { messageList } = useSocketStore();
 
     return {
       messageList
@@ -57,13 +59,14 @@ export default defineComponent({
     },
     async enterRoom() {
       const roomId = localStorage.getItem('wschat.roomId');
-      this.messageList = [];
+      socketStore.clearMessageList();
+      await socketStore.unSubscribeToRoom(beforeRoomId);
 
       await socketStore.findRoomMessage(roomId)
           .then(async (data) => {
             console.log(data);
             this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
-            await socketStore.subscribeToRoom(roomId, this.sender)
+            await socketStore.subscribeToRoom(roomId);
           })
           .catch((error) => {
             console.error(error);
@@ -109,8 +112,6 @@ export default defineComponent({
             <div class="Box" v-for="(messages,idx) in messageList" :key="idx">
               <ChatBox :messages="messages"/>
             </div>
-            {{messageList}}
-            {{getter}}
           </div>
         </div>
 
@@ -125,7 +126,7 @@ export default defineComponent({
       <div id="chatSidebar">
         <div id="offline">
           <div class="roomMemberInfo">
-            <div>채널맴버</div>
+            <div>온라인</div>
           </div>
           <ChannelMemberInfo name="박재연"/>
         </div>
