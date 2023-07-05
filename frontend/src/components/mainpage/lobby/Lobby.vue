@@ -14,12 +14,12 @@
         <div class="row">
           <div class="edit-button col-1" @click="openModal()">
             <span class="material-symbols-outlined">manage_accounts</span>
-            <div>프로필 수정</div>
+            <div>Settings</div>
           </div>
           <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
           <div class="writing-button col-1" @click="openModal2()">
             <span class="material-symbols-outlined">edit_note</span>
-            <div>글 작성</div>
+            <div>Post</div>
           </div>
           <WritingContentModal v-if="modalStore.modal.writingContent === true"/>
         </div>

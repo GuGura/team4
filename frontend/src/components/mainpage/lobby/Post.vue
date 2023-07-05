@@ -40,11 +40,18 @@ const props = defineProps({
 })
 
 function deletePost(){
-    api.post("/content/deleteContent", {id:props.post.id}
-    ).then(() => {
-        Swal.fire("삭제되었습니다.")
-        // eslint-disable-next-line vue/no-mutating-props
-        props.post.visible = false
+    Swal.fire({
+        title: `포스트를 삭제하시겠습니까?`,
+        confirmButtonText: "삭제",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            api.post("/content/deleteContent", {id:props.post.id}
+            ).then(() => {
+                Swal.fire("삭제되었습니다.")
+                // eslint-disable-next-line vue/no-mutating-props
+                props.post.visible = false
+            })
+        }
     })
 }
 </script>

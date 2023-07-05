@@ -8,7 +8,7 @@ export default {
         return {
             calendarKey: 0,
             profileKey: 0,
-            tabs: ['일정 보기', '글 목록'],
+            tabs: ['Calendar', 'Posts'],
             tabContents: [
                 'Content for Tab 1',
                 null,
@@ -125,6 +125,8 @@ export default {
     color: white;
     border-radius: 10px 10px 0px 0px;
     border: none;
+    justify-content: center;
+    display: flex;
 }
 .tab-button:hover{
     background: #41434A;

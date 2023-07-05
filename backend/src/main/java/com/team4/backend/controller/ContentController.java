@@ -99,6 +99,7 @@ public class ContentController {
         }
         RContent.setContent(content.getContent());
         RContent.setSharedWriter(content.getSharedWriter());
+        RContent.setSharingCode(content.getSharingCode());
         return RContent;
     }
 

@@ -2,14 +2,15 @@
 
 import Calendar from "@/components/mainpage/lobby/Calendar.vue";
 import PostList from "@/components/mainpage/lobby/PostList.vue";
+import MyFeed from "@/components/mainpage/lobby/myFeed.vue";
 
 export default {
-    components: {PostList, Calendar},
+    components: {MyFeed, PostList, Calendar},
     data() {
         return {
             calendarKey: 0,
             profileKey: 0,
-            tabs: ['내 피드', '일정 보기', '글 목록'],
+            tabs: ['My Feed', 'My Calendar', 'My Contents'],
             tabContents: [
                 'Content for Tab 1',
                 'Content for Tab 2',
@@ -57,7 +58,9 @@ export default {
         <div class="tab-content">
             <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index }">
                 <div v-if="index === 0">
-                    <div class="content-box"></div>
+                    <div class="content-box">
+                        <myFeed/>
+                    </div>
                 </div>
                 <div v-else-if="index === 1">
                     <div class="content-box">
@@ -125,6 +128,7 @@ export default {
 }
 
 .tab-button {
+    display: flex;
     width: 100%;
     padding: 10px 20px;
     background-color: #36373D;
@@ -133,6 +137,7 @@ export default {
     color: white;
     border-radius: 10px 10px 0px 0px;
     border: none;
+    justify-content: center;
 }
 .tab-button:hover{
     background: #41434A;
