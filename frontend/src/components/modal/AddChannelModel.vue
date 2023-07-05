@@ -30,6 +30,7 @@ async function createServer() {
           modalStore.terminate('addServer')
           serverListStore.updateBtn(data[0])
           localStorage.setItem('selectChannel', data[0].channel_title)
+          localStorage.setItem('inviteCode',data[0].channel_invite_code)
           router.push(`/channel/${result}`)
           router.go(1);
         })
@@ -52,6 +53,7 @@ async function attendChannel() {
         serverListStore.updateBtn(data)
         exitModal();
         localStorage.setItem('selectChannel', data.channel_title)
+        localStorage.setItem('inviteCode',data.channel_invite_code)
         router.push(`/channel/${data.channel_UID}`)
         router.go(1);
       }).catch((err)=>{

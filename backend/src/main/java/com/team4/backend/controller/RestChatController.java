@@ -21,16 +21,18 @@ public class RestChatController {
     private final RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
     private final ChatRoomRepository chatRoomRepository;
 
-    @GetMapping("/rooms")
-    public ResponseEntity<?> room() {
-        List<ChatRoom> list = chatRoomRepository.findAllRoom();
+    @GetMapping("/rooms/{channel_id}")
+    public ResponseEntity<?> room(@PathVariable("channel_id") String channel_id) {
+        List<ChatRoom> list = chatRoomRepository.findAllRoom(channel_id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @PostMapping("/room")
     public ResponseEntity<?> createRoom(@RequestBody Map<String,?> params) {
         String name = (String)params.get("name");
         boolean room_type = (boolean)params.get("room_type");
-        ChatRoom chatRoom = chatRoomRepository.createChatRoom(name, room_type);
+        String channel_id = (String) params.get("channel_id");
+        System.out.println("RestChatController chatnnel_Id= "+channel_id);
+        ChatRoom chatRoom = chatRoomRepository.createChatRoom(name, room_type, channel_id);
         return new ResponseEntity<>(chatRoom,HttpStatus.CREATED);
     }
 }
