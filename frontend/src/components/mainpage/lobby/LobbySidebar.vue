@@ -3,12 +3,20 @@ import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
 import {reactive} from "vue";
 import {useFriendStore} from "../../../../script/stores/friend";
 import Friend from "@/components/mainpage/lobby/Friend.vue";
+import {useModalStore} from "../../../../script/stores/modal";
+import FriendModal from "@/components/modal/FriendModal.vue";
 
 const props = reactive({
   type: 'friend',
 })
 
 const friendStore = useFriendStore();
+const modalStore = useModalStore();
+
+function FriendM(){
+  modalStore.open('Friend')
+  console.log(modalStore.modal.Friend)
+}
 
 let friendList = friendStore.getFriendList()
 
@@ -39,13 +47,17 @@ let friendList = friendStore.getFriendList()
         <input name="searchbox" placeholder="친구 찾기">
       </div>
 
-      <div style="color: #fff;margin-top: 10px; padding: 0 5px;">리스트</div>
+      <div style="display:flex;align-items: center;color: #fff;margin-top: 10px; padding: 0 5px;">
+        리스트&nbsp;
+        <img src="/img/serverlist/add_server1.png" style="width: 15px; height: 15px;cursor: pointer" @click="FriendM()">
+      </div>
       <!----><!---->
       <Friend v-for="friend in friendList" :key="friend"
               :friendInfo="friend"/>
     </div>
     <SidebarMyInfo />
   </div>
+  <FriendModal v-if="modalStore.modal.Friend === true" />
 </template>
 
 <style scoped>

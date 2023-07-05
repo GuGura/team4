@@ -17,7 +17,10 @@ export const useFriendStore = defineStore("friendStore", () => {
         user_description: ''
     })
     let friendList = reactive([])
-
+    let searchUsers = reactive([])
+    let getSearchUsers = ()=>(computed(()=>{
+        return searchUsers
+    }))
     let getFriendList = ()=>(computed(()=>{
         return friendList
     }))
@@ -70,6 +73,8 @@ export const useFriendStore = defineStore("friendStore", () => {
     return {
         user,
         friendList,
+        searchUsers,
+        getSearchUsers,
         getFriendList,
         initFriendList,
         updateFriendInfo,

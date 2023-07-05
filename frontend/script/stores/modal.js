@@ -9,6 +9,7 @@ export const useModalStore = defineStore("modalStore",()=>{
         writingContent: false,
         RoomToggle: false,
         CreateRoom: false,
+        Friend: false,
     })
 
     function terminate(index){
