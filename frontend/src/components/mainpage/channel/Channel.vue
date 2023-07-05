@@ -1,8 +1,8 @@
 <script>
-import {computed, defineComponent} from "vue";
+import {computed, defineComponent, reactive} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
-import {useSocketStore} from '/script/socket';
+import {useSocketStore} from '/script/socketOperations';
 import router from "../../../../script/routes/router";
 import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
 
@@ -13,15 +13,15 @@ const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
 const socketStore = useSocketStore();
-export default defineComponent({
+let beforeRoomId;
 
+export default defineComponent({
   watch: {
     '$route.params.roomId'(to, from) {
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
-        console.log("start enterRoom");
+        this.roomId = to;
+        beforeRoomId = from;
         this.enterRoom();
-        const url = `${to}`
-        console.log(`-----------------------Changed from server to room------------------------` ,url );
       }
     }
   },
@@ -42,7 +42,8 @@ export default defineComponent({
     };
   },
   setup() {
-    const messageList = socketStore.getter
+    const { messageList } = useSocketStore();
+
     return {
       messageList
     };
@@ -55,26 +56,26 @@ export default defineComponent({
       this.roomId = localStorage.getItem('wschat.roomId');
       this.channelId = localStorage.getItem('wschat.channelId')
       this.sender = updateUsername
-      console.log("Channel.vue sender : " + this.sender);
-      console.log("Channel.vue roomId : " + this.roomId);
-      console.log("Channel.vue channelId : " + this.channelId);
-
-      this.messageList.messages = []; // messageList 초기화
     },
     async enterRoom() {
       const roomId = localStorage.getItem('wschat.roomId');
-      console.log("-----------------------------enterRoom:-------------------------\n ", roomId)
-      const data = await socketStore.findRoomMessage(roomId);
+      socketStore.clearMessageList();
+      await socketStore.unSubscribeToRoom(beforeRoomId);
 
-      console.log("------------------------data", data);
-      this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
-      await socketStore.subscribeToRoom(roomId, this.sender)
+      await socketStore.findRoomMessage(roomId)
+          .then(async (data) => {
+            console.log(data);
+            this.chatMessages = data; // 받은 데이터를 chatMessages에 저장
+            await socketStore.subscribeToRoom(roomId);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
     },
 
   sendMessage() {
 
     const roomId = localStorage.getItem('wschat.roomId');
-    console.log("------------------------------------sendMessage--------------", roomId)
     const sender = this.sender;
     const message = this.inputMessage;
 
@@ -125,7 +126,7 @@ export default defineComponent({
       <div id="chatSidebar">
         <div id="offline">
           <div class="roomMemberInfo">
-            <div>채널맴버</div>
+            <div>온라인</div>
           </div>
           <ChannelMemberInfo name="박재연"/>
         </div>

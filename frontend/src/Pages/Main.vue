@@ -6,11 +6,11 @@ import LobbySidebar from "@/components/mainpage/lobby/LobbySidebar.vue";
 import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
-import {onMounted, provide, watch} from "vue";
+import {onMounted, provide, reactive, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
 import {useChannelStore} from "../../script/stores/channel";
-import {useSocketStore} from '/script/socket';
+import {useSocketStore} from '/script/socketOperations';
 
 
 const serverListStore = useServerListStore();
@@ -37,8 +37,7 @@ watch(route.currentRoute, (to,form) => {
 })
 onMounted(async () => {
   lobbyStore.updateMyInfo();
-  socketStore.connectSocket();
-
+  await socketStore.connectSocket();
   provide('socket', socketStore.ws);
   provide('wsConnected', socketStore.wsConnected);  // 상태를 provide로 제공
 });

@@ -37,11 +37,13 @@ public class SecurityConfig {
                     .addFilter(new JwtAuthorizationFilter(authenticationManager, jwtService));
         }
     }
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
+    public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().mvcMatchers(
                 "/api/v1/join/**",
-                "/ws/**"
+                "/ws/**",
+                "/ws"
         );
     }
 

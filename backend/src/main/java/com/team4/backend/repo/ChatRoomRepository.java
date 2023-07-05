@@ -40,11 +40,14 @@ public class ChatRoomRepository {
         topics = new HashMap<>();
     }
 
-    public List<ChatRoom> findAllRoom() {
+    public List<ChatRoom> findAllRoom(String channel_id) {
         // MariaDB에서 데이터를 먼저 가져옵니다.
-        List<ChatRoom> chatRoomsFromDB = redisToMariaDBMigrationMapper.getAllChatRoomsFromDB();
+        List<ChatRoom> chatRoomsFromDB = redisToMariaDBMigrationMapper.getAllChatRoomsFromDB(channel_id);
         // Redis에서 데이터를 가져옵니다.
-        List<ChatRoom> chatRoomsFromRedis = opsHashChatRoom.values(CHAT_ROOMS);
+        List<ChatRoom> chatRoomsFromRedis = opsHashChatRoom.values(CHAT_ROOMS)
+                .stream()
+                .filter(chatRoom -> chatRoom.getChannel_id().equals(channel_id))
+                .collect(Collectors.toList());
 
         // MariaDB에서 가져온 채팅룸의 ID를 추출합니다.
         Set<String> roomIdsFromDB = chatRoomsFromDB.stream()
@@ -70,8 +73,8 @@ public class ChatRoomRepository {
     /**
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
      */
-    public ChatRoom createChatRoom(String name, boolean room_type) {
-        ChatRoom chatRoom = ChatRoom.create(name, room_type);
+    public ChatRoom createChatRoom(String name, boolean room_type, String channel_id) {
+        ChatRoom chatRoom = ChatRoom.create(name, room_type, channel_id);
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
