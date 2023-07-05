@@ -69,9 +69,11 @@ create table chat_messages
 
 create table chat_room
 (
-    room_id varchar(255) not null
+    room_id    varchar(255) not null
         primary key,
-    name    varchar(255) null
+    name       varchar(255) null,
+    room_type  tinyint      null,
+    channel_id varchar(255) not null
 );
 
 create table content
@@ -84,9 +86,7 @@ create table content
     uploadDate date    default current_timestamp(),
     visible    tinyint default TRUE,
     contentIMG VARCHAR(500),
-    isImgIn    tinyint,
-    sharingCode varchar(200)
-
+    isImgIn    tinyint
 );
 
 create table event
@@ -97,6 +97,5 @@ create table event
     title     varchar(500),
     memberId  int,
     groupName varchar(100),
-    allday    BOOLEAN,
-    groupId int
+    allday    BOOLEAN
 );
