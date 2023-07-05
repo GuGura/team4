@@ -84,13 +84,21 @@ public class ContentController {
         }
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         RContent.setUploadDate(transFormat.format(content.getUploadDate()));
-        RContent.setWriter_id(content.getWriter_id());
-        RContent.setContent(content.getContent());
-        RContent.setUsername(memberMapper.findMemberByUID(content.getWriter_id()).getUsername());
-        if(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()!=null){
-            RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
+        if(content.getSharingCode() == 0){
+            RContent.setWriter_id(content.getWriter_id());
+            RContent.setUsername(memberMapper.findMemberByUID(content.getWriter_id()).getUsername());
+            if(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()!=null){
+                RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
+            }
+        }else {
+            RContent.setWriter_id(content.getWriter_id());
+            RContent.setUsername(memberMapper.findMemberByUID(content.getSharedWriter()).getUsername());
+            if(memberMapper.findMemberByUID(content.getSharedWriter()).getUser_icon_url()!=null){
+                RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getSharedWriter()).getUser_icon_url()));
+            }
         }
-        RContent.setSharingCode(content.getSharingCode());
+        RContent.setContent(content.getContent());
+        RContent.setSharedWriter(content.getSharedWriter());
         return RContent;
     }
 
@@ -124,8 +132,29 @@ public class ContentController {
         }
         content.setContent(params.get("context"));
         content.setWriter_id((int) request.getAttribute(ResultDtoProperties.USER_UID));
+        content.setSharingCode(0);
+        content.setSharedWriter((int) request.getAttribute(ResultDtoProperties.USER_UID));
         contentService.saveContent(content);
     }
+
+    @ResponseBody
+    @PostMapping("/content/getFriendPost")
+    public void getFriendPost(@RequestBody Map<String,String> params, HttpServletRequest request) throws Exception{
+        ContentDTO content = contentService.getContentById(Integer.parseInt(params.get(("id"))));
+        content.setSharingCode(content.getId());
+        content.setSharedWriter(content.getWriter_id());
+        content.setWriter_id((int) request.getAttribute(ResultDtoProperties.USER_UID));
+        contentService.saveContent(content);
+    }
+
+    @ResponseBody
+    @PostMapping("/content/deleteContent")
+    public void deleteContent(@RequestBody Map<String,String> params, HttpServletRequest request) throws Exception{
+        int id = Integer.parseInt(params.get(("id")));
+        int writer_id = (int) request.getAttribute(ResultDtoProperties.USER_UID);
+        contentService.deleteContent(id, writer_id);
+    }
+
 
 
     //이미지 글쓰기창에 불러오기

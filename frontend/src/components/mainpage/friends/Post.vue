@@ -1,6 +1,5 @@
 <template>
     <div class="card mb-3">
-
         <div v-if="props.post.visible" class="card-body" :id="props.post.id">
             <div class="row">
                 <div class="col-4" style="width: 120px;" v-if="props.post.userIcon === 'data:image/png;base64,null'">
@@ -16,7 +15,7 @@
                 </div>
                 <div class="btnDelete col-1" >
                 </div>
-                <div class="btnDelete col-1" @click="viewCode">
+                <div class="btnDelete col-1" @click="getFriendPost">
                     <span class="material-symbols-outlined">content_copy</span>
                 </div>
 
@@ -34,6 +33,7 @@
 <script setup>
 
 import {defineProps} from "vue";
+import api from "../../../../script/token/axios";
 
 const props = defineProps({
     post: Object,
@@ -43,6 +43,16 @@ function viewCode(){
     // eslint-disable-next-line no-undef
     Swal.fire(props.post.sharingCode);
 }
+
+function getFriendPost(){
+    api.post("/content/getFriendPost/", {id:props.post.id}
+    ).then(
+        Swal.fire("공유 완료!")
+    )
+
+
+}
+
 </script>
 
 <style scoped>

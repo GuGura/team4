@@ -19,8 +19,15 @@ public class ContentService {
     }
 
     public void saveContent(ContentDTO content) {
-        String code = CodeGenerator.createCode();
-        contentMapper.saveContent(content,code);
+        contentMapper.saveContent(content);
+    }
+
+    public ContentDTO getContentById(int id){
+        return contentMapper.getContentById(id);
+    }
+
+    public void deleteContent(int id, int writer_id){
+        contentMapper.deleteContent(id, writer_id);
     }
 
 }
