@@ -11,7 +11,7 @@ public interface EventMapper {
 
 
     @Insert("insert into event(estart, end, title, memberId, groupName, groupId) values(#{start},#{end},#{title}, #{memberId}, #{groupName}, #{groupId})")
-    void saveEvent( EventDTO event);
+    void saveEvent(EventDTO event);
 
     @Select("SELECT last_insert_id();")
     int selectLast();

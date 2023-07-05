@@ -169,7 +169,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   flex: 1;
-    justify-content: flex-end;
+
 
 }
 /** scroll*/
@@ -314,6 +314,7 @@ input[name=message] {
   display: flex;
   padding: 0 10px 15px;
   gap: 5px;
+    justify-content: flex-end;
 }
 
 .Box:hover {

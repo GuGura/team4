@@ -45,6 +45,7 @@ public class EventController {
     @PostMapping("/event/saveEvent")
     public int save(@RequestBody EventDTO event, HttpServletRequest request) throws Exception {
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+
         event.setGroupName(memberMapper.findMemberByUID(memberUID).getUsername());
         event.setMemberId(memberUID);
         int id = eventService.saveEvent(event);
