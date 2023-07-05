@@ -11,7 +11,7 @@ public interface EventMapper {
 
 
     @Insert("insert into event(estart, end, title, memberId, groupName, groupId) values(#{start},#{end},#{title}, #{memberId}, #{groupName}, #{groupId})")
-    void saveEvent(EventDTO event);
+    void saveEvent(@Param("event") EventDTO event);
 
     @Select("SELECT last_insert_id();")
     int selectLast();
@@ -25,7 +25,7 @@ public interface EventMapper {
             @Result(column = "memberId", property = "memberId"),
             @Result(column = "groupId", property = "groupId")
     })
-    EventDTO viewEventById(int id);
+    EventDTO viewEventById(@Param("id") int id);
 
     @Select("SELECT id, estart, end, title, memberId, groupName from event WHERE (month(estart) = #{year} OR month(end) = #{year}) and memberId=#{memberId}")
     @Results({
