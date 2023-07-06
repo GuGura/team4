@@ -1,7 +1,6 @@
 <script setup>
 import {defineProps, reactive} from 'vue'
 import api from "../../../../script/token/axios";
-import {useFriendStore} from "../../../../script/stores/friend";
 
 const props = defineProps({
   friendInfo: Object,
@@ -26,8 +25,7 @@ console.log(props.friendInfo.id)
 <template>
   <div class="btnList" >
     <div style="width: 35px;">
-        <img class="rounded" v-if="props.friendInfo.user_ICON_URL === 'data:image/png;base64,null'" src="/img/serverlist/bright_icon.png">
-        <img class="rounded" :src="props.friendInfo.user_ICON_URL">
+      <img src="/img/sidebar/userIcon.png">
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
