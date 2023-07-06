@@ -3,19 +3,29 @@ import {useModalStore} from "../../../script/stores/modal";
 import {reactive, ref} from "vue";
 import OtherUsers from "@/components/mainpage/lobby/OtherUsers.vue";
 import api from "../../../script/token/axios";
+import RequestUsers from "@/components/mainpage/lobby/RequestUsers.vue";
 
 
 const modalStore = useModalStore();
 
 let buttonType = ref(1)
 let OtherUser = reactive([]);
+let RequestUser = reactive([]);
 let username = reactive(null);
 let afterSearch = reactive(null);
 
 function closeM() {
   modalStore.openClose('Friend')
 }
-
+function initRequestUser(){
+  api.get(`/friend/requestUser`)
+      .then(({data})=>{
+        console.log(data)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+}
 function findOtherUser() {
   if (afterSearch !== username) {
     OtherUser.splice(0, OtherUser.length)
@@ -32,7 +42,7 @@ function findOtherUser() {
 
 }
 
-
+initRequestUser();
 </script>
 
 <template>
@@ -59,7 +69,7 @@ function findOtherUser() {
                     :request="false"/>
       </div>
       <div id="" v-else-if="buttonType===2">
-
+        <RequestUsers v-for="user in RequestUser" :key="user" />
       </div>
     </div>
   </div>

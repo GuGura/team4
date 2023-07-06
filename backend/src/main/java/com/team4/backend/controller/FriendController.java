@@ -33,6 +33,12 @@ public class FriendController {
         return friendService.save(memberUID,sendMemberUID);
     }
 
+    @GetMapping("/friend/requestUser")
+    public ResponseEntity<?> requestUserList(HttpServletRequest request){
+        int memberUID = (int) request.getAttribute(ResultDtoProperties.USER_UID);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }
