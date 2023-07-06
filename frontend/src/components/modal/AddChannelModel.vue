@@ -38,6 +38,7 @@ async function createServer() {
           localStorage.setItem('selectChannel', data[0].channel_title)
           localStorage.setItem('inviteCode',data[0].channel_invite_code)
           localStorage.setItem('newChannelUID',data[0].channel_UID)
+          createRoom(localStorage.getItem('newChannelUID'), props);
           router.push(`/channel/${result}`)
           router.go(1);
         })
@@ -45,8 +46,6 @@ async function createServer() {
           console.log("createServer2")
         })
   }
-  console.log("11111111111111111111111111 : " + localStorage.getItem('newChannelUID'));
-  await createRoom(localStorage.getItem('newChannelUID'), props);
 }
 
 async function attendChannel() {

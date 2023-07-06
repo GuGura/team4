@@ -39,7 +39,7 @@ export function createRoom(channel_id, roomInfo) {
     console.log(roomInfo.name)
     if (!roomInfo || "" === roomInfo.name) {
         alert("방 제목을 입력해 주십시요.");
-    } else if (updatechannel_id.value !== "lobby"){
+    } else {
         roomInfo.channel_id = channel_id;
         console.log(roomInfo.channel_id);
         return api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', roomInfo)

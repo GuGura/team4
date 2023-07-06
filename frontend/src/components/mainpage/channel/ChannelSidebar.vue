@@ -27,7 +27,9 @@ const updateChannelId = computed(() => {
 
 onMounted(async () => {
   await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-  await enterRoom(textChatRooms[0].roomId,textChatRooms[0].name); // Here only roomId is needed
+  if (textChatRooms.length >0) {
+    await enterRoom(textChatRooms[0].roomId, textChatRooms[0].name); // Here only roomId is needed
+  }
 });
 
 watch(
