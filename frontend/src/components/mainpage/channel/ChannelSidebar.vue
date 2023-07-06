@@ -44,7 +44,7 @@ watch(() => updateChannelId.value,
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
         if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId,textChatRooms[0].name); // Here only roomId is needed
+          enterRoom(textChatRooms[0].roomId, textChatRooms[0].name); // Here only roomId is needed
         }
       }
     },
