@@ -9,7 +9,7 @@ export default {
         return {
             calendarKey: 0,
             profileKey: 0,
-            tabs: ['내 피드', '일정 보기', '글 목록'],
+            tabs: ['My Feed', 'Calendar', 'List'],
             tabContents: [
                 'Content for Tab 1',
                 'Content for Tab 2',
@@ -115,6 +115,7 @@ export default {
 }
 
 .tab-buttons {
+    font-family: 'IBMPlexSansKR-Regular';
     display: flex;
     background-color: #36373D;
     color: white;
@@ -126,13 +127,15 @@ export default {
 
 .tab-button {
     width: 100%;
-    padding: 10px 20px;
+    padding: 15px 20px;
     background-color: #36373D;
     outline: none;
     cursor: pointer;
     color: white;
     border-radius: 10px 10px 0px 0px;
     border: none;
+    display: flex;
+    justify-content: center;
 }
 .tab-button:hover{
     background: #41434A;
@@ -160,5 +163,11 @@ export default {
     justify-content: space-evenly;
     align-items: center;
 
+}
+@font-face {
+    font-family: 'IBMPlexSansKR-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 </style>

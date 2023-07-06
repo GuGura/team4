@@ -89,6 +89,7 @@ function viewCode(){
 
 .contents {
     margin: 20px;
+
 }
 
 .card {
@@ -98,6 +99,8 @@ function viewCode(){
 
 .card-text {
     color: white;
+
 }
+
 
 </style>

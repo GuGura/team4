@@ -206,6 +206,7 @@ h2.featurette-heading {
 }
 
 #main_content1 {
+
     display: flex;
     background: #36393F;
     width: 73%;
@@ -216,5 +217,11 @@ h2.featurette-heading {
     display: flex;
     width: 25%;
     height: 60%; /* 임시로 */
+}
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 </style>
