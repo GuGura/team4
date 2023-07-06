@@ -1,12 +1,11 @@
 package com.team4.backend.service;
 
 import com.team4.backend.mapper.FriendMapper;
+import com.team4.backend.mapper.MemberMapper;
 import com.team4.backend.model.FriendDTO;
 import com.team4.backend.model.Member;
 import com.team4.backend.model.dto.MemberDTO;
-import com.team4.backend.model.dto.MyChannelsDTO;
 import com.team4.backend.model.dto.ResultDTO;
-import com.team4.backend.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

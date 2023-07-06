@@ -51,4 +51,13 @@ public class FriendService {
         friendMapper.saveResponse(sendMemberUID,memberUID);
         return new ResponseEntity<>("친구신청 완료",HttpStatus.CREATED);
     }
+
+    public List<ResultFriend> findRequestUsers(int memberUID) {
+        List<FriendDTO2> list = friendMapper.fineRequestUsers(memberUID);
+        List<ResultFriend> listToReturn = new ArrayList<>();
+        for (FriendDTO2 friend: list) {
+            listToReturn.add(friendToReturn(friend));
+        }
+        return listToReturn;
+    }
 }

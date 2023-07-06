@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface FriendMapper {
@@ -44,4 +43,14 @@ public interface FriendMapper {
 
     @Insert("INSERT INTO friend (FRIEND_SENDER,FRIEND_RECEIVER) values (#{sendMemberUID},#{memberUID})")
     void saveResponse(@Param("sendMemberUID") int sendMemberUID, @Param("memberUID") int memberUID);
+
+
+    @Select("SELECT ID, USERNAME, USER_ICON_URL\n" +
+            "FROM member\n" +
+            "WHERE ID IN\n" +
+            "      (SELECT FRIEND_SENDER\n" +
+            "       FROM friend\n" +
+            "       WHERE FRIEND_RECEIVER = #{memberUID} \n" +
+            "         and FRIEND_CHECKED = false)")
+    List<FriendDTO2> fineRequestUsers(@Param("memberUID") int memberUID);
 }
