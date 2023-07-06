@@ -34,7 +34,6 @@ public class RedisToMariaDBMigrationService {
         List<ChatRoom> chatRooms = chatRoomRepository.getAllChatRooms();
         List<ChatMessage> chatMessages = chatMessageRepository.getAllChatMessage();
         // 데이터 변환
-        System.out.println("Redis insert chat rooms: " + chatRooms.size());
         // MariaDB에 데이터 저장
         for (ChatRoom chatRoom : chatRooms) {
             String roomId = chatRoom.getRoomId();
@@ -46,9 +45,6 @@ public class RedisToMariaDBMigrationService {
             if (isDuplicate) {
                 continue; // 중복된 값은 삽입을 건너뜁니다.
             }
-
-            System.out.println("Redis To Maria DB Migration Service Channel Id = " + channel_id);
-
             redisToMariaDBMigrationMapper.insertChatRoom(roomId, name, roomType, channel_id);
         }
 
@@ -65,11 +61,8 @@ public class RedisToMariaDBMigrationService {
 
             redisToMariaDBMigrationMapper.insertChatMessage(roomId, sender, message, sendDate);
         }
-
-        System.out.println("Start Redis Data");
+        System.out.println("Redis to MariaDB Data Save");
         clearRedisData();
-        System.out.println("End Redis Data");
-        System.out.println("Redis insert chat rooms: " + chatRooms.size());
     }
 
     private boolean checkDuplicateChatRoom(String roomId) {
@@ -96,4 +89,6 @@ public class RedisToMariaDBMigrationService {
             return null;
         });
     }
+
+
 }

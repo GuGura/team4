@@ -27,6 +27,15 @@ const updateChannelId = computed(() => {
 
 onMounted(async () => {
   await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
+  if (textChatRooms.length === 0 && voiceChatRooms.length === 0 && updateChannelId.value !== "lobby") {
+    roomInfo.name = "Text Chatting Room";
+    roomInfo.room_type = false;
+    await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
+    roomInfo.name = "Voice Chatting Room";
+    roomInfo.room_type = true;
+    await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
+    enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
+  }
   if (textChatRooms.length > 0) {
     enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
   }
@@ -36,15 +45,6 @@ watch(()=>updateChannelId.value,
     async () => {
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-        if (textChatRooms.length === 0 && voiceChatRooms.length === 0) {
-          roomInfo.name = "Text Chatting Room";
-          roomInfo.room_type = false;
-          await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-          roomInfo.name = "Voice Chatting Room";
-          roomInfo.room_type = true;
-          await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-          enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
-        }
         if (textChatRooms.length > 0) {
           enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
         }
@@ -122,17 +122,6 @@ const createRoomInChannel = () => {
 
             </div>
           </ul>
-
-          <div class="inputChatRoomName">
-            <div>
-              <label>방제목</label>
-            </div>
-            <input type="text" v-model="roomInfo.name" @keyup.enter="createRoomInChannel">
-            <div>
-              <input type="checkbox" id="roomType" v-model="roomInfo.room_type">
-              <label for="roomType">음성채팅방으로 설정</label>
-            </div>
-          </div>
 
         </div>
       </div>

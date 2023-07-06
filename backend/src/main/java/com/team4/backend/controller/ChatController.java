@@ -2,10 +2,11 @@ package com.team4.backend.controller;
 
 import com.team4.backend.mapper.RedisToMariaDBMigrationMapper;
 import com.team4.backend.model.ChatMessage;
-import com.team4.backend.pubsub.RedisPublisher;
 import com.team4.backend.repo.ChatMessageRepository;
 import com.team4.backend.repo.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +19,11 @@ import java.util.List;
 @Controller
 public class ChatController {
 
-    private final RedisPublisher redisPublisher;
-    private final ChatRoomRepository chatRoomRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final ChatMessageRepository chatMessageRepository;
     private final RedisToMariaDBMigrationMapper redisToMariaDBMigrationMapper;
+    private final ChannelTopic channelTopic;
+
 
 
     /**
@@ -29,11 +31,12 @@ public class ChatController {
      */
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
-        chatRoomRepository.enterChatRoom(message.getRoomId());
         chatMessageRepository.save(message);
         // Websocket에 발행된 메시지를 redis로 발행한다(publish)
-        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
+        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }
+
+
 
     @ResponseBody
     @GetMapping("/enter/{roomId}")

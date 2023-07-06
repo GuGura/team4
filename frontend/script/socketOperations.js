@@ -12,36 +12,33 @@ export const useSocketStore = defineStore("socketStore", () => {
     let ws = reactive(null)
     let wsConnected = ref(false);  // WebSocket 연결 상태 추가
     const messageList = reactive([]);
+    const onlineUsers = reactive([]);
     const lobbyStore = useLobbyStore();
     const updateUsername = computed(() => {
         return lobbyStore.user.username
     })
+    const updateUserEmail = computed(() => {
+        return lobbyStore.user.email
+    })
     let subscription;
 
     //소켓 연결
+
     function connectSocket() {
         const serverURL = 'http://localhost:8090/ws';
         let socket = new SockJS(serverURL);
         ws = Stomp.over(socket);
-        ws.connect({}, connectSuccess, connectFail);
+        const headers = {
+            'username': updateUserEmail.value
+        };
+        ws.connect(headers, connectSuccess, connectFail);
+
     }
 
     function connectSuccess(frame) {
         console.log("호출성공", frame)
         wsConnected = true
-        ws.subscribe('/sub/chat/room/"UserList"',
-            message => {
-                console.log('구독으로 받은 메시지입니다.', message.body);
-                const recv = JSON.parse(message.body);
-                receiveMessage(recv);
-            });
-        if (ws && ws.connected) {
-            const msg = {
-                type: 'ENTER',
-                roomId: "UserList",
-                sender: updateUsername,
-            };
-        }
+
     }
 
     function connectFail() {
@@ -83,7 +80,7 @@ export const useSocketStore = defineStore("socketStore", () => {
 
     //메세지 받기
     function receiveMessage(recv) {
-        if (recv.type !== 'ENTER') {
+        if (recv.type === 'TALK') {
             messageList.push({
                 type: recv.type,
                 sender: recv.sender,
@@ -110,6 +107,20 @@ export const useSocketStore = defineStore("socketStore", () => {
         });
     }
 
+    //유저리스트 확인
+    function UserList() {
+        return api.get(`/chat/room/list/UserList`)
+            .then((response) => {
+                console.log(response.data);  // Add this line
+                return response;
+            })
+            .catch((error) => {
+                console.error(error);  // Add this line
+                throw error;
+            });
+    }
+
+
     return {
         ws,
         messageList,
@@ -118,6 +129,7 @@ export const useSocketStore = defineStore("socketStore", () => {
         connectFail,
         connectSuccess,
         unSubscribeToRoom,
+        UserList,
         subscribeToRoom,
         clearMessageList,
         sendMessage,

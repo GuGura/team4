@@ -41,10 +41,19 @@ public class ChatRoomController {
         return chatMessages;
     }
 
+/*    @GetMapping("/room/list/UserList")
+    @ResponseBody
+    public List<ChatMessage> onlinUsers(Model model) {
+        List<ChatMessage> chatMessages = redisToMariaDBMigrationMapper.getUserListFromDB();
+        model.addAttribute("chatMessages", chatMessages);
+        return chatMessages;
+    }*/
+
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
+
         return chatRoomRepository.findRoomById(roomId);
     }
 }

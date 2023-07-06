@@ -48,7 +48,18 @@ export default defineComponent({
       messageList
     };
   },
+  mounted() {
+    this.scrollToBottom(); // Scroll to the bottom initially
+    socketStore.UserList();
+  },
+  updated() {
+    this.scrollToBottom(); // Scroll to the bottom after updates
+  },
   methods: {
+    scrollToBottom() {
+      const chatScroll = this.$refs.chatScroll;
+      chatScroll.scrollTop = chatScroll.scrollHeight; // Scroll to the bottom
+    },
     router() {
       return router
     },
@@ -74,24 +85,15 @@ export default defineComponent({
     },
 
     sendMessage() {
-      if (this.isSending) {
-        return; // 이미 전송 중인 경우 중복 전송 방지
-      }
 
       const roomId = localStorage.getItem('wschat.roomId');
       const sender = this.sender;
       const message = this.inputMessage;
 
-      this.isSending = true;
       socketStore.sendMessage(roomId, sender, message);
       this.inputMessage = ''; // 입력 필드 초기화
-
-      setTimeout(() => {
-        this.isSending = false;
-      }, 1000);
-    }
-
-},
+    },
+  },
 
 
 });
@@ -114,7 +116,7 @@ export default defineComponent({
     <div id="chat_body">
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
-          <div class="scroll box2">
+          <div class="scroll box2" ref="chatScroll">
             <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">
               <ChatBox :messages="message"/>
             </div>
@@ -137,7 +139,7 @@ export default defineComponent({
           <div class="roomMemberInfo">
             <div>온라인</div>
           </div>
-          <ChannelMemberInfo name="박재연"/>
+          <ChannelMemberInfo v-for="(online, idx) in onlineUsers" :key="idx" name="박재연"/>
         </div>
       </div>
     </div>
