@@ -25,9 +25,7 @@ export default defineComponent({
         this.roomId = to;
         beforeRoomId = from;
         this.enterRoomEvent();
-        console.log("1111111111111111111111  : " + localStorage.getItem('wschat.roomName'));
         this.roomName = localStorage.getItem('wschat.roomName');
-        console.log("2222222222222222222222  : " + localStorage.getItem('wschat.roomName'));
         socketStore.UserList();
       }
     }

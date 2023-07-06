@@ -102,31 +102,66 @@ export const useSocketStore = defineStore("socketStore", () => {
     }
 
     //유저리스트 확인
+    let prevData = [];
+
     async function UserList() {
         try {
-            onlineUsers.splice(0);
-            offlineUsers.splice(0);
             const response = await api.get(`/chat/room/list/UserList`);
-            // console.log(`UserList -------------- ${JSON.stringify(response.data)}`);
-            response.data.forEach((user) => {
-                // console.log("updateChannelId.value:", localStorage.getItem('wschat.channel_id'));
-                // console.log("user.channel_UID:", user.channelUID);
-                if (user.message === "ENTER" && user.channelUID === localStorage.getItem('wschat.channel_id')) {
-                    onlineUsers.push({
-                        name: user.userName,
-                    });
-                } else if (user.message === "QUIT" && user.channelUID === localStorage.getItem('wschat.channel_id')) {
-                    offlineUsers.push({
-                        name: user.userName,
-                    });
+
+            const currentData = response.data.filter(user =>
+                user.channelUID === localStorage.getItem('wschat.channel_id') &&
+                (user.message === "ENTER" || user.message === "QUIT")
+            );
+
+            // Find new online users or users that moved from offline to online
+            const newOnlineUsers = currentData.filter(user =>
+                !prevData.some(prevUser =>
+                    prevUser.userName === user.userName && prevUser.message === user.message
+                ) && user.message === "ENTER"
+            );
+
+            // Add new online users to onlineUsers and remove from offlineUsers if present
+            newOnlineUsers.forEach(user => {
+                onlineUsers.push({ name: user.userName });
+
+                // If user was previously offline, remove from offlineUsers
+                const indexOffline = offlineUsers.findIndex(offlineUser => offlineUser.name === user.userName);
+                if (indexOffline !== -1) {
+                    offlineUsers.splice(indexOffline, 1);
                 }
             });
+
+            // Find users who moved offline
+            const movedOfflineUsers = prevData.filter(prevUser =>
+                !currentData.some(user =>
+                    user.userName === prevUser.userName && user.message === prevUser.message
+                ) && prevUser.message === "ENTER"
+            );
+
+            // Move users who went offline from onlineUsers to offlineUsers
+            movedOfflineUsers.forEach(user => {
+                const indexOnline = onlineUsers.findIndex(onlineUser => onlineUser.name === user.userName);
+                if (indexOnline !== -1) {
+                    onlineUsers.splice(indexOnline, 1);
+                    offlineUsers.push({ name: user.userName });
+                }
+            });
+
+            // Store the current data as the previous data for the next comparison
+            prevData = [...currentData];
+
             return response.data;
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
+
+// Set the function to run every second (1000 milliseconds)
+    setInterval(UserList, 5000);
+
+
+
 
     return {
         ws,
