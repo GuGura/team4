@@ -53,6 +53,22 @@ public class ContentController {
     }
 
     @ResponseBody
+    @PostMapping("/content/listByPageFeed")
+    public List<ResultContent> listContentFeed(@RequestBody Map<String,String> params, HttpServletRequest request){
+        int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
+        int pageNum=Integer.parseInt(params.get("lastPosting"));
+        if(pageNum==0){
+            pageNum = 100000000;
+        }
+        List<ContentDTO> contents = contentService.listContentFeed(pageNum, memberUID);
+        List<ResultContent> returnContents = new ArrayList<>();
+        for (ContentDTO content: contents) {
+            returnContents.add(contentToReturn(content));
+        }
+        return returnContents;
+    }
+
+    @ResponseBody
     @PostMapping("/content/listByPageFriend")
     public List<ResultContent> listContentFriend(@RequestBody Map<String,String> params, HttpServletRequest request){
         int memberUID = Integer.parseInt(params.get("id"));

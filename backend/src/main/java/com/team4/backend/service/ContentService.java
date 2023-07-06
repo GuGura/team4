@@ -30,4 +30,7 @@ public class ContentService {
         contentMapper.deleteContent(id, writer_id);
     }
 
+    public List<ContentDTO> listContentFeed(int pageNum, int memberUID) {
+        return contentMapper.listContentFeed(pageNum, memberUID);
+    }
 }
