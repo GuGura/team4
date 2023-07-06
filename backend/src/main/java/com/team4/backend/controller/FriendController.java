@@ -36,7 +36,7 @@ public class FriendController {
     @GetMapping("/friend/requestUser")
     public ResponseEntity<?> requestUserList(HttpServletRequest request){
         int memberUID = (int) request.getAttribute(ResultDtoProperties.USER_UID);
-
+       // List<FriendDTO2> list = friendService.findRequest
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
