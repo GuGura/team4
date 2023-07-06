@@ -87,7 +87,7 @@ public class ContentController {
         RContent.setWriter_id(content.getWriter_id());
         RContent.setContent(content.getContent());
         RContent.setUsername(memberMapper.findMemberByUID(content.getWriter_id()).getUsername());
-        if(!memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url().equals("")){
+        if(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()!=null){
             RContent.setUserIcon(UserUtil.pathToBytes(memberMapper.findMemberByUID(content.getWriter_id()).getUser_icon_url()));
         }
         RContent.setSharingCode(content.getSharingCode());

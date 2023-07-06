@@ -44,7 +44,7 @@ public class MyInfoController {
         return new ResponseEntity<>(resultDTO,HttpStatus.OK);
     }
 
-    @GetMapping("/myInfo/lobby")
+    @PostMapping("/myInfo/lobby")
     public  ResponseEntity<ResultDTO> getLobbyInfo(HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         Member member = memberService.getLobbyInfoByMemberUID(memberUID);
