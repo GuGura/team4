@@ -28,8 +28,12 @@ export const useFriendStore = defineStore("friendStore", () => {
         api.get('/myInfo/friendList')
             .then(({data})=>{
                 data.forEach(member =>{
+                    if(member.user_ICON_URL !== null&& member.user_ICON_URL !== ''){
+                        member.user_ICON_URL = "data:image/png;base64,"+member.user_ICON_URL
+                    }else {
+                        member.user_ICON_URL = "data:image/png;base64,null"
+                    }
                     friendList.push(member)
-                    console.log(member)
                 })
             })
             .catch(err=>{

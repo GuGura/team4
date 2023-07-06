@@ -10,10 +10,10 @@ const props = defineProps({
 const friendStore = useFriendStore();
 const router = useRouter();
 function openFriend() {
-  api.get(`/friend/${props.friendInfo.friend_RECEIVER}`, {}).then(({data}) => {
+  api.get(`/friend/${props.friendInfo.id}`, {}).then(({data}) => {
     friendStore.user.id = data
     friendStore.updateFriendInfo()
-    router.push(`/channel/friend/${props.friendInfo.friend_RECEIVER}`)
+    router.push(`/channel/friend/${props.friendInfo.id}`)
   })
 }
 </script>
@@ -21,7 +21,8 @@ function openFriend() {
 <template>
   <div class="btnList" @click="openFriend()">
     <div style="width: 35px;">
-      <img src="/img/sidebar/userIcon.png">
+        <img class="rounded" v-if="props.friendInfo.user_ICON_URL === 'data:image/png;base64,null'" src="/img/serverlist/bright_icon.png">
+        <img class="rounded" :src="props.friendInfo.user_ICON_URL">
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">

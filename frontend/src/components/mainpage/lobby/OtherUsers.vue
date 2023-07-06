@@ -24,7 +24,8 @@ console.log(props.friendInfo.id)
 <template>
   <div class="btnList" @click="friendSend()">
     <div style="width: 35px;">
-      <img src="/img/sidebar/userIcon.png">
+        <img class="rounded" v-if="props.friendInfo.user_ICON_URL === 'data:image/png;base64,null'" src="/img/serverlist/bright_icon.png">
+        <img class="rounded" :src="props.friendInfo.user_ICON_URL">
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">

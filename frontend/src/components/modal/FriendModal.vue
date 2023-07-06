@@ -24,6 +24,11 @@ function findOtherUser() {
       api.get(`/friend/search/${username}`)
           .then(({data}) => {
             data.forEach(user => {
+                if(user.user_ICON_URL !== null&& user.user_ICON_URL !== ''){
+                    user.user_ICON_URL = "data:image/png;base64,"+user.user_ICON_URL
+                }else {
+                    user.user_ICON_URL = "data:image/png;base64,null"
+                }
               OtherUser.push(user)
             })
           })
