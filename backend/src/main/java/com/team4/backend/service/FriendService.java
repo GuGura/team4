@@ -13,8 +13,10 @@ public class FriendService {
     private final FriendMapper friendMapper;
 
     public FriendService(FriendMapper friendMapper) {
+
         this.friendMapper = friendMapper;
     }
+
     public List<FriendDTO> findFriend() {
         System.out.println("친구 리스트 service단 접속 체크 ");
         return  friendMapper.findAll();

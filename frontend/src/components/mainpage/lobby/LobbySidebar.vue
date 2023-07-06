@@ -7,13 +7,15 @@ const friends = reactive([]);
 // const friend_SENDER = 'richard';
 // const friend_RECEIVER = '';
 const props = reactive({
+
   type: 'friend',
+
 })
+
+
 //이코드를 작성했을 때 jhon이라는 friend_SENDER를 기준으로 친구 목록을 나타내기 위해 작성하였다.
 //null 값을 함께 보내는 이유는 데이터를 전송하지 않고
 // friend_SENDER라는  매개변수를 서버로 전달하기 위해서 작성함
-
-
 const find = async()=> {
     try {
         const response = await
@@ -87,7 +89,7 @@ onMounted(()=> {
           <div class="MyMember_Name">
               {{ friend.friend_RECEIVER }}
           </div>
-          <div class="MyMember_exit" @click="decline(friend)">
+          <div class="MyMember_exit " @click="decline(friend)">
             <img src="/img/sidebar/exit.png">
           </div>
         </div>

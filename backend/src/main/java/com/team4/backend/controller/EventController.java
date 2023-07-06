@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping(ControllerProperties.API_VERSION)
 public class EventController {
@@ -67,6 +68,7 @@ public class EventController {
         List<EventDTO> events= eventService.listMonthly(Integer.parseInt(year)+1, memberUID);
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
+
 
 
 }

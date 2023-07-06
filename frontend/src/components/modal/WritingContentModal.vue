@@ -21,7 +21,6 @@ let contentsForm = reactive({
     isImgIn : false
 })
 
-
 function imgChange(e){
     contentsForm.isImgIn = true
     const img = e.target.files[0];

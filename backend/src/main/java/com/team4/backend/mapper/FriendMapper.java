@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface FriendMapper {
 
+
     @Select("SELECT * FROM FRIEND WHERE FRIEND_SENDER= #{friend_SENDER} AND FRIEND_CHECKED='1'")
     List<FriendDTO> findAll();
 

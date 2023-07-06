@@ -107,6 +107,7 @@ public class ContentController {
         content.setContent(params.get("context"));
         content.setWriter_id((int) request.getAttribute(ResultDtoProperties.USER_UID));
         contentService.saveContent(content);
+
     }
 
 
