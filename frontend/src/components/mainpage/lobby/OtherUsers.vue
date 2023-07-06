@@ -1,11 +1,14 @@
 <script setup>
-import {defineProps} from 'vue'
+import {defineProps, reactive} from 'vue'
 import api from "../../../../script/token/axios";
 import {useFriendStore} from "../../../../script/stores/friend";
 
 const props = defineProps({
   friendInfo: Object,
+  request: Boolean,
 })
+let isRequest = reactive([props.request])
+
 const friendStore = useFriendStore();
 
 function friendSend() {
@@ -13,6 +16,7 @@ console.log(props.friendInfo.id)
   api.post(`/friend/send/${props.friendInfo.id}`)
       .then(({data}) => {
         console.log(data)
+        isRequest[0] = true
       })
       .catch(err=>{
         console.log(err)
@@ -22,7 +26,7 @@ console.log(props.friendInfo.id)
 </script>
 
 <template>
-  <div class="btnList" @click="friendSend()">
+  <div class="btnList" >
     <div style="width: 35px;">
       <img src="/img/sidebar/userIcon.png">
     </div>
@@ -30,9 +34,8 @@ console.log(props.friendInfo.id)
       <div class="MyMember_Name">
         {{ props.friendInfo.username }}
       </div>
-      <div class="MyMember_exit">
-        <img src="/img/sidebar/exit.png">
-      </div>
+      <button style="outline: none;border: none;cursor: pointer;" @click="friendSend()" v-if="isRequest[0]===false">수락하기</button>
+      <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">요청완료</button>
     </div>
   </div>
 </template>
@@ -45,7 +48,7 @@ console.log(props.friendInfo.id)
   border-radius: 5px;
   padding: 0px 15px;
   align-items: center;
-  cursor: pointer;
+
 }
 
 .btnList:hover {

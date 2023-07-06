@@ -55,10 +55,11 @@ function findOtherUser() {
           <div id="check" @click="findOtherUser">확인</div>
         </div>
         <OtherUsers v-for="user in OtherUser" :key="user"
-                    :friendInfo="user"/>
+                    :friendInfo="user"
+                    :request="false"/>
       </div>
       <div id="" v-else-if="buttonType===2">
-        2
+
       </div>
     </div>
   </div>

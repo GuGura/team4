@@ -33,4 +33,6 @@ public class FriendController {
         return friendService.save(memberUID,sendMemberUID);
     }
 
+
+
 }
