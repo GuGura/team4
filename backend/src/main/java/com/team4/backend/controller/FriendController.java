@@ -38,5 +38,10 @@ public class FriendController {
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
+    @PutMapping("/friend/response/{friendUID}")
+    public ResponseEntity<?> responseFriend(@PathVariable("friendUID") int friendUID,HttpServletRequest request){
+        int memberUID = (int) request.getAttribute(ResultDtoProperties.USER_UID);
+        return friendService.responseFriend(memberUID,friendUID);
+    }
 
 }

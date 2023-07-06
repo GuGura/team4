@@ -1,6 +1,7 @@
 <script setup>
 import {defineProps, reactive} from 'vue'
 import api from "../../../../script/token/axios";
+import router from "../../../../script/routes/router";
 
 const props = defineProps({
   friendInfo: Object,
@@ -8,9 +9,9 @@ const props = defineProps({
 })
 let isRequest = reactive([props.request])
 
-function friendSend() {
+function friendResponse() {
 console.log(props.friendInfo.id)
-  api.post(`/friend/send/${props.friendInfo.id}`)
+  api.put(`/friend/response/${props.friendInfo.id}`)
       .then(({data}) => {
         console.log(data)
         isRequest[0] = true
@@ -31,8 +32,8 @@ console.log(props.friendInfo.id)
       <div class="MyMember_Name">
         {{ props.friendInfo.username }}
       </div>
-      <button style="outline: none;border: none;cursor: pointer;" @click="friendSend()" v-if="isRequest[0]===false">수락하기</button>
-      <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">요청완료</button>
+      <button style="outline: none;border: none;cursor: pointer;" @click="friendResponse()" v-if="isRequest[0]===false">수락하기</button>
+      <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">수락완료</button>
     </div>
   </div>
 </template>
