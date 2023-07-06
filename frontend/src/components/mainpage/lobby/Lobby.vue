@@ -14,7 +14,7 @@
         <div class="row">
           <div class="edit-button col-1" @click="openModal()">
             <span class="material-symbols-outlined">manage_accounts</span>
-            <div>Settings</div>
+            <div style="width: 90px;>Settings</div>
           </div>
           <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
           <div class="writing-button col-1" @click="openModal2()">
@@ -153,7 +153,7 @@ h2.featurette-heading {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
+  flex: 1;
   height: 30px;
   background: #41434A;
   border-radius: 10px;
@@ -170,7 +170,7 @@ h2.featurette-heading {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
+  flex: 1;
   height: 30px;
   background: #41434A;
   border-radius: 10px;

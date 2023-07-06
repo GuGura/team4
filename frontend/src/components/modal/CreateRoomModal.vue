@@ -1,7 +1,7 @@
 <script setup>
 import {useModalStore} from "../../../script/stores/modal";
 import {computed, reactive} from "vue";
-import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
+import {createRoom, enterRoom} from '/script/chatOperations';
 import {useServerListStore} from "../../../script/stores/serverlist";
 
 const serverListStore = useServerListStore();
