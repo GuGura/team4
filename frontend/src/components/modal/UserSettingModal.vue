@@ -61,8 +61,8 @@ function exitModal(){
             </div>
             <div id="body">
                 <div id="img_upload">
-                    <img :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
-                    <img src="/img/serverlist/user_icon.png" alt="헬로" style="width: 200px;" class="rounded" v-else>
+                    <img id="icon" :src="lobbyStore.user.user_icon_url" alt="헬로" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
+                    <img src="/img/serverlist/user_icon.png" id="icon" alt="헬로" style="width: 200px;" class="rounded" v-else>
                     <input ref="image" class="file-input" type="file" tabindex="0" accept=".jpg,.jpeg,.png,.gif"
                            @change="imgChange"
                            multiple="multiple"/>

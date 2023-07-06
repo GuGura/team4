@@ -18,7 +18,7 @@ export const useFriendStore = defineStore("friendStore", () => {
     })
 
     function updateFriendInfo() {
-        api.post(process.env.VUE_APP_BASEURL_V1 + '/myInfo/friend',{friendId:user.id})
+        api.post('/myInfo/friend',{friendId:user.id})
             .then(({data}) => {
                 const userInfo = data.result
                 user.id = userInfo.id
