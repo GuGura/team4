@@ -167,8 +167,8 @@ export default defineComponent({
                 })
             }
         },
-        handleEventClick(clickInfo) {
-            if (Swal.fire(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
+        async handleEventClick(clickInfo) {
+            if (await Swal.fire(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
                 clickInfo.event.remove()
                 api.post("/event/deleteEvent", {
                     id: clickInfo.event.id,
