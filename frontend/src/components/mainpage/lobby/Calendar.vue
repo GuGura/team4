@@ -140,8 +140,7 @@ export default defineComponent({
         async handleDateSelect(selectInfo) {
             const title = await Swal.fire({
                 title: '추가할 일정명을 입력해주세요.',
-                html:
-                    '<input id="swal-input1" class="swal2-input">',
+                html: '<input id="swal-input1" class="swal2-input">',
                 focusConfirm: false,
                 preConfirm: () => {
                     return document.getElementById('swal-input1').value
@@ -164,24 +163,30 @@ export default defineComponent({
                         end: selectInfo.endStr,
                         allDay: selectInfo.allDay
                     })
+                }).catch(err=>{
+                    console.log(err)
                 })
             }
         },
         handleEventClick(clickInfo) {
-
-            if (Swal.fire(`일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`)) {
-                clickInfo.event.remove()
-                api.post("/event/deleteEvent", {
-                    id: clickInfo.event.id,
-                    title: clickInfo.event.title,
-                    start: clickInfo.event.start,
-                    end: clickInfo.event.end,
-                    allDay: clickInfo.event.allDay
-                }).then(() => {
-                    clickInfo.event.remove()
-                })
-            }
+            Swal.fire({
+                title: `일정 '${clickInfo.event.title}'를 삭제하시겠습니까?`,
+                confirmButtonText: "삭제",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    api.post("/event/deleteEvent", {
+                        id: clickInfo.event.id,
+                        title: clickInfo.event.title,
+                        start: clickInfo.event.start,
+                        end: clickInfo.event.end,
+                        allDay: clickInfo.event.allDay,
+                    }).then(() => {
+                        clickInfo.event.remove();
+                    });
+                }
+            });
         },
+
         handleEvents(events) {
             this.currentEvents = events
 

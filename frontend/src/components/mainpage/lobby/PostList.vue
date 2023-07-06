@@ -15,7 +15,8 @@ let postList = reactive({
       contentIMG: '',
       isImgIn: '',
       visible: '',
-        sharingCode:''
+        sharingCode:'',
+        sharedWriter:''
     }
 
   ]

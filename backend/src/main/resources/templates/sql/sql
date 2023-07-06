@@ -86,7 +86,10 @@ create table content
     uploadDate date    default current_timestamp(),
     visible    tinyint default TRUE,
     contentIMG VARCHAR(500),
-    isImgIn    tinyint
+    isImgIn    tinyint,
+    sharingCode int,
+    sharedWriter int
+
 );
 
 create table event
@@ -97,7 +100,8 @@ create table event
     title     varchar(500),
     memberId  int,
     groupName varchar(100),
-    allday    BOOLEAN
+    allday    BOOLEAN,
+    groupId int
 );
 create table friend
 (

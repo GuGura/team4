@@ -3,21 +3,43 @@ package com.team4.backend.service;
 import com.team4.backend.mapper.FriendMapper;
 import com.team4.backend.model.FriendDTO;
 import com.team4.backend.model.FriendDTO2;
+import com.team4.backend.model.ResultFriend;
+import com.team4.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendMapper friendMapper;
-    public List<FriendDTO2> findSearchUsers(String username, int memberUID) {
+    public List<ResultFriend> findSearchUsers(String username, int memberUID) {
         List<FriendDTO2> list = friendMapper.findSearchUsers(username, memberUID);
-        System.out.println(list);
-        return list;
+        List<ResultFriend> listToReturn = new ArrayList<>();
+        for (FriendDTO2 friend: list) {
+            listToReturn.add(friendToReturn(friend));
+        }
+        return listToReturn;
+    }
+
+    public ResultFriend friendToReturn(FriendDTO2 friend){
+        ResultFriend Rfriend = new ResultFriend();
+        Rfriend.setID(friend.getID());
+        Rfriend.setUSER_ICON_URL(UserUtil.pathToBytes(friend.getUSER_ICON_URL()));
+        Rfriend.setUSERNAME(friend.getUSERNAME());
+        return Rfriend;
+    }
+
+    public ResultFriend friendToReturn(FriendDTO friend){
+        ResultFriend Rfriend = new ResultFriend();
+        Rfriend.setID(friend.getFRIEND_RECEIVER());
+        Rfriend.setUSER_ICON_URL(UserUtil.pathToBytes(friend.getUSER_ICON_URL()));
+        Rfriend.setUSERNAME(friend.getUSERNAME());
+        return Rfriend;
     }
 
     public ResponseEntity<?> save(int memberUID, int sendMemberUID) {

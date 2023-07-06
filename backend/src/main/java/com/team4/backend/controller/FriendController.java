@@ -2,6 +2,7 @@ package com.team4.backend.controller;
 
 import com.team4.backend.model.FriendDTO;
 import com.team4.backend.model.FriendDTO2;
+import com.team4.backend.model.ResultFriend;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.FriendService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class FriendController {
     @GetMapping("/friend/search/{username}")
     public ResponseEntity<?> getSearchList(@PathVariable("username") String username, HttpServletRequest request) {
         int memberUID = (int) request.getAttribute(ResultDtoProperties.USER_UID);
-        List<FriendDTO2> list = friendService.findSearchUsers(username, memberUID);
+        List<ResultFriend> list = friendService.findSearchUsers(username, memberUID);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
