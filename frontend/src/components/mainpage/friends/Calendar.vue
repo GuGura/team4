@@ -5,9 +5,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import loginService from "../../../../script/LoginService";
-import router from "../../../../script/routes/router";
 import api from "../../../../script/token/axios";
+import {useFriendStore} from "../../../../script/stores/friend";
 
 export default defineComponent({
     // eslint-disable-next-line vue/multi-word-component-names
@@ -16,34 +15,49 @@ export default defineComponent({
         FullCalendar,
     },
     data() {
+        const friendStore = useFriendStore();
         return {
+
             calendarOptions: {
                 customButtons: {
+                    today: {
+                        text: "TODAY",
+                        click: () => {
+                            this.getApi().today()
+                            this.getApi().removeAllEvents();
+                            api.post("/event/listMonthlyFriend", {
+                                date: this.getApi().getDate(),id:friendStore.user.id
+                            }).then(({data}) => {
+                                for (const i in data) {
+                                    this.getApi().addEvent({
+                                        id: data[i].id,
+                                        title: data[i].title,
+                                        start: data[i].start,
+                                        end: data[i].end,
+                                        allDay: true
+                                    })
+                                }
+                            })
+                        }
+                    },
                     prev: { // this overrides the prev button
                         text: "PREV",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
-                                this.getApi().prev();
-                                this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 프리브")
-                                api.post("/home/listMonthlyBtn",{
-                                    date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
-                                        this.getApi().addEvent({
-                                            id: data[i].id,
-                                            title: data[i].title,
-                                            start: data[i].start,
-                                            end: data[i].end,
-                                            allDay: data[i].allDay
-                                        })
-                                    }
-                                })
-
-                            }else {
-                                router.push("/login").then()
-                            }
+                            this.getApi().prev();
+                            this.getApi().removeAllEvents();
+                            api.post("/event/listMonthlyBtnFriend", {
+                                date: this.getApi().getDate(),id:friendStore.user.id
+                            }).then(({data}) => {
+                                for (const i in data) {
+                                    this.getApi().addEvent({
+                                        id: data[i].id,
+                                        title: data[i].title,
+                                        start: data[i].start,
+                                        end: data[i].end,
+                                        allDay: true
+                                    })
+                                }
+                            })
 
 
                         }
@@ -51,30 +65,22 @@ export default defineComponent({
                     next: { // this overrides the next button
                         text: "NEXT",
                         click: () => {
-                            const isTest=loginService.methodTokenCheck()
-                            if(isTest){
-                                this.getApi().next();
-                                this.getApi().removeAllEvents();
-                                console.log(this.getApi().getDate()+": 넥스트")
-                                api.post("/home/listMonthlyBtn",{
-                                    date: this.getApi().getDate()
-                                }).then(({data})=>{
-                                    for(const i in data){
-                                        this.getApi().addEvent({
-                                            id: data[i].id,
-                                            title: data[i].title,
-                                            start: data[i].start,
-                                            end: data[i].end,
-                                            allDay: data[i].allDay
-                                        })
-                                    }
-                                })
-
-                            }else{
-                                router.push("/login").then()
-                            }
-
-
+                            this.getApi().next();
+                            this.getApi().removeAllEvents();
+                            console.log(this.getApi().getDate() + ": 넥스트")
+                            api.post("/event/listMonthlyBtnFriend", {
+                                date: this.getApi().getDate(),id:friendStore.user.id
+                            }).then(({data}) => {
+                                for (const i in data) {
+                                    this.getApi().addEvent({
+                                        id: data[i].id,
+                                        title: data[i].title,
+                                        start: data[i].start,
+                                        end: data[i].end,
+                                        allDay: true
+                                    })
+                                }
+                            })
                         }
                     }
                 },
@@ -84,9 +90,9 @@ export default defineComponent({
                     interactionPlugin // needed for dateClick
                 ],
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next',
                     center: 'title',
-                    right: 'dayGridMonth'
+                    right: 'today'
                 },
                 initialView: 'dayGridMonth',
                 editable: true,
@@ -104,64 +110,41 @@ export default defineComponent({
 
     },
     mounted() {
-        this.initCalendar();
+        this.friendStore = useFriendStore().init()
+        this.initCalendar(useFriendStore());
     },
     methods: {
-        initCalendar(){
-            const isTest=loginService.methodTokenCheck()
-            if(isTest){
-                console.log("캘린더로드")
-                api.post("/home/listMonthly",{
-                    date: this.getApi().getDate()
-                }).then(({data})=>{
-                    for(const i in data){
-                        this.getApi().addEvent({
-                            id: data[i].id,
-                            title: data[i].title,
-                            start: data[i].start,
-                            end: data[i].end,
-                            allDay: data[i].allDay
-                        })
-                    }
-                })
-            }else {
-                router.push("/login").then()
-            }
+        initCalendar(friendStore) {
+            this.getApi().removeAllEvents()
+            api.post("/event/listMonthlyFriend", {
+                date: this.getApi().getDate(), id:friendStore.user.id
+            }).then(({data}) => {
+                for (const i in data) {
+                    this.getApi().addEvent({
+                        id: data[i].id,
+                        title: data[i].title,
+                        start: data[i].start,
+                        end: data[i].end,
+                        allDay: true
+                    })
+                }
+            })
+
 
         },
         handleWeekendsToggle() {
             this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
         },
-        handleDateSelect(selectInfo) {
-            let title = prompt('Please enter a new title for your event')
-            let calendarApi = selectInfo.view.calendar
+        handleDateSelect() {
 
-            calendarApi.unselect() // clear date selection
-
-            if (title) {
-                let id;
-                api.post("/home/saveEvent",{
-                    title,
-                    start: selectInfo.startStr,
-                    end: selectInfo.endStr,
-                    allDay: selectInfo.allDay
-                }).then(({data}) => {
-                    id = data;
-                })
-                calendarApi.addEvent({
-                    id: id,
-                    title,
-                    start: selectInfo.startStr,
-                    end: selectInfo.endStr,
-                    allDay: selectInfo.allDay
-                })
-
-
-            }
         },
         handleEventClick(clickInfo) {
-            if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-                clickInfo.event.remove()
+            if (confirm(`일정 '${clickInfo.event.title}'을 내 캘린더에 추가하시겠습니까?`)) {
+                api.post("/event/saveFriendEvent", {
+                    id: clickInfo.event.id,
+                }).then(() => {
+                    alert("추가되었습니다.")
+                })
             }
         },
         handleEvents(events) {
@@ -181,9 +164,9 @@ export default defineComponent({
 
 <template>
     <FullCalendar
-            class='demo-app-calendar'
-            :options='calendarOptions'
-            ref="fc"
+        class='demo-app-calendar'
+        :options='calendarOptions'
+        ref="fc"
     >
         <template v-slot:eventContent='arg'>
             <b>{{ arg.timeText }}</b>
@@ -210,22 +193,112 @@ ul {
     padding: 0 0 0 1.5em;
 }
 
-li {
-    margin: 1.5em 0;
-    padding: 0;
+.demo-app-calendar {
+    width: 100%;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 100%;
 }
 
-b { /* used for event dates/times */
-    margin-right: 3px;
+.fc-daygrid-view .fc-daygrid-day-frame {
+    border-color: black;
 }
-.demo-app-calendar{
-
-    width: 70%;
-
+.fc-col-header-cell-cushion{
+    color: #1F2123;
 }
 
+.fc-event-main{
+    background-color: #2b2d31;
+}
 
 
+.fc-daygrid-event-harness {
+    background-color: black;
+}
+
+.fc-today-button {
+    margin-top: -10px;
+}
+
+
+
+.fc-col-header-cell-cushion{
+    color: #5965f3;
+}
+.fc-daygrid-day-number{
+    color: #b6b8cf;
+}
+#fc-dom-95.fc-daygrid-day-number{
+    color: #FFFFFF;
+}
+.fc .fc-button-primary:disabled {
+    margin-top: -2px;
+    margin-right: 5px;
+}
+.fc .fc-button-primary:hover{
+    margin-top: -2px;
+}
+.fc-today-button fc-button fc-button-primary{
+    margin-top:-2px
+}
+.fc .fc-button:disabled{
+    margin-top: -2px;
+}
+
+.fc .fc-button-primary{
+    margin-top: -1px;
+    background-color: transparent;
+    border-color: transparent;
+    margin-right: 5px;
+}
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 13px;
+    margin-top: 10px;
+}
+fc-daygrid-more-link fc-more-link{
+    color: #F23F42;
+}
+fc-event-main{
+    background-color: grey;
+}
+
+.fc-h-event .fc-event-main{
+    background-color: #23A559;
+}
+
+a {
+
+    text-decoration: none;
+}
+
+.fc .fc-more-popover .fc-popover-body{
+    background-color: #FFFFFF;
+}
+
+.fc-theme-standard .fc-popover-header{
+    background-color: #5965f3;
+
+}
+
+.fc-daygrid-event-harness{
+    background-color: transparent;
+}
+.fc-h-event .fc-event-main{
+    text-align: center;
+}
+
+fc-h-event{
+    background-color: yellow;
+
+
+}
+:root{
+    --fc-event-border-color: #yellow;
+}
+
+.fc-h-event .fc-event-main{
+    background-color: transparent;
+}
 
 </style>
 

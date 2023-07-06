@@ -1,54 +1,25 @@
 <script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
-import {reactive, onMounted} from "vue";
- import notToken from "../../../../script/notTokenAxios";
-import api from "../../../../script/token/axios";
-const friends = reactive([]);
-// const friend_SENDER = 'richard';
-// const friend_RECEIVER = '';
+import {reactive} from "vue";
+import {useFriendStore} from "../../../../script/stores/friend";
+import Friend from "@/components/mainpage/lobby/Friend.vue";
+import {useModalStore} from "../../../../script/stores/modal";
+import FriendModal from "@/components/modal/FriendModal.vue";
+
 const props = reactive({
-
   type: 'friend',
-
 })
 
+const friendStore = useFriendStore();
+const modalStore = useModalStore();
 
-//이코드를 작성했을 때 jhon이라는 friend_SENDER를 기준으로 친구 목록을 나타내기 위해 작성하였다.
-//null 값을 함께 보내는 이유는 데이터를 전송하지 않고
-// friend_SENDER라는  매개변수를 서버로 전달하기 위해서 작성함
-const find = async()=> {
-    try {
-        const response = await
-               api.post("/findFriend")
-              // notToken.post("/findFriend")
-             // api.post("/findFriend", null, {params: { friend_SENDER }})
-            // notToken.post("/findFriend", {params: {friend_SENDER}})
+function FriendM(){
+  modalStore.open('Friend')
+  console.log(modalStore.modal.Friend)
+}
 
-        // axios.post(notToken+ "/findFriend", null, { params: {friend_SENDER}} )
-        const data = response.data;
-         friends.push(...data);
-       console.log(data);
-    }catch (error) {
-        console.log(error);
-    }
-};
+let friendList = friendStore.getFriendList()
 
-// const decline = async() => {
-//       try {
-//         const response = await
-//            api.post("deleteFriend/", null, {params: {}} )
-//           const data = response.data;
-//         friends.push(...data);
-//         console.log(data);
-//       }catch (error) {
-//           console.log(error);
-//       }
-//
-//     }
-
-onMounted(()=> {
-     find();
-})
 
 </script>
 
@@ -61,10 +32,10 @@ onMounted(()=> {
           <img src="/img/sidebar/DM_icon.png" style="height: 20px;">
         </div>
         <div>DM</div>
-          <input type="radio" v-model="props.type" value="DM" name="lobbySidebarType">
+        <input type="radio" v-model="props.type" value="DM" name="lobbySidebarType">
       </label>
 
-      <label id="btn_FriendList" class="btnList" >
+      <label id="btn_FriendList" class="btnList">
         <div style="width: 20px;">
           <img src="/img/sidebar/friend_icon.png" style="height: 20px;">
         </div>
@@ -76,46 +47,17 @@ onMounted(()=> {
         <input name="searchbox" placeholder="친구 찾기">
       </div>
 
-      <div style="color: #fff;margin-top: 10px; padding: 0 5px;">리스트</div>
+      <div style="display:flex;align-items: center;color: #fff;margin-top: 10px; padding: 0 5px;">
+        리스트&nbsp;
+        <img src="/img/serverlist/add_server1.png" style="width: 15px; height: 15px;cursor: pointer" @click="FriendM()">
+      </div>
       <!----><!---->
-<!--    반복문 시작     -->
-        <div class="repeat" v-for="friend in friends" :key="friend.id">
-        <a href=""></a>
-      <div class="btnList">
-        <div style="width: 35px;">
-          <img src="/img/sidebar/userIcon.png">
-        </div>
-        <div class="MyMember_Info">
-          <div class="MyMember_Name">
-              {{ friend.friend_RECEIVER }}
-          </div>
-          <div class="MyMember_exit " @click="decline(friend)">
-            <img src="/img/sidebar/exit.png">
-          </div>
-        </div>
-      </div>
-        </div>
-
-      <!---->
-      <!---->
-<!--        <div v-for="friend in friends" :key="friend.id">-->
-      <div class="btnList">
-        <div style="width: 35px;">
-          <img src="/img/sidebar/userIcon.png">
-        </div>
-        <div class="MyMember_Info">
-          <div class="MyMember_Name">
-              <label> 민화</label>
-          </div>
-          <div class="MyMember_exit">
-            <img src="/img/sidebar/exit.png">
-          </div>
-        </div>
-      </div>
-<!--        </div>-->
+      <Friend v-for="friend in friendList" :key="friend"
+              :friendInfo="friend"/>
     </div>
-    <SidebarMyInfo/>
+    <SidebarMyInfo />
   </div>
+  <FriendModal v-if="modalStore.modal.Friend === true" />
 </template>
 
 <style scoped>

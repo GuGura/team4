@@ -16,13 +16,15 @@ public class ChatRoom implements Serializable {
 
     private String roomId;
     private String name;
-    private boolean roomType; // 변경: 필드 이름을 roomType으로 수정
+    private boolean roomType;
+    private String channel_id;
 
-    public static ChatRoom create(String name, boolean roomType) {
+    public static ChatRoom create(String name, boolean roomType, String channel_id) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
-        chatRoom.roomType = roomType; // 변경: 필드 이름을 roomType으로 수정
+        chatRoom.roomType = roomType;
+        chatRoom.channel_id = channel_id;
         return chatRoom;
     }
 }

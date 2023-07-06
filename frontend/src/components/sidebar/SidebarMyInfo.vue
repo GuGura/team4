@@ -32,7 +32,9 @@ const info = reactive({
   <div id="side_content_mystatus">
     <div style="display: flex;gap: 15px;">
       <div id="MyIcon">
-        <img src="/img/channel/userIcon.png" style="width: 40px;height: 40px;" alt="헬로">
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-if="lobbyStore.user.user_icon_url==='' ">
+          <img :src="lobbyStore.user.user_icon_url"  alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-else-if="lobbyStore.user.user_icon_url!=='data:image/png;base64,null'">
+          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-else>
       </div>
       <div id="MyInfo">
         <div id="MyName" >

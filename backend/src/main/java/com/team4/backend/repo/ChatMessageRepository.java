@@ -7,7 +7,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Repository
@@ -38,5 +40,17 @@ public class ChatMessageRepository {
         return opsHashChatMessage.values(CHAT_MESSAGES);
     }
 
+    public List<ChatMessage> getChatMessagesByRoomId(String roomId) {
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        Map<String, ChatMessage> allChatMessages = opsHashChatMessage.entries(CHAT_MESSAGES);
+        for (Map.Entry<String, ChatMessage> entry : allChatMessages.entrySet()) {
+            String key = entry.getKey();
+            ChatMessage message = entry.getValue();
+            if (message.getRoomId().equals(roomId)) {
+                chatMessages.add(message);
+            }
+        }
+        return chatMessages;
+    }
 }
 

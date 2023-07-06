@@ -15,7 +15,8 @@ public class EventService {
 
 
     public List<EventDTO> listMonthly(int year, int memberId) {
-        System.out.println("이벤트서비스 리스트먼슬리 : year = "+year);
+        System.out.println(memberId);
+        System.out.println(eventMapper.listMonthly(year, memberId));
         return eventMapper.listMonthly(year, memberId);
     }
 
@@ -24,8 +25,12 @@ public class EventService {
         return eventMapper.selectLast();
     }
 
-    public void deleteEvent(int id) {
-        eventMapper.deleteEvent(id);
+    public EventDTO viewEventById(int id){
+        return eventMapper.viewEventById(id);
+    }
+
+    public void deleteEvent(int id, int memberId) {
+        eventMapper.deleteEvent(id,memberId);
     }
 
     public List<EventDTO> listDaily(int year,int month, int date, int memberId) {

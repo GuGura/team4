@@ -1,26 +1,42 @@
 <script setup>
 import {useModalStore} from "../../../script/stores/modal";
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
+import {createRoom, enterRoom} from '/script/chatOperations';
+import {useServerListStore} from "../../../script/stores/serverlist";
 
+const serverListStore = useServerListStore();
 const modalStore = useModalStore();
 const props = reactive({
   type: 'Text',
-  roomName: '',
+  name: '',
+  room_type: false,
 })
+const updateChannelId = computed(() => {
+  return serverListStore.getEndPoint;
+});
+const textChatRooms = reactive([]); // Text Chat Room List
+const voiceChatRooms = reactive([]); // Voice Chat Room List
+
 
 function closeModal() {
   modalStore.terminate('CreateRoom')
 }
 
-function createRoom(){
-  if (props.roomName === ''){
-    alert("방이름을 입력해주세요")
-    return
+function createRoomInChannel() {
+  if (props.name === '') {
+    alert("방이름을 입력해주세요");
+  } else {
+    createRoom(updateChannelId.value, props, textChatRooms, voiceChatRooms)
+        .then((data) => {
+          closeModal();
+          enterRoom(textChatRooms[textChatRooms.length - 1].roomId);
+        })
+        .catch(() => {
+          console.log("CreateRoomModal.vue Error CreateRoomInChannel()");
+        });
   }
-  console.log(props.type)
-  console.log(props.roomName)
- //.. 방생성 로직 작성
 }
+
 </script>
 
 <template>
@@ -72,13 +88,13 @@ function createRoom(){
           <img src="/img/channel/chat.png" v-if="props.type === 'Text'" >
           <img src="/img/channel/speak.png" v-else-if="props.type === 'Voice'">
         </div>
-        <input v-model="props.roomName" name="roomName" placeholder="새로운 채널(필수입력)">
+        <input v-model="props.name" name="roomName" placeholder="새로운 채널(필수입력)">
       </div>
     </div>
 
     <div id="footer">
       <div @click="closeModal">취소</div>
-      <button @click="createRoom">채널 만들기</button>
+      <button @click="createRoomInChannel">채널 만들기</button>
     </div>
   </div>
 </template>

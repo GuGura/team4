@@ -45,12 +45,16 @@ public class UserUtil {
 
     public static ResultMember memberToReturn(Member member){
         ResultMember resultMember = new ResultMember();
-        resultMember.setUser_icon_url(pathToBytes(member.getUser_icon_url()));
+        if(member.getUser_icon_url()!=null){
+            resultMember.setUser_icon_url(pathToBytes(member.getUser_icon_url()));
+        }
         resultMember.setRole(member.getRole());
         resultMember.setUsername(member.getUsername());
         resultMember.setEmail(member.getEmail());
         resultMember.setJoin_date(member.getJoin_date());
-        resultMember.setUser_description(member.getUser_description());
+        if(member.getUser_description()!=null){
+            resultMember.setUser_description(member.getUser_description());
+        }
         return resultMember;
     }
 
