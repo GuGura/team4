@@ -14,7 +14,6 @@ public class ChatMessage implements Serializable {
     public ChatMessage() {
     }
 
-
     @Builder
     public ChatMessage(MessageType type, String roomId, String sender, String message) {
         this.type = type;

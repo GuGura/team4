@@ -14,28 +14,24 @@ const props = reactive({
 const updateChannelId = computed(() => {
   return serverListStore.getEndPoint;
 });
-const textChatRooms = reactive([]); // Text Chat Room List
-const voiceChatRooms = reactive([]); // Voice Chat Room List
-
-
 function closeModal() {
   modalStore.terminate('CreateRoom')
 }
+const textChatRooms = reactive([]); // Text Chat Room List
+const voiceChatRooms = reactive([]); // Voice Chat Room List
 
-function createRoomInChannel() {
+async function createRoomInChannel() {
   if (props.name === '') {
     alert("방이름을 입력해주세요");
   } else {
-    createRoom(updateChannelId.value, props, textChatRooms, voiceChatRooms)
-        .then((data) => {
-          closeModal();
-          enterRoom(textChatRooms[textChatRooms.length - 1].roomId);
+    await createRoom(updateChannelId.value, props)
+        .then(data=>{
+          enterRoom(props.roomId, props.name);
         })
-        .catch(() => {
-          console.log("CreateRoomModal.vue Error CreateRoomInChannel()");
-        });
+    closeModal();
   }
 }
+
 
 </script>
 

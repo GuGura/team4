@@ -35,6 +35,7 @@ public class StompHandler extends ChannelInterceptorAdapter {
                 username = accessor.getFirstNativeHeader("username");
                 sessionIdUsernameMap.put(sessionId, username);
                 chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(username).build());
+                System.out.println("username : "+ username);
                 log.info("SUBSCRIBED {}, {}", username, roomId);
                 break;
             case DISCONNECT:

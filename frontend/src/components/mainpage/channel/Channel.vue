@@ -1,5 +1,5 @@
 <script>
-import {computed, defineComponent, reactive} from "vue";
+import {computed, defineComponent, ref} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socketOperations';
@@ -13,6 +13,9 @@ const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
 const socketStore = useSocketStore();
+
+const onlineUsers = ref([]);
+const offlineUsers = ref([]);
 let beforeRoomId;
 
 export default defineComponent({
@@ -21,7 +24,11 @@ export default defineComponent({
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
         this.roomId = to;
         beforeRoomId = from;
-        this.enterRoom();
+        this.enterRoomEvent();
+        console.log("1111111111111111111111  : " + localStorage.getItem('wschat.roomName'));
+        this.roomName = localStorage.getItem('wschat.roomName');
+        console.log("2222222222222222222222  : " + localStorage.getItem('wschat.roomName'));
+        socketStore.UserList();
       }
     }
   },
@@ -34,6 +41,7 @@ export default defineComponent({
       message: '',
       sendDate: '',
       messages: [],
+      roomName: '',
       chatMessages: [],
       inputMessage: '',
       canSend: true,
@@ -42,10 +50,12 @@ export default defineComponent({
     };
   },
   setup() {
-    const { messageList } = useSocketStore();
+    const { messageList, onlineUsers, offlineUsers } = useSocketStore();
 
     return {
-      messageList
+      messageList,
+      onlineUsers,
+      offlineUsers
     };
   },
   mounted() {
@@ -63,13 +73,9 @@ export default defineComponent({
     router() {
       return router
     },
-    created() {
-      this.roomId = localStorage.getItem('wschat.roomId');
-      this.channelId = localStorage.getItem('wschat.channelId')
-      this.sender = updateUsername
-    },
-    async enterRoom() {
+    async enterRoomEvent() {
       const roomId = localStorage.getItem('wschat.roomId');
+
       socketStore.clearMessageList();
       await socketStore.unSubscribeToRoom(beforeRoomId);
 
@@ -95,7 +101,6 @@ export default defineComponent({
     },
   },
 
-
 });
 </script>
 
@@ -108,7 +113,7 @@ export default defineComponent({
           <div>
             <img src="/img/channel/chat.png" style="height: 100%;">
           </div>
-          <div>회의록</div>
+          <div>{{ roomName }}</div>
         </div>
         <input name="searchRoom" placeholder="검색하기">
       </div>
@@ -134,14 +139,22 @@ export default defineComponent({
         </div>
       </div>
 
-      <div id="chatSidebar">
-        <div id="offline">
-          <div class="roomMemberInfo">
-            <div>온라인</div>
+        <div id="chatSidebar">
+          <div id="online">
+            <div class="roomMemberInfo">
+              <div>온라인</div>
+            </div>
+            <ChannelMemberInfo v-for="(online, idx) in onlineUsers" :key="idx" :name="online.name" />
           </div>
-          <ChannelMemberInfo v-for="(online, idx) in onlineUsers" :key="idx" name="박재연"/>
+          <div id="offline">
+            <div class="roomMemberInfo">
+              <div>오프라인</div>
+            </div>
+            <ChannelMemberInfo v-for="(offline, idx) in offlineUsers" :key="idx" :name="offline.name" />
+          </div>
         </div>
-      </div>
+
+
     </div>
   </div>
 </template>

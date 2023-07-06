@@ -14,14 +14,14 @@ public class UserListDto {
 
     @Builder
     public UserListDto(String id, String username, String channelUid, String message) {
-        this.id = id;
-        this.username = username;
-        this.channelUid = channelUid;
+        this.userUID = id;
+        this.userName = username;
+        this.channelUID = channelUid;
         this.message = message;
     }
 
-    private String id;
-    private String username;
-    private String channelUid;
+    private String userUID;
+    private String userName;
+    private String channelUID;
     private String message;
 }

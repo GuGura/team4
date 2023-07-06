@@ -1,6 +1,6 @@
 import api from "/script/token/axios.js";
 import router from "../script/routes/router";
-import { computed } from 'vue';
+import {computed, reactive} from 'vue';
 import { useLobbyStore } from "../script/stores/lobby";
 import { useServerListStore } from "../script/stores/serverlist";
 
@@ -35,14 +35,17 @@ export async function findAllRoom(channel_id,textChatRooms, voiceChatRooms) {
         });
 }
 
-export async function createRoom(channel_id, roomInfo, textChatRooms, voiceChatRooms) {
+export function createRoom(channel_id, roomInfo) {
+    console.log(roomInfo.name)
     if (!roomInfo || "" === roomInfo.name) {
         alert("방 제목을 입력해 주십시요.");
     } else if (updatechannel_id.value !== "lobby"){
         roomInfo.channel_id = channel_id;
-        await api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', roomInfo)
+        console.log(roomInfo.channel_id);
+        return api.post(process.env.VUE_APP_BASEURL_V1 + '/chat/room', roomInfo)
             .then(({data}) => {
                 console.log(data)
+                roomInfo.roomId = data.roomId;
                 if (data.roomType === false) textChatRooms.unshift(data)
                 else if (data.roomType === true) voiceChatRooms.unshift(data)
                 return data;
@@ -53,12 +56,22 @@ export async function createRoom(channel_id, roomInfo, textChatRooms, voiceChatR
 }
 
 
-export function enterRoom(roomId) {
-    console.log("Start EnterRoom in ChannelSideBar.vue")
-    let sender = updateUsername.value
-    let channel_id = updatechannel_id.value
+export function enterRoom(roomId, name) {
+    let sender = updateUsername.value;
+    let channel_id = updatechannel_id.value;
+    let roomName = name || "Text Chatting Room"; // name이 undefined인 경우 기본 값을 설정
+
     localStorage.setItem('wschat.roomId', roomId);
     localStorage.setItem('wschat.channel_id', channel_id);
+    localStorage.setItem('wschat.roomName', roomName);
+    console.log("rrrrrrrrrrrrrr : " + localStorage.getItem('wschat.roomName'));
+
 
     router.push(`/channel/${channel_id}/chat/room/enter/${roomId}`);
 }
+
+export function roomName(){
+    let userRoomName = reactive;
+    userRoomName = localStorage.getItem('wschat.roomName');
+}
+

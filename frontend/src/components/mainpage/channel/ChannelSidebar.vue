@@ -6,7 +6,6 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useServerListStore} from "../../../../script/stores/serverlist";
 import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead.vue";
 import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
-import Room from "@/components/mainpage/channel/Room.vue";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -28,36 +27,26 @@ const updateChannelId = computed(() => {
 
 onMounted(async () => {
   await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-  if (textChatRooms.length === 0 && voiceChatRooms.length === 0 && updateChannelId.value !== "lobby") {
-    roomInfo.name = "Text Chatting Room";
-    roomInfo.room_type = false;
-    await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-    roomInfo.name = "Voice Chatting Room";
-    roomInfo.room_type = true;
-    await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-    enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
-  }
-  if (textChatRooms.length > 0) {
-    enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
-  }
+  await enterRoom(textChatRooms[0].roomId,textChatRooms[0].name); // Here only roomId is needed
 });
 
+watch(
+    async () => {
+      if (updateChannelId.value !== "lobby") {
+        await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
+      }
+    },
+);
 watch(() => updateChannelId.value,
     async () => {
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
         if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
+          enterRoom(textChatRooms[0].roomId,textChatRooms[0].name); // Here only roomId is needed
         }
       }
     },
 );
-
-// To use the createRoom function, the channel_id and roomInfo object are needed
-const createRoomInChannel = () => {
-  createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-};
-
 
 </script>
 
@@ -77,7 +66,7 @@ const createRoomInChannel = () => {
           </div>
 
           <ul class="btnRooms">
-            <li class="btnRoom" v-for="item in textChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
+            <li class="btnRoom" v-for="item in textChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId, item.name)">
               <div>
                 <img src="/img/channel/chat.png">
               </div>
@@ -97,9 +86,31 @@ const createRoomInChannel = () => {
           </div>
 
           <ul class="btnRooms">
-            <Room v-for="voiceRoom in voiceChatRooms" :key="voiceRoom.roomId"
-                  :item="voiceRoom"
-                  :username="lobbyStore.user.username"/>
+
+            <li class="btnRoom" v-for="item in voiceChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
+              <div>
+                <img src="/img/channel/speak.png">
+              </div>
+              <div class="MyMember_Info">
+                <div class="MyMember_Name">
+                  {{ item.name }}
+                </div>
+              </div>
+            </li>
+
+            <div>
+              <div class="btnRoomMember">
+                <div>
+                  <img src="/img/channel/userIcon.png">
+                </div>
+                <div class="MyMember_Info">
+                  <div class="MyMember_Name">
+                    박재연
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </ul>
 
         </div>
@@ -178,11 +189,9 @@ img {
   align-items: center;
   cursor: pointer;
 }
-
-li {
+li{
   margin: 0;
 }
-
 .btnRoom:hover {
   background: #36373D;
 }
@@ -223,6 +232,24 @@ li {
   gap: 5px;
 }
 
+.btnRoomMember {
+  display: flex;
+  height: 30px;
+  gap: 5px;
+  border-radius: 5px;
+  padding: 0px 15px;
+  align-items: center;
+  cursor: pointer;
+  width: 90%;
+}
+
+.btnRoomMember:hover {
+  background: #36373D;
+}
+
+.btnRoomMember:active {
+  background: #3B3D44;
+}
 
 .btnRoomMember > div:nth-of-type(1) {
   display: flex;

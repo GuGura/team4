@@ -32,23 +32,11 @@ public class ChatRoomController {
     }
 
     @GetMapping("/room/enter/{roomId}")
-    @ResponseBody
-    public List<ChatMessage> roomDetail(Model model, @PathVariable String roomId) {
+    public List<ChatMessage> roomDetail(@PathVariable String roomId) {
         List<ChatMessage> chatMessages = redisToMariaDBMigrationMapper.getChatMessagesFromDB(roomId);
         chatMessages.addAll(chatMessageRepository.getChatMessagesByRoomId(roomId));
-        model.addAttribute("roomId", roomId);
-        model.addAttribute("chatMessages", chatMessages);
         return chatMessages;
     }
-
-/*    @GetMapping("/room/list/UserList")
-    @ResponseBody
-    public List<ChatMessage> onlinUsers(Model model) {
-        List<ChatMessage> chatMessages = redisToMariaDBMigrationMapper.getUserListFromDB();
-        model.addAttribute("chatMessages", chatMessages);
-        return chatMessages;
-    }*/
-
 
     @GetMapping("/room/{roomId}")
     @ResponseBody

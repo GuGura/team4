@@ -37,7 +37,7 @@ public interface RedisToMariaDBMigrationMapper {
     })
     List<ChatMessage> getChatMessagesFromDB(@Param("roomId") String roomId);
 
-/*    @Select("SELECT m.ID, m.USERNAME, chm.CHANNEL_UID, cm.message " +
+    @Select("SELECT m.ID, m.USERNAME, chm.CHANNEL_UID, cm.message " +
             "FROM chat_messages cm " +
             "JOIN member m ON cm.sender = m.EMAIL " +
             "JOIN channelmember chm ON m.ID = chm.MEMBER_UID " +
@@ -49,10 +49,13 @@ public interface RedisToMariaDBMigrationMapper {
             ")" +
             "ORDER BY cm.sender")
     @Results({
-            @Result(property = "roomId", column = ""),
-            @Result(property = "sendDate", column = "send_date"),
+            @Result(property = "userUID", column = "ID"),
+            @Result(property = "userName", column = "USERNAME"),
+            @Result(property = "channelUID", column = "CHANNEL_UID"),
+            @Result(property = "message", column = "message")
     })
-    List<UserListDto> getUserListFromDB();*/
+    List<UserListDto> getUserListFromDB();
+
 
 
 
