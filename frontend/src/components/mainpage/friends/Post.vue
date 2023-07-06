@@ -17,7 +17,7 @@
                 <div class="btnDelete col-1" >
                 </div>
                 <div class="btnDelete col-1" @click="viewCode">
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined">content_copy</span>
                 </div>
 
             </div>
