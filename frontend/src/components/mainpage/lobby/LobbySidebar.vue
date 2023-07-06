@@ -14,7 +14,7 @@ const router = useRouter();
 
 
 function openFriend(){
-    api.get(process.env.VUE_APP_BASEURL_V1 + "/friend/2", {
+    api.get(  "/friend/2", {
     }).then(({data}) => {
         friendStore.user.id = data
         friendStore.updateFriendInfo()

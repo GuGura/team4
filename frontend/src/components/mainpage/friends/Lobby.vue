@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="edit-button col-1">
                         <span class="material-symbols-outlined">group_add</span>
-                        <div>친구 추가</div>
+                        <div>Add</div>
                     </div>
                 </div>
             </div>

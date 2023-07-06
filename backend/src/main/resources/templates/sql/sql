@@ -87,7 +87,8 @@ create table content
     visible    tinyint default TRUE,
     contentIMG VARCHAR(500),
     isImgIn    tinyint,
-    sharingCode varchar(200)
+    sharingCode int,
+    sharedWriter int
 
 );
 

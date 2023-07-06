@@ -13,15 +13,12 @@
                     <h6 class="card-title">{{ props.post.username }}</h6>
                     <p class="card-text"><small class="card-text fw-lighter">{{ props.post.uploadDate }}</small></p>
                 </div>
+                <div class="btnDelete col-1">
 
-                <div class="btnDelete col-1" @click="viewCode">
-                    <span class="material-symbols-outlined">content_copy</span>
                 </div>
-                <div class="btnDelete col-1" @click="toggleDelete">
+                <div class="btnDelete col-1" @click="deletePost">
                     <span class="material-symbols-outlined">close</span>
                 </div>
-
-
             </div>
             <div v-if="props.post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+props.post.contentIMG"
                                           class="img-fluid"></div>
@@ -36,14 +33,26 @@
 <script setup>
 
 import {defineProps} from "vue";
+import api from "../../../../script/token/axios";
 
 const props = defineProps({
     post: Object,
 })
 
-function viewCode(){
-    // eslint-disable-next-line no-undef
-    Swal.fire(props.post.sharingCode);
+function deletePost(){
+    Swal.fire({
+        title: `포스트를 삭제하시겠습니까?`,
+        confirmButtonText: "삭제",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            api.post("/content/deleteContent", {id:props.post.id}
+            ).then(() => {
+                Swal.fire("삭제되었습니다.")
+                // eslint-disable-next-line vue/no-mutating-props
+                props.post.visible = false
+            })
+        }
+    })
 }
 </script>
 
