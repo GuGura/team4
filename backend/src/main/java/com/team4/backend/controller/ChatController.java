@@ -32,6 +32,7 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
         chatMessageRepository.save(message);
+        System.out.println("roomID: "+ message.getRoomId());
         // Websocket에 발행된 메시지를 redis로 발행한다(publish)
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }

@@ -1,9 +1,14 @@
 server:
   port: 8090
+  ssl:
+    enabled: false
 
 #logging:
 #  level:
 #    org.springframework: DEBUG
+OPENVIDU_URL: http://localhost:4443/
+OPENVIDU_SECRET: MY_SECRET
+
 
 spring:
   mail:

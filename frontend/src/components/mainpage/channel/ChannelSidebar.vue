@@ -6,6 +6,7 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useServerListStore} from "../../../../script/stores/serverlist";
 import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead.vue";
 import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
+import Room from "@/components/mainpage/channel/Room.vue";
 
 const channelStore = useChannelStore();
 const lobbyStore = useLobbyStore();
@@ -41,7 +42,7 @@ onMounted(async () => {
   }
 });
 
-watch(()=>updateChannelId.value,
+watch(() => updateChannelId.value,
     async () => {
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
@@ -96,31 +97,9 @@ const createRoomInChannel = () => {
           </div>
 
           <ul class="btnRooms">
-
-            <li class="btnRoom" v-for="item in voiceChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
-              <div>
-                <img src="/img/channel/speak.png">
-              </div>
-              <div class="MyMember_Info">
-                <div class="MyMember_Name">
-                  {{ item.name }}
-                </div>
-              </div>
-            </li>
-
-            <div>
-              <div class="btnRoomMember">
-                <div>
-                  <img src="/img/channel/userIcon.png">
-                </div>
-                <div class="MyMember_Info">
-                  <div class="MyMember_Name">
-                    박재연
-                  </div>
-                </div>
-              </div>
-
-            </div>
+            <Room v-for="voiceRoom in voiceChatRooms" :key="voiceRoom.roomId"
+                  :item="voiceRoom"
+                  :username="lobbyStore.user.username"/>
           </ul>
 
         </div>
@@ -199,9 +178,11 @@ img {
   align-items: center;
   cursor: pointer;
 }
-li{
+
+li {
   margin: 0;
 }
+
 .btnRoom:hover {
   background: #36373D;
 }
@@ -242,24 +223,6 @@ li{
   gap: 5px;
 }
 
-.btnRoomMember {
-  display: flex;
-  height: 30px;
-  gap: 5px;
-  border-radius: 5px;
-  padding: 0px 15px;
-  align-items: center;
-  cursor: pointer;
-  width: 90%;
-}
-
-.btnRoomMember:hover {
-  background: #36373D;
-}
-
-.btnRoomMember:active {
-  background: #3B3D44;
-}
 
 .btnRoomMember > div:nth-of-type(1) {
   display: flex;
