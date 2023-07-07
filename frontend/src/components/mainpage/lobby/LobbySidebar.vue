@@ -1,10 +1,29 @@
 <script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
+import {useFriendStore} from "../../../../script/stores/friend";
+import Friend from "@/components/mainpage/lobby/Friend.vue";
+import {useModalStore} from "../../../../script/stores/modal";
+import FriendModal from "@/components/modal/FriendModal.vue";
 
 const props = reactive({
   type: 'friend',
 })
+
+const friendStore = useFriendStore();
+const modalStore = useModalStore();
+
+function FriendM(){
+  modalStore.open('Friend')
+  console.log(modalStore.modal.Friend)
+}
+
+watch(()=>friendStore.getFriendList(),()=>{
+  friendList = friendStore.getFriendList()
+})
+let friendList = friendStore.getFriendList()
+
+
 </script>
 
 <template>
@@ -16,10 +35,10 @@ const props = reactive({
           <img src="/img/sidebar/DM_icon.png" style="height: 20px;">
         </div>
         <div>DM</div>
-          <input type="radio" v-model="props.type" value="DM" name="lobbySidebarType">
+        <input type="radio" v-model="props.type" value="DM" name="lobbySidebarType">
       </label>
 
-      <label id="btn_FriendList" class="btnList" >
+      <label id="btn_FriendList" class="btnList">
         <div style="width: 20px;">
           <img src="/img/sidebar/friend_icon.png" style="height: 20px;">
         </div>
@@ -31,41 +50,17 @@ const props = reactive({
         <input name="searchbox" placeholder="친구 찾기">
       </div>
 
-      <div style="color: #fff;margin-top: 10px; padding: 0 5px;">리스트</div>
+      <div style="display:flex;align-items: center;color: #fff;margin-top: 10px; padding: 0 5px;">
+        리스트&nbsp;
+        <img src="/img/serverlist/add_server1.png" style="width: 15px; height: 15px;cursor: pointer" @click="FriendM()">
+      </div>
       <!----><!---->
-        <a href="">
-      <div class="btnList">
-        <div style="width: 35px;">
-          <img src="/img/sidebar/userIcon.png">
-        </div>
-        <div class="MyMember_Info">
-          <div class="MyMember_Name">
-            재연
-          </div>
-          <div class="MyMember_exit">
-            <img src="/img/sidebar/exit.png">
-          </div>
-        </div>
-      </div>
-        </a>
-      <!---->
-      <!---->
-      <div class="btnList">
-        <div style="width: 35px;">
-          <img src="/img/sidebar/userIcon.png">
-        </div>
-        <div class="MyMember_Info">
-          <div class="MyMember_Name">
-            재연
-          </div>
-          <div class="MyMember_exit">
-            <img src="/img/sidebar/exit.png">
-          </div>
-        </div>
-      </div>
+      <Friend v-for="friend in friendList" :key="friend"
+              :friendInfo="friend"/>
     </div>
-    <SidebarMyInfo/>
+    <SidebarMyInfo />
   </div>
+  <FriendModal v-if="modalStore.modal.Friend === true" />
 </template>
 
 <style scoped>

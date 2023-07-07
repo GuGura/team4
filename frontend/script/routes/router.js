@@ -41,7 +41,17 @@ const routes = [
         meta: {requiresAuth: true},
         props: true
     },
+    {
+        path: '/channel/friend/:memberUID',
+        name: 'FriendLobby',
+        component: () => import(/*webpackChunkName: "main", webpackPrefetch: true */ "@/Pages/Main.vue"),
+        meta: {requiresAuth: true}
 
+    },
+    {
+
+
+    }
 ]
 const router = createRouter({
     history: createWebHistory(),

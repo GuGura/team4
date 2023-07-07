@@ -17,15 +17,24 @@ export const useLobbyStore = defineStore("lobbyStore", () => {
     })
 
     function updateMyInfo() {
-        return api.get('/myInfo/lobby')
+        api.post('/myInfo/lobby')
             .then(({data}) => {
                 const userInfo = data.result
                 user.email = userInfo.email
                 user.username = userInfo.username
                 user.role = userInfo.role
                 user.join_date = userInfo.join_date
-                user.user_icon_url = "data:image/png;base64,"+userInfo.user_icon_url
-                user.user_description = userInfo.user_description
+                if(userInfo.user_icon_url?.trim()){
+                    user.user_icon_url = "data:image/png;base64,"+userInfo.user_icon_url
+                }else {
+                    user.user_icon_url = "data:image/png;base64,null"
+                }
+                if(userInfo.user_description?.trim()){
+                    user.user_description = userInfo.user_description
+                }else {
+                    user.user_description = "환영합니다. 나만의 메신저를 꾸며보세요!"
+                }
+
                 localStorage.setItem('user',JSON.stringify(user))
             })
     }

@@ -1,10 +1,7 @@
 <script setup>
 import {onMounted, reactive} from "vue";
-import Post from "@/components/mainpage/friends/Post.vue";
+import Post from "@/components/mainpage/lobby/feedPost.vue";
 import api from "../../../../script/token/axios";
-import {useFriendStore} from "../../../../script/stores/friend";
-
-const friendStore = useFriendStore();
 
 let postList = reactive({
     posts: [
@@ -17,18 +14,25 @@ let postList = reactive({
             id: '',
             contentIMG: '',
             isImgIn: '',
-            visible: ''
+            visible: '',
+            sharingCode:'',
+            sharedWriter:'',
+            writer_id: ''
         }
 
     ]
 })
 function initPosts() {
-    api.post( "/content/listByPageFriend", {
-        lastPosting: lastPosting, id:friendStore.user.id
+    api.post("/content/listByPageFeed", {
+        lastPosting: lastPosting
     }).then(({data}) => {
-        if(data && data.length){
+        if(data && data.length) {
             for (const item of data) {
-                item.userIcon = "data:image/png;base64,"+item.userIcon
+                if(item.userIcon && item.userIcon.length) {
+                    item.userIcon = "data:image/png;base64," + item.userIcon
+                }else {
+                    item.userIcon = "data:image/png;base64,null"
+                }
             }
             postList.posts = data
             lastPosting = postList.posts.at(-1).id
@@ -37,23 +41,22 @@ function initPosts() {
 }
 
 function morePost() {
-    api.post( "/content/listByPageFriend", {
-        lastPosting: lastPosting, id:friendStore.user.id
+    api.post("/content/listByPage", {
+        lastPosting: lastPosting
     }).then(({data}) => {
-        if(data && data.length){
+        if(data && data.length) {
             for (const item of data) {
                 item.userIcon = "data:image/png;base64,"+item.userIcon
                 postList.posts.push(item)
             }
             lastPosting = postList.posts.at(-1).id
         }
-
     })
 }
 
 onMounted(() => {
-    friendStore.init()
     initPosts()
+    console.log(postList.posts)
 })
 
 
@@ -70,7 +73,7 @@ let lastPosting = 0
         </div>
         <div class="row my-2 mx-auto">
             <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost"><span
-                class="material-symbols-outlined">more_horiz</span>
+                    class="material-symbols-outlined">more_horiz</span>
             </button>
         </div>
     </div>
@@ -78,18 +81,6 @@ let lastPosting = 0
 
 
 <style>
-.content-wrapper {
-    display: flex;
-    align-items: center;
-}
-
-.content {
-    flex: 1;
-}
-
-.image {
-    margin-left: 20px;
-}
 
 img {
     max-width: 100%;

@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentDTO {
-    private Long id;
+    private int id;
     private int writer_id;
     private String title;
     private String content;
@@ -18,5 +18,6 @@ public class ContentDTO {
     private boolean visible;
     private String contentIMG;
     private boolean isImgIn;
-
+    private int sharingCode;
+    private int sharedWriter;
 }

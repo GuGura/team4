@@ -16,12 +16,15 @@
                 <div class="btnDelete col-1">
 
                 </div>
-                <div class="btnDelete col-1" @click="deletePost">
+                <div v-if="props.post.sharingCode === 0 || props.post.writer_id === useLobbyStore().user.username" class="btnDelete col-1" @click="deletePost">
                     <span class="material-symbols-outlined">close</span>
+                </div>
+                <div v-else class="btnDelete col-1" @click="getFriendPost">
+                    <span class="material-symbols-outlined">content_copy</span>
                 </div>
             </div>
             <div v-if="props.post.isImgIn"><img alt="Post Image" :src="'data:image/png;base64,'+props.post.contentIMG"
-                                          class="img-fluid"></div>
+                                                class="img-fluid"></div>
             <p class="card-text contents fw-light">{{ props.post.content }}</p>
         </div>
         <div v-else>
@@ -34,10 +37,25 @@
 
 import {defineProps} from "vue";
 import api from "../../../../script/token/axios";
+import {useLobbyStore} from "../../../../script/stores/lobby";
 
 const props = defineProps({
     post: Object,
 })
+function getFriendPost(){
+    Swal.fire({
+        title: `포스트를 스크랩하시겠습니까?`,
+        confirmButtonText: "스크랩",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            api.post("/content/getFriendPost/", {id:props.post.id}
+            ).then(
+                Swal.fire("공유 완료!")
+            )
+        }
+    })
+
+}
 
 function deletePost(){
     Swal.fire({

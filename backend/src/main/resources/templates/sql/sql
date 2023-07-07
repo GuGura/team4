@@ -86,16 +86,27 @@ create table content
     uploadDate date    default current_timestamp(),
     visible    tinyint default TRUE,
     contentIMG VARCHAR(500),
-    isImgIn    tinyint
+    isImgIn    tinyint,
+    sharingCode int,
+    sharedWriter int
+
 );
 
 create table event
+      (
+          id        int NOT NULL AUTO_INCREMENT PRIMARY key,
+          estart    date,
+          end       date,
+          title     varchar(500),
+          memberId  int,
+          groupName varchar(100),
+          allday    BOOLEAN,
+          groupId int
+      );
+create table friend
 (
-    id        int NOT NULL AUTO_INCREMENT PRIMARY key,
-    estart    date,
-    end       date,
-    title     varchar(500),
-    memberId  int,
-    groupName varchar(100),
-    allday    BOOLEAN
+    FRIEND_SENDER   int                  null,
+    FRIEND_RECEIVER int                  null,
+    FRIEND_CHECKED  tinyint(1) default 0 not null,
+    FRIEND_DATE     timestamp            not null
 );

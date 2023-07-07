@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ResultContent {
     private String username;
-    private Long id;
+    private int id;
     private int writer_id;
     private String title;
     private String content;
@@ -20,4 +20,6 @@ public class ResultContent {
     private byte[] contentIMG;
     private int isImgIn;
     private byte[] userIcon;
+    private int sharingCode;
+    private int sharedWriter;
 }

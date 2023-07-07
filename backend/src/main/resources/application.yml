@@ -35,10 +35,9 @@ spring:
 
   #DB
   datasource:
-    url: jdbc:mariadb://localhost:3306/discord
-
+    url: jdbc:mariadb://localhost:3307/park
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
+    username: park
     password: 1234
 
   profiles:
