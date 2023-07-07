@@ -7,12 +7,13 @@ import LobbyF from "@/components/mainpage/friends/Lobby.vue";
 import Lobby from "@/components/mainpage/lobby/Lobby.vue";
 import ChannelSidebar from "@/components/mainpage/channel/ChannelSidebar.vue";
 import {useServerListStore} from "../../script/stores/serverlist";
-import {onMounted, provide, reactive, watch} from "vue";
+import {onMounted, provide, watch} from "vue";
 import {useLobbyStore} from "../../script/stores/lobby";
 import {useRouter} from "vue-router";
 import {useChannelStore} from "../../script/stores/channel";
 import {useSocketStore} from '/script/socketOperations';
-
+import {useFriendStore} from "../../script/stores/friend";
+const friendStore = useFriendStore();
 
 const serverListStore = useServerListStore();
 const lobbyStore = useLobbyStore();
@@ -43,7 +44,7 @@ onMounted(async () => {
   provide('wsConnected', socketStore.wsConnected);  // 상태를 provide로 제공
 });
 
-
+friendStore.initFriendList();
 </script>
 
 <template>

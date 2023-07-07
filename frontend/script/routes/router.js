@@ -42,7 +42,7 @@ const routes = [
         props: true
     },
     {
-        path: '/channel/friend/',
+        path: '/channel/friend/:memberUID',
         name: 'FriendLobby',
         component: () => import(/*webpackChunkName: "main", webpackPrefetch: true */ "@/Pages/Main.vue"),
         meta: {requiresAuth: true}

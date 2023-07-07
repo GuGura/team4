@@ -103,3 +103,10 @@ create table event
     allday    BOOLEAN,
     groupId int
 );
+create table friend
+(
+    FRIEND_SENDER   int                  null,
+    FRIEND_RECEIVER int                  null,
+    FRIEND_CHECKED  tinyint(1) default 0 not null,
+    FRIEND_DATE     timestamp            not null
+);
