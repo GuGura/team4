@@ -41,6 +41,7 @@ export const useFriendStore = defineStore("friendStore", () => {
             })
     }
     function updateFriendInfo() {
+        localStorage.removeItem('friend')
         api.post('/myInfo/friend',{friendId:user.id})
             .then(({data}) => {
                 const userInfo = data.result
