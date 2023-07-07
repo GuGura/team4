@@ -25,6 +25,11 @@ function initRequestUser() {
       .then(({data}) => {
         console.log("initRequestUser")
         data.forEach(member => {
+            if (member.user_ICON_URL !== null && member.user_ICON_URL !== '') {
+                member.user_ICON_URL = "data:image/png;base64," + member.user_ICON_URL
+            } else {
+                member.user_ICON_URL = "data:image/png;base64,null"
+            }
           RequestUser.push(member)
         })
       })

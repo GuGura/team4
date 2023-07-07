@@ -41,7 +41,7 @@ function initPosts() {
 }
 
 function morePost() {
-    api.post("/content/listByPage", {
+    api.post("/content/listByPageFeed", {
         lastPosting: lastPosting
     }).then(({data}) => {
         if(data && data.length) {
