@@ -3,6 +3,7 @@ package com.team4.backend.controller;
 import com.team4.backend.model.Member;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ProfileService;
+import com.team4.backend.util.CodeGenerator;
 import com.team4.backend.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class ProfileController {
        bis.close();
 
        //파일명
-       String fileName = base64.substring(30,50)+".png";
+      String fileName = CodeGenerator.createCode() +".png";
 
        String uploadFolder = "C:\\upload\\images\\users\\"+UserUtil.getEmail().substring(0,UserUtil.getEmail().lastIndexOf("@"))+"\\icons\\";
        File folder = new File(uploadFolder);

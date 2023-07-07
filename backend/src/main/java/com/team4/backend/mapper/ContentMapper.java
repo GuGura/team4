@@ -33,7 +33,7 @@ public interface ContentMapper {
             "WHERE f2.FRIEND_SENDER = f1.FRIEND_RECEIVER " +
             "AND f2.FRIEND_RECEIVER = f1.FRIEND_SENDER " +
             "AND f2.FRIEND_CHECKED = true) " +
-            "LIMIT 1) or #{memberUID})" +
+            "LIMIT 1) or writer_id = #{memberUID})" +
             "AND id < #{pageNum} ORDER BY id DESC LIMIT 10")
     List<ContentDTO> listContentFeed(@Param("pageNum")int pageNum, @Param("memberUID") int memberUID);
 }

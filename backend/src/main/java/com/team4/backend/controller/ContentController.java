@@ -5,6 +5,7 @@ import com.team4.backend.model.ResultContent;
 import com.team4.backend.model.dto.ContentDTO;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ContentService;
+import com.team4.backend.util.CodeGenerator;
 import com.team4.backend.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -138,7 +139,7 @@ public class ContentController {
             image = ImageIO.read(bis);
             bis.close();
             //파일명
-            String fileName = base64.substring(30,50)+".png";
+            String fileName = CodeGenerator.createCode() +".png";
             String uploadFolder = "C:\\upload\\images\\users\\"+ UserUtil.getEmail().substring(0,UserUtil.getEmail().lastIndexOf("@"))+"\\contents\\";
             new File(uploadFolder).mkdirs();
             File outputfile = new File(uploadFolder+fileName);
