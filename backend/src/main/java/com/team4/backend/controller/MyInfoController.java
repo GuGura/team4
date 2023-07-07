@@ -1,12 +1,11 @@
 package com.team4.backend.controller;
 
-import com.team4.backend.model.FriendDTO;
-import com.team4.backend.model.Member;
-import com.team4.backend.model.ResultMember;
+import com.team4.backend.model.*;
 import com.team4.backend.model.dto.MyChannelsDTO;
 import com.team4.backend.model.dto.ResultDTO;
 import com.team4.backend.model.dto.ResultDtoProperties;
 import com.team4.backend.service.ChannelService;
+import com.team4.backend.service.FriendService;
 import com.team4.backend.service.MemberService;
 import com.team4.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +25,8 @@ public class MyInfoController {
     ResultDTO resultDTO;
     private final ChannelService channelService;
     private final MemberService memberService;
+    private final FriendService friendService;
+
     @PutMapping("/myInfo/init")
     public ResponseEntity<ResultDTO> initMyInfo() {
         String email = UserUtil.getEmail();
@@ -71,7 +73,11 @@ public class MyInfoController {
     public ResponseEntity<?> getFriendList(HttpServletRequest request){
         int memberUID =(int) request.getAttribute(ResultDtoProperties.USER_UID);
         List<FriendDTO> friendsList = memberService.myFriendList(memberUID);
+        List<ResultFriend> friendsListToReturn = new ArrayList<>();
+        for (FriendDTO friend: friendsList) {
+            friendsListToReturn.add(friendService.friendToReturn(friend));
+        }
         System.out.println("getFriendList:"+friendsList);
-        return new ResponseEntity<>(friendsList,HttpStatus.OK);
+        return new ResponseEntity<>(friendsListToReturn,HttpStatus.OK);
     }
 }

@@ -12,8 +12,7 @@
                 </div>
                 <div class="row">
                     <div class="edit-button col-1">
-                        <span class="material-symbols-outlined">group_add</span>
-                        <div>Add</div>
+
                     </div>
                 </div>
             </div>
@@ -136,9 +135,8 @@ h2.featurette-heading {
     align-items: center;
     width: 100px;
     height: 30px;
-    background: #41434A;
     border-radius: 10px;
-    cursor: pointer;
+
     margin-right: 10px;
 }
 
@@ -166,7 +164,7 @@ h2.featurette-heading {
 
 .edit-button .material-symbols-outlined {
     font-size: 20px;
-    color: #fff;
+
     margin-right: 5px;
 }
 
@@ -179,11 +177,11 @@ h2.featurette-heading {
 }
 
 .edit-button:hover {
-    background: #36373D;
+
 }
 
 .edit-button:active {
-    background: #3B3D44;
+
 }
 
 
