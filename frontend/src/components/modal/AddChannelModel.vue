@@ -1,10 +1,11 @@
 <script setup>
-import {reactive} from 'vue'
+import {computed, reactive} from 'vue'
 import api from "../../../script/token/axios";
 import {useModalStore} from "../../../script/stores/modal";
 import {useLobbyStore} from "../../../script/stores/lobby";
 import router from "../../../script/routes/router";
 import {useServerListStore} from "../../../script/stores/serverlist";
+import {createRoom} from "../../../script/chatOperations";
 
 const modalStore = useModalStore();
 const userStore = useLobbyStore();
@@ -19,6 +20,11 @@ let channelCode = reactive({
   channelCode: '',
   result: '*'
 })
+const props = reactive({
+  type: 'Text',
+  name: 'Text Chatting Room',
+  room_type: false,
+})
 
 async function createServer() {
   if (createChannel.serverName !== '') {
@@ -31,6 +37,8 @@ async function createServer() {
           serverListStore.updateBtn(data[0])
           localStorage.setItem('selectChannel', data[0].channel_title)
           localStorage.setItem('inviteCode',data[0].channel_invite_code)
+          localStorage.setItem('newChannelUID',data[0].channel_UID)
+          createRoom(localStorage.getItem('newChannelUID'), props);
           router.push(`/channel/${result}`)
           router.go(1);
         })

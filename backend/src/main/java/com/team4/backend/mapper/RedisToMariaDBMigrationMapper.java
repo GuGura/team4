@@ -2,6 +2,7 @@ package com.team4.backend.mapper;
 
 import com.team4.backend.model.ChatMessage;
 import com.team4.backend.model.ChatRoom;
+import com.team4.backend.model.dto.UserListDto;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
@@ -35,5 +36,28 @@ public interface RedisToMariaDBMigrationMapper {
             @Result(property = "sendDate", column = "send_date")
     })
     List<ChatMessage> getChatMessagesFromDB(@Param("roomId") String roomId);
+
+    @Select("SELECT m.ID, m.USERNAME, chm.CHANNEL_UID, cm.message " +
+            "FROM chat_messages cm " +
+            "JOIN member m ON cm.sender = m.EMAIL " +
+            "JOIN channelmember chm ON m.ID = chm.MEMBER_UID " +
+            "WHERE (cm.sender, cm.send_date) IN (" +
+            "  SELECT sender, MAX(send_date) " +
+            "  FROM chat_messages " +
+            "  WHERE room_id = 'UserList' " +
+            "  GROUP BY sender" +
+            ")" +
+            "ORDER BY cm.sender")
+    @Results({
+            @Result(property = "userUID", column = "ID"),
+            @Result(property = "userName", column = "USERNAME"),
+            @Result(property = "channelUID", column = "CHANNEL_UID"),
+            @Result(property = "message", column = "message")
+    })
+    List<UserListDto> getUserListFromDB();
+
+
+
+
 
 }

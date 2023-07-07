@@ -1,9 +1,14 @@
 server:
   port: 8090
+  ssl:
+    enabled: false
 
 #logging:
 #  level:
 #    org.springframework: DEBUG
+OPENVIDU_URL: http://localhost:4443/
+OPENVIDU_SECRET: MY_SECRET
+
 
 spring:
   mail:
@@ -30,9 +35,9 @@ spring:
 
   #DB
   datasource:
-    url: jdbc:mariadb://localhost:3306/projectdb
+    url: jdbc:mariadb://localhost:3306/discord
     driver-class-name: org.mariadb.jdbc.Driver
-    username: project1
+    username: root
     password: 1234
 
   profiles:

@@ -27,36 +27,28 @@ const updateChannelId = computed(() => {
 
 onMounted(async () => {
   await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-  if (textChatRooms.length > 0) {
-    enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
+  if (textChatRooms.length >0) {
+    await enterRoom(textChatRooms[0].roomId, textChatRooms[0].name); // Here only roomId is needed
   }
 });
 
-watch(()=>updateChannelId.value,
+watch(
     async () => {
       if (updateChannelId.value !== "lobby") {
         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-        if (textChatRooms.length === 0 && voiceChatRooms.length === 0) {
-          roomInfo.name = "Text Chatting Room";
-          roomInfo.room_type = false;
-          await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-          roomInfo.name = "Voice Chatting Room";
-          roomInfo.room_type = true;
-          await createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-          enterRoom(updateUsername.value, updateChannelId.value, textChatRooms[0].roomId);
-        }
+      }
+    },
+);
+watch(() => updateChannelId.value,
+    async () => {
+      if (updateChannelId.value !== "lobby") {
+        await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
         if (textChatRooms.length > 0) {
-          enterRoom(textChatRooms[0].roomId); // Here only roomId is needed
+          enterRoom(textChatRooms[0].roomId, textChatRooms[0].name); // Here only roomId is needed
         }
       }
     },
 );
-
-// To use the createRoom function, the channel_id and roomInfo object are needed
-const createRoomInChannel = () => {
-  createRoom(updateChannelId.value, roomInfo, textChatRooms, voiceChatRooms);
-};
-
 
 </script>
 
@@ -76,7 +68,7 @@ const createRoomInChannel = () => {
           </div>
 
           <ul class="btnRooms">
-            <li class="btnRoom" v-for="item in textChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">
+            <li class="btnRoom" v-for="item in textChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId, item.name)">
               <div>
                 <img src="/img/channel/chat.png">
               </div>
@@ -122,17 +114,6 @@ const createRoomInChannel = () => {
 
             </div>
           </ul>
-
-          <div class="inputChatRoomName">
-            <div>
-              <label>방제목</label>
-            </div>
-            <input type="text" v-model="roomInfo.name" @keyup.enter="createRoomInChannel">
-            <div>
-              <input type="checkbox" id="roomType" v-model="roomInfo.room_type">
-              <label for="roomType">음성채팅방으로 설정</label>
-            </div>
-          </div>
 
         </div>
       </div>

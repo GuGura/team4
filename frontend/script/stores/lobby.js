@@ -17,7 +17,7 @@ export const useLobbyStore = defineStore("lobbyStore", () => {
     })
 
     function updateMyInfo() {
-        api.post('/myInfo/lobby')
+       return api.post('/myInfo/lobby')
             .then(({data}) => {
                 const userInfo = data.result
                 user.email = userInfo.email

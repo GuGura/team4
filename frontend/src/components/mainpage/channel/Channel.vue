@@ -1,18 +1,17 @@
 <script>
-import {computed, defineComponent, reactive} from "vue";
+import {computed, defineComponent, ref} from "vue";
 import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socketOperations';
 import router from "../../../../script/routes/router";
 import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
-
-
 const lobbyStore = useLobbyStore();
 
 const updateUsername = computed(() => {
   return lobbyStore.user.username
 })
 const socketStore = useSocketStore();
+
 let beforeRoomId;
 
 export default defineComponent({
@@ -21,7 +20,10 @@ export default defineComponent({
       if (to !== from && to) { // id가 바뀌었고, 새로운 id가 존재할 때만 함수 실행
         this.roomId = to;
         beforeRoomId = from;
-        this.enterRoom();
+        this.enterRoomEvent();
+        console.log("11111111111122222222 : "+localStorage.getItem('wschat.roomName'))
+        this.roomName = localStorage.getItem('wschat.roomName');
+        socketStore.UserList();
       }
     }
   },
@@ -34,6 +36,7 @@ export default defineComponent({
       message: '',
       sendDate: '',
       messages: [],
+      roomName: '',
       chatMessages: [],
       inputMessage: '',
       canSend: true,
@@ -42,33 +45,32 @@ export default defineComponent({
     };
   },
   setup() {
-    const { messageList } = useSocketStore();
+    const { messageList, onlineUsers, offlineUsers } = useSocketStore();
 
     return {
-      messageList
+      messageList,
+      onlineUsers,
+      offlineUsers
     };
   },
-    mounted() {
-        this.scrollToBottom();
-    },
-    updated() {
-        this.scrollToBottom(); // 업데이트 되어도 스크롤 바닥 고정(채팅 하단에서 시작시, 스크롤 사라짐)
-    },
+  mounted() {
+    this.scrollToBottom(); // Scroll to the bottom initially
+    socketStore.UserList();
+  },
+  updated() {
+    this.scrollToBottom(); // Scroll to the bottom after updates
+  },
   methods: {
-      scrollToBottom() {
-          const chatScroll = this.$refs.chatScroll;
-          chatScroll.scrollTop = chatScroll.scrollHeight; // 바닥 스크롤
-      },
+    scrollToBottom() {
+      const chatScroll = this.$refs.chatScroll;
+      chatScroll.scrollTop = chatScroll.scrollHeight; // Scroll to the bottom
+    },
     router() {
       return router
     },
-    created() {
-      this.roomId = localStorage.getItem('wschat.roomId');
-      this.channelId = localStorage.getItem('wschat.channelId')
-      this.sender = updateUsername
-    },
-    async enterRoom() {
+    async enterRoomEvent() {
       const roomId = localStorage.getItem('wschat.roomId');
+
       socketStore.clearMessageList();
       await socketStore.unSubscribeToRoom(beforeRoomId);
 
@@ -83,17 +85,16 @@ export default defineComponent({
           });
     },
 
-  sendMessage() {
+    sendMessage() {
 
-    const roomId = localStorage.getItem('wschat.roomId');
-    const sender = this.sender;
-    const message = this.inputMessage;
+      const roomId = localStorage.getItem('wschat.roomId');
+      const sender = this.sender;
+      const message = this.inputMessage;
 
-    socketStore.sendMessage(roomId, sender, message);
-    this.inputMessage = ''; // 입력 필드 초기화
+      socketStore.sendMessage(roomId, sender, message);
+      this.inputMessage = ''; // 입력 필드 초기화
+    },
   },
-},
-
 
 });
 </script>
@@ -107,7 +108,7 @@ export default defineComponent({
           <div>
             <img src="/img/channel/chat.png" style="height: 100%;">
           </div>
-          <div>회의록</div>
+          <div>{{ roomName }}</div>
         </div>
         <input name="searchRoom" placeholder="검색하기">
       </div>
@@ -133,14 +134,22 @@ export default defineComponent({
         </div>
       </div>
 
-      <div id="chatSidebar">
-        <div id="offline">
-          <div class="roomMemberInfo">
-            <div>온라인</div>
+        <div id="chatSidebar">
+          <div id="online">
+            <div class="roomMemberInfo">
+              <div>온라인</div>
+            </div>
+            <ChannelMemberInfo v-for="(online, idx) in onlineUsers" :key="idx" :name="online.name" />
           </div>
-          <ChannelMemberInfo name="박재연"/>
+          <div id="offline">
+            <div class="roomMemberInfo">
+              <div>오프라인</div>
+            </div>
+            <ChannelMemberInfo v-for="(offline, idx) in offlineUsers" :key="idx" :name="offline.name" />
+          </div>
         </div>
-      </div>
+
+
     </div>
   </div>
 </template>
@@ -169,9 +178,8 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   flex: 1;
-
-
 }
+
 /** scroll*/
 #header {
   display: flex;
@@ -314,7 +322,6 @@ input[name=message] {
   display: flex;
   padding: 0 10px 15px;
   gap: 5px;
-    justify-content: flex-end;
 }
 
 .Box:hover {
