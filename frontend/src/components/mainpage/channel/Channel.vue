@@ -5,8 +5,6 @@ import {useLobbyStore} from "../../../../script/stores/lobby";
 import {useSocketStore} from '/script/socketOperations';
 import router from "../../../../script/routes/router";
 import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
-
-
 const lobbyStore = useLobbyStore();
 
 const updateUsername = computed(() => {
@@ -14,8 +12,6 @@ const updateUsername = computed(() => {
 })
 const socketStore = useSocketStore();
 
-const onlineUsers = ref([]);
-const offlineUsers = ref([]);
 let beforeRoomId;
 
 export default defineComponent({

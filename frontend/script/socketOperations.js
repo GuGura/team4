@@ -14,9 +14,7 @@ export const useSocketStore = defineStore("socketStore", () => {
     const onlineUsers = reactive([]);
     const offlineUsers = reactive([]);
     const lobbyStore = useLobbyStore();
-    const updateUsername = computed(() => {
-        return lobbyStore.user.username;
-    });
+
     const updateUserEmail = computed(() => {
         return lobbyStore.user.email;
     });
@@ -107,13 +105,12 @@ export const useSocketStore = defineStore("socketStore", () => {
     async function UserList() {
         try {
             const response = await api.get(`/chat/room/list/UserList`);
-
             const currentData = response.data.filter(user =>
                 user.channelUID === localStorage.getItem('wschat.channel_id') &&
                 (user.message === "ENTER" || user.message === "QUIT")
             );
 
-            // Find new online users or users that moved from offline to online
+            // Find new online users
             const newOnlineUsers = currentData.filter(user =>
                 !prevData.some(prevUser =>
                     prevUser.userName === user.userName && prevUser.message === user.message
@@ -131,19 +128,42 @@ export const useSocketStore = defineStore("socketStore", () => {
                 }
             });
 
-            // Find users who moved offline
-            const movedOfflineUsers = prevData.filter(prevUser =>
-                !currentData.some(user =>
-                    user.userName === prevUser.userName && user.message === prevUser.message
-                ) && prevUser.message === "ENTER"
-            );
+            // Find users who quit
+            const quitUsers = currentData.filter(user => user.message === "QUIT");
 
-            // Move users who went offline from onlineUsers to offlineUsers
-            movedOfflineUsers.forEach(user => {
+            // Process quit users
+            quitUsers.forEach(user => {
+                // If user was previously online, remove from onlineUsers
                 const indexOnline = onlineUsers.findIndex(onlineUser => onlineUser.name === user.userName);
                 if (indexOnline !== -1) {
                     onlineUsers.splice(indexOnline, 1);
+                }
+
+                // Check if user is already marked as offline, if not, add to offlineUsers
+                const indexOffline = offlineUsers.findIndex(offlineUser => offlineUser.name === user.userName);
+                if (indexOffline === -1) {
                     offlineUsers.push({ name: user.userName });
+                }
+            });
+
+
+            // Find users who were in the previous data but are no longer present
+            const missingUsers = prevData.filter(prevUser =>
+                !currentData.some(user =>
+                    user.userName === prevUser.userName
+                )
+            );
+
+            // Remove missing users from both lists
+            missingUsers.forEach(user => {
+                const indexOnline = onlineUsers.findIndex(onlineUser => onlineUser.name === user.userName);
+                if (indexOnline !== -1) {
+                    onlineUsers.splice(indexOnline, 1);
+                }
+
+                const indexOffline = offlineUsers.findIndex(offlineUser => offlineUser.name === user.userName);
+                if (indexOffline !== -1) {
+                    offlineUsers.splice(indexOffline, 1);
                 }
             });
 
@@ -157,8 +177,9 @@ export const useSocketStore = defineStore("socketStore", () => {
         }
     }
 
-// Set the function to run every second (1000 milliseconds)
-    setInterval(UserList, 5000);
+    setInterval(UserList, 3000);
+
+
 
 
 

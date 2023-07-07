@@ -28,7 +28,7 @@ public class RedisToMariaDBMigrationService {
         this.redisTemplate = redisTemplate;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 3000)
     private void migrateData() {
         // Redis 데이터 읽기
         List<ChatRoom> chatRooms = chatRoomRepository.getAllChatRooms();
@@ -61,7 +61,6 @@ public class RedisToMariaDBMigrationService {
 
             redisToMariaDBMigrationMapper.insertChatMessage(roomId, sender, message, sendDate);
         }
-        System.out.println("Redis to MariaDB Data Save");
         clearRedisData();
     }
 

@@ -70,8 +70,4 @@ export function enterRoom(roomId, name) {
     router.push(`/channel/${channel_id}/chat/room/enter/${roomId}`);
 }
 
-export function roomName(){
-    let userRoomName = reactive;
-    userRoomName = localStorage.getItem('wschat.roomName');
-}
 
