@@ -1,7 +1,6 @@
 <script setup>
 import {defineProps, reactive} from 'vue'
 import api from "../../../../script/token/axios";
-import {useFriendStore} from "../../../../script/stores/friend";
 
 const props = defineProps({
   friendInfo: Object,
