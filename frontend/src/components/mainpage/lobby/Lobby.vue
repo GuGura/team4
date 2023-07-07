@@ -1,39 +1,4 @@
 <template>
-  <div id="main_contents">
-    <div id="main_content_header">
-      <div id="icon_URL">
-          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-if="lobbyStore.user.user_icon_url==='data:image/png;base64,null' ">
-          <img src="/img/serverlist/user_icon.png" alt="UserIcon" style="width: 200px;" class="rounded" v-else-if="lobbyStore.user.user_icon_url==='' ">
-          <img :src="lobbyStore.user.user_icon_url"  alt="UserIcon" style="width: 200px;" class="rounded" v-else>
-      </div>
-      <div id="userName" class="">
-        <div class="order-md-2">
-          <h2 class="featurette-heading fw-normal lh-1">{{ lobbyStore.user.username }} </h2>
-          <div class="lead"> {{ lobbyStore.user.user_description }}</div>
-        </div>
-        <div class="row">
-          <div class="edit-button col-1" @click="openModal()">
-            <span class="material-symbols-outlined">manage_accounts</span>
-            <div>Settings</div>
-          </div>
-          <UserSettingModal v-if="modalStore.modal.userSetting === true"/>
-          <div class="writing-button col-1" @click="openModal2()">
-            <span class="material-symbols-outlined">edit_note</span>
-            <div>Post</div>
-          </div>
-          <WritingContentModal v-if="modalStore.modal.writingContent === true"/>
-        </div>
-      </div>
-    </div>
-    <div id="main_content_body">
-      <div id="main_content1">
-        <Tab/>
-      </div>
-      <div id="main_content2">
-        <TodaySchedule/>
-      </div>
-    </div>
-  </div>
     <div id="main_contents">
         <div id="main_content_header">
             <div id="icon_URL">
