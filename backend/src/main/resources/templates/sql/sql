@@ -93,16 +93,16 @@ create table content
 );
 
 create table event
-(
-    id        int NOT NULL AUTO_INCREMENT PRIMARY key,
-    estart    date,
-    end       date,
-    title     varchar(500),
-    memberId  int,
-    groupName varchar(100),
-    allday    BOOLEAN,
-    groupId int
-);
+      (
+          id        int NOT NULL AUTO_INCREMENT PRIMARY key,
+          estart    date,
+          end       date,
+          title     varchar(500),
+          memberId  int,
+          groupName varchar(100),
+          allday    BOOLEAN,
+          groupId int
+      );
 create table friend
 (
     FRIEND_SENDER   int                  null,

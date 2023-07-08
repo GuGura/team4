@@ -33,7 +33,7 @@ console.log(props.friendInfo.id)
       <div class="MyMember_Name">
         {{ props.friendInfo.username }}
       </div>
-      <button style="outline: none;border: none;cursor: pointer;" @click="friendSend()" v-if="isRequest[0]===false">수락하기</button>
+      <button style="outline: none;border: none;cursor: pointer;" @click="friendSend()" v-if="isRequest[0]===false">친구요청</button>
       <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">요청완료</button>
     </div>
   </div>

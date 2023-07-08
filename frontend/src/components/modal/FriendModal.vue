@@ -4,6 +4,7 @@ import {reactive, ref} from "vue";
 import OtherUsers from "@/components/mainpage/lobby/OtherUsers.vue";
 import api from "../../../script/token/axios";
 import RequestUsers from "@/components/mainpage/lobby/RequestUsers.vue";
+import router from "../../../script/routes/router";
 
 
 const modalStore = useModalStore();
@@ -16,16 +17,27 @@ let afterSearch = reactive(null);
 
 function closeM() {
   modalStore.openClose('Friend')
+  router.go(0)
 }
-function initRequestUser(){
+
+function initRequestUser() {
   api.get(`/friend/requestUser`)
-      .then(({data})=>{
-        console.log(data)
+      .then(({data}) => {
+        console.log("initRequestUser")
+        data.forEach(member => {
+            if (member.user_ICON_URL !== null && member.user_ICON_URL !== '') {
+                member.user_ICON_URL = "data:image/png;base64," + member.user_ICON_URL
+            } else {
+                member.user_ICON_URL = "data:image/png;base64,null"
+            }
+          RequestUser.push(member)
+        })
       })
-      .catch(err=>{
+      .catch(err => {
         console.log(err)
       })
 }
+
 function findOtherUser() {
   if (afterSearch !== username) {
     OtherUser.splice(0, OtherUser.length)
@@ -34,11 +46,11 @@ function findOtherUser() {
       api.get(`/friend/search/${username}`)
           .then(({data}) => {
             data.forEach(user => {
-                if(user.user_ICON_URL !== null&& user.user_ICON_URL !== ''){
-                    user.user_ICON_URL = "data:image/png;base64,"+user.user_ICON_URL
-                }else {
-                    user.user_ICON_URL = "data:image/png;base64,null"
-                }
+              if (user.user_ICON_URL !== null && user.user_ICON_URL !== '') {
+                user.user_ICON_URL = "data:image/png;base64," + user.user_ICON_URL
+              } else {
+                user.user_ICON_URL = "data:image/png;base64,null"
+              }
               OtherUser.push(user)
             })
           })
@@ -74,7 +86,9 @@ initRequestUser();
                     :request="false"/>
       </div>
       <div id="" v-else-if="buttonType===2">
-        <RequestUsers v-for="user in RequestUser" :key="user" />
+        <RequestUsers v-for="user in RequestUser" :key="user"
+                      :friendInfo="user"
+                      :request="false"/>
       </div>
     </div>
   </div>

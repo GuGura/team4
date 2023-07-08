@@ -2,13 +2,9 @@ package com.team4.backend.mapper;
 
 import com.team4.backend.model.FriendDTO;
 import com.team4.backend.model.FriendDTO2;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface FriendMapper {
@@ -44,4 +40,17 @@ public interface FriendMapper {
 
     @Insert("INSERT INTO friend (FRIEND_SENDER,FRIEND_RECEIVER) values (#{sendMemberUID},#{memberUID})")
     void saveResponse(@Param("sendMemberUID") int sendMemberUID, @Param("memberUID") int memberUID);
+
+
+    @Select("SELECT ID, USERNAME, USER_ICON_URL\n" +
+            "FROM member\n" +
+            "WHERE ID IN\n" +
+            "      (SELECT FRIEND_RECEIVER\n" +
+            "       FROM friend\n" +
+            "       WHERE FRIEND_SENDER = #{memberUID} \n" +
+            "         and FRIEND_CHECKED = false)")
+    List<FriendDTO2> fineRequestUsers(@Param("memberUID") int memberUID);
+
+    @Update("update friend set FRIEND_CHECKED = true where FRIEND_SENDER = #{memberUID} and FRIEND_RECEIVER = #{friendUID}")
+    void updateFriend(@Param("memberUID") int memberUID,@Param("friendUID") int friendUID);
 }

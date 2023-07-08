@@ -1,5 +1,6 @@
 package com.team4.backend.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +11,21 @@ import java.util.Date;
 @Setter
 public class ChatMessage implements Serializable {
 
+    public ChatMessage() {
+    }
+
+    @Builder
+    public ChatMessage(MessageType type, String roomId, String sender, String message) {
+        this.type = type;
+        this.roomId = roomId;
+        this.sender = sender;
+        this.message = message;
+        this.sendDate = new Date();
+    }
+
     // 메시지 타입 : 입장, 채팅
     public enum MessageType {
-        ENTER, TALK
+        ENTER, TALK, QUIT
     }
 
     private MessageType type; // 메시지 타입

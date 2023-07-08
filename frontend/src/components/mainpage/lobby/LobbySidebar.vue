@@ -1,6 +1,6 @@
 <script setup>
 import SidebarMyInfo from "@/components/sidebar/SidebarMyInfo.vue";
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
 import {useFriendStore} from "../../../../script/stores/friend";
 import Friend from "@/components/mainpage/lobby/Friend.vue";
 import {useModalStore} from "../../../../script/stores/modal";
@@ -18,6 +18,9 @@ function FriendM(){
   console.log(modalStore.modal.Friend)
 }
 
+watch(()=>friendStore.getFriendList(),()=>{
+  friendList = friendStore.getFriendList()
+})
 let friendList = friendStore.getFriendList()
 
 

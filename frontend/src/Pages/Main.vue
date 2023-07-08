@@ -38,7 +38,7 @@ watch(route.currentRoute, (to,form) => {
   }
 })
 onMounted(async () => {
-  lobbyStore.updateMyInfo();
+  await lobbyStore.updateMyInfo();
   await socketStore.connectSocket();
   provide('socket', socketStore.ws);
   provide('wsConnected', socketStore.wsConnected);  // 상태를 provide로 제공

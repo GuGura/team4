@@ -16,7 +16,7 @@
                 <div class="btnDelete col-1">
 
                 </div>
-                <div v-if="props.post.sharingCode === 0 || props.post.writer_id === useLobbyStore().user.username" class="btnDelete col-1" @click="deletePost">
+                <div v-if="props.post.sharingCode === 0 && props.post.username === useLobbyStore().user.username" class="btnDelete col-1" @click="deletePost">
                     <span class="material-symbols-outlined">close</span>
                 </div>
                 <div v-else class="btnDelete col-1" @click="getFriendPost">

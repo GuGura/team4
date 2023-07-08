@@ -12,8 +12,6 @@ export const useChannelStore = defineStore('channelStore',()=>{
     function init(){
         channelInfo.channel_title = localStorage.getItem('selectChannel')
         channelInfo.channel_invite_code = localStorage.getItem('inviteCode')
-        console.log(JSON.parse(localStorage.getItem('user')).username)
-        console.log(channelInfo.channel_title)
     }
 
     const chatRoomInfo = reactive({

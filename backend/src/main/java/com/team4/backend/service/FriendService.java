@@ -17,16 +17,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendMapper friendMapper;
+
     public List<ResultFriend> findSearchUsers(String username, int memberUID) {
         List<FriendDTO2> list = friendMapper.findSearchUsers(username, memberUID);
         List<ResultFriend> listToReturn = new ArrayList<>();
-        for (FriendDTO2 friend: list) {
+        for (FriendDTO2 friend : list) {
             listToReturn.add(friendToReturn(friend));
         }
         return listToReturn;
     }
 
-    public ResultFriend friendToReturn(FriendDTO2 friend){
+    public ResultFriend friendToReturn(FriendDTO2 friend) {
         ResultFriend Rfriend = new ResultFriend();
         Rfriend.setID(friend.getID());
         Rfriend.setUSER_ICON_URL(UserUtil.pathToBytes(friend.getUSER_ICON_URL()));
@@ -34,7 +35,7 @@ public class FriendService {
         return Rfriend;
     }
 
-    public ResultFriend friendToReturn(FriendDTO friend){
+    public ResultFriend friendToReturn(FriendDTO friend) {
         ResultFriend Rfriend = new ResultFriend();
         Rfriend.setID(friend.getFRIEND_RECEIVER());
         Rfriend.setUSER_ICON_URL(UserUtil.pathToBytes(friend.getUSER_ICON_URL()));
@@ -43,12 +44,28 @@ public class FriendService {
     }
 
     public ResponseEntity<?> save(int memberUID, int sendMemberUID) {
-        if (friendMapper.findData(memberUID,sendMemberUID)==1)
+        if (friendMapper.findData(memberUID, sendMemberUID) == 1)
             return new ResponseEntity<>("이미 친구추가 신청한 상대입니다.", HttpStatus.PAYMENT_REQUIRED);
-        friendMapper.saveRequest(memberUID,sendMemberUID);
-        if (friendMapper.findData(memberUID,sendMemberUID)!=1)
+        friendMapper.saveRequest(memberUID, sendMemberUID);
+        if (friendMapper.findData(memberUID, sendMemberUID) != 1)
             return new ResponseEntity<>("친구신청 실패", HttpStatus.PAYMENT_REQUIRED);
-        friendMapper.saveResponse(sendMemberUID,memberUID);
-        return new ResponseEntity<>("친구신청 완료",HttpStatus.CREATED);
+        friendMapper.saveResponse(sendMemberUID, memberUID);
+        return new ResponseEntity<>("친구신청 완료", HttpStatus.CREATED);
+    }
+
+    public List<ResultFriend> findRequestUsers(int memberUID) {
+        List<FriendDTO2> list = friendMapper.fineRequestUsers(memberUID);
+        List<ResultFriend> listToReturn = new ArrayList<>();
+        for (FriendDTO2 friend : list) {
+            listToReturn.add(friendToReturn(friend));
+        }
+        return listToReturn;
+    }
+
+    public ResponseEntity<?> responseFriend(int memberUID, int friendUID) {
+        if (friendMapper.findData(memberUID, friendUID) == 1)
+            return new ResponseEntity<>("이미 친구추가 신청한 상대입니다.", HttpStatus.PAYMENT_REQUIRED);
+        friendMapper.updateFriend(memberUID, friendUID);
+        return new ResponseEntity<>("친구수락", HttpStatus.ACCEPTED);
     }
 }
