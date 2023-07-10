@@ -9,7 +9,7 @@ Discord를 클론코딩한 커뮤니케이션 메신저 입니다.(05/08~07/07)
 |Members|Contact|
 |------|---|
 |박재연(팀장)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/wodus331@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:wodus331@gmail.com)](mailto:wodus331@gmail.com)|
-|김원식(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>|
-|김선아(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>|
-|구도연(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>|
-|홍민화(조원)|<a href="https://github.com/hongminhwa"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>|
+|김원식(조원)|<a href="https://github.com/Cicada223"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/cicada2529@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:cicada2529@gmail.com)](mailto:cicada2529@gmail.com)|
+|김선아(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/wodus331@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:wodus331@gmail.com)](mailto:wodus331@gmail.com)|
+|구도연(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/wodus331@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:wodus331@gmail.com)](mailto:wodus331@gmail.com)|
+|홍민화(조원)|<a href="https://github.com/hongminhwa"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/minhwa101@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:minhwa101@gmail.com)](mailto:minhwa101@gmail.com)|
