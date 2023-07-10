@@ -9,13 +9,17 @@
 ## 📽️ 프로젝트 소개
 Discord를 클론코딩한 커뮤니케이션 메신저 입니다. <br>
 한번도 해보지 못한 영역들을 공부하면서 만들어보자라는 취지를 바탕으로 프로젝트를 진행했습니다.(05/08~07/07)
+
+### 프로젝트 실행방법
+인스톨 sql create 
+
 ### 🧑‍🤝‍🧑맴버구성
 |Members|Contact|
 |------|---|
 |박재연(팀장)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/wodus331@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:wodus331@gmail.com)](mailto:wodus331@gmail.com)|
 |김원식(조원)|<a href="https://github.com/Cicada223"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/cicada2529@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:cicada2529@gmail.com)](mailto:cicada2529@gmail.com)|
-|김선아(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/wodus331@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:wodus331@gmail.com)](mailto:wodus331@gmail.com)|
-|구도연(조원)|<a href="https://github.com/GuGura"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/wodus331@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:wodus331@gmail.com)](mailto:wodus331@gmail.com)|
+|김선아(조원)|<a href="https://github.com/DaegilTheRuler"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/tjsdwngp@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:tjsdwngp@gmail.com)](mailto:tjsdwngp@gmail.com)|
+|구도연(조원)|<a href="https://github.com/lauv.0309"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/lauv.0309@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:lauv.0309@gmail.com)](mailto:lauv.0309@gmail.com)|
 |홍민화(조원)|<a href="https://github.com/hongminhwa"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a> [![Gmail Badge](https://img.shields.io/badge/minhwa101@gmail.com-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:minhwa101@gmail.com)](mailto:minhwa101@gmail.com)|
 
 ## 🚀 Stacks
@@ -31,11 +35,6 @@ Discord를 클론코딩한 커뮤니케이션 메신저 입니다. <br>
 </div>
 
 ### Library
-
-## ⚙️ ERD
-<img src="https://user-images.githubusercontent.com/92138545/252337707-6fc2d629-8e79-4094-bc9b-de0499989bc0.png">
-
-## ⚙️ Usecase Diagram
 
 ## ⚙️ 주요기능
 
