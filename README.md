@@ -40,6 +40,29 @@ Discord를 클론코딩한 커뮤니케이션 메신저 입니다. <br>
 
 ## ⚙️ 시연영상
 
+### 회원가입
+https://github.com/GuGura/team4/assets/92138545/3cb02547-c40c-478c-85e6-f0be84c18df6
+### 로그인
+https://github.com/GuGura/team4/assets/92138545/f4d8cfdc-8cee-4b8b-82ae-f0a727c111a7
+### 일정추가
+https://github.com/GuGura/team4/assets/92138545/6107ca79-a25e-4391-adac-14bac2194e23
+### 친구피드 및 게시글
+https://github.com/GuGura/team4/assets/92138545/47e06429-e272-4eba-855a-5e1a11b829b5
+### 친구 글 스크랩
+https://github.com/GuGura/team4/assets/92138545/bcf9d4f4-798a-4133-a9bc-80ef4e8e3c64
+### 친구 찾기 && 요청 && 수락
+https://github.com/GuGura/team4/assets/92138545/f508af28-1607-4072-a099-63cace083ac1
+### 채널 생성
+
+### 채팅방 생성
+
+### 채널 변경
+
+### 채팅 시연 및 유저리스트
+https://github.com/GuGura/team4/assets/92138545/017d3ccd-fad6-4551-bc07-55d2b7b027f1
+
+
+
 ## 🔈 Project Review 
 - 재연 :
 - 원식 :
